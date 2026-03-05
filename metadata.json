@@ -1,0 +1,5 @@
+{
+  "name": "SRS Lodge Manager",
+  "description": "A lightweight mobile-friendly lodge management application for room booking, check-in, check-out, and billing.",
+  "requestFramePermissions": []
+}
