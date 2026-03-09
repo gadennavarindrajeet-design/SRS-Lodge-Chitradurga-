@@ -323,13 +323,15 @@ const useAuth = () => {
 
 // --- Components ---
 
-const PublicLandingPage = () => {
+const PublicLandingPage = ({ isAuthenticated, user }: { isAuthenticated?: boolean, user?: any }) => {
   const [location, setLocation] = useState('');
   const [lodges, setLodges] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { isAuthenticated, user } = useAuth();
+  // Use props if provided, otherwise fallback to hook (for direct routes)
+  const auth = useAuth();
+  const currentIsAuthenticated = isAuthenticated !== undefined ? isAuthenticated : auth.isAuthenticated;
 
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -396,7 +398,7 @@ const PublicLandingPage = () => {
               </form>
             </motion.div>
 
-            {!isAuthenticated ? (
+            {!currentIsAuthenticated ? (
               <div className="flex gap-4">
                 <Link to="/public/login" className="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold transition-all border border-white/10">
                   Public Login
@@ -4256,7 +4258,7 @@ export default function App() {
         
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<PublicLandingPage />} />
+          <Route path="/" element={<PublicLandingPage isAuthenticated={isAuthenticated} user={user} />} />
           <Route path="/public/login" element={!isAuthenticated ? <PublicLoginPage onLogin={login} /> : <Navigate to="/" />} />
           <Route path="/public/register" element={!isAuthenticated ? <PublicRegisterPage /> : <Navigate to="/" />} />
           <Route path="/public/lodge/:id" element={<PublicLodgeDetails />} />
@@ -4277,7 +4279,7 @@ export default function App() {
             element={
               isAuthenticated ? (
                 isPublic ? (
-                  view === 'dashboard' ? <PublicLandingPage /> : <PublicMyBookings />
+                  view === 'dashboard' ? <PublicLandingPage isAuthenticated={isAuthenticated} user={user} /> : <PublicMyBookings />
                 ) : (
                   user?.is_super_admin ? (
                     <SuperAdminDashboard />

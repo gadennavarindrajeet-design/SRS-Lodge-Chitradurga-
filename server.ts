@@ -398,17 +398,14 @@ async function startServer() {
     const { lodgeId, roomId, customerName, customerPhone, checkInDate, checkOutDate } = req.body;
     const publicUserId = (req as any).user.id;
 
-    // Check for conflicts
+    // Check for conflicts: Overlap if (S1 < E2) AND (S2 < E1)
     const conflict = db.prepare(`
       SELECT * FROM bookings 
       WHERE room_id = ? 
       AND status = 'confirmed'
-      AND (
-        (check_in_date <= ? AND check_out_date >= ?) OR
-        (check_in_date <= ? AND check_out_date >= ?) OR
-        (check_in_date >= ? AND check_out_date <= ?)
-      )
-    `).get(roomId, checkInDate, checkInDate, checkOutDate, checkOutDate, checkInDate, checkOutDate);
+      AND check_in_date < ? 
+      AND check_out_date > ?
+    `).get(roomId, checkOutDate, checkInDate);
 
     if (conflict) {
       return res.status(400).json({ error: "Room is already booked for these dates" });
@@ -811,17 +808,14 @@ async function startServer() {
     const lodgeId = (req as any).user.id;
     const { roomId, customerName, customerPhone, checkInDate, checkOutDate } = req.body;
 
-    // Check for conflicts
+    // Check for conflicts: Overlap if (S1 < E2) AND (S2 < E1)
     const conflict = db.prepare(`
       SELECT * FROM bookings 
       WHERE room_id = ? 
       AND status = 'confirmed'
-      AND (
-        (check_in_date <= ? AND check_out_date >= ?) OR
-        (check_in_date <= ? AND check_out_date >= ?) OR
-        (check_in_date >= ? AND check_out_date <= ?)
-      )
-    `).get(roomId, checkInDate, checkInDate, checkOutDate, checkOutDate, checkInDate, checkOutDate);
+      AND check_in_date < ? 
+      AND check_out_date > ?
+    `).get(roomId, checkOutDate, checkInDate);
 
     if (conflict) {
       return res.status(400).json({ error: "Room is already booked for these dates" });
