@@ -329,6 +329,8 @@ const PublicLandingPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { isAuthenticated, user } = useAuth();
+
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault();
     setLoading(true);
@@ -394,14 +396,23 @@ const PublicLandingPage = () => {
               </form>
             </motion.div>
 
-            <div className="flex gap-4">
-              <Link to="/public/login" className="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold transition-all border border-white/10">
-                Public Login
-              </Link>
-              <Link to="/login" className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl font-bold transition-all border border-white/5">
-                Lodge Owner Login
-              </Link>
-            </div>
+            {!isAuthenticated ? (
+              <div className="flex gap-4">
+                <Link to="/public/login" className="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold transition-all border border-white/10">
+                  Public Login
+                </Link>
+                <Link to="/login" className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl font-bold transition-all border border-white/5">
+                  Lodge Owner Login
+                </Link>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <Link to="/dashboard" className="px-8 py-3 bg-white text-zinc-900 rounded-2xl font-black uppercase tracking-widest hover:bg-zinc-100 transition-all shadow-lg flex items-center gap-2">
+                  <LayoutDashboard size={18} />
+                  Go to Dashboard
+                </Link>
+              </div>
+            )}
           </div>
         </div>
         
@@ -674,7 +685,7 @@ const PublicLodgeDetails = () => {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          lodgeId: id,
+          lodgeId: parseInt(id || '0'),
           roomId: selectedRoom.id,
           customerName: user.name,
           customerPhone: user.phone,
@@ -1098,17 +1109,27 @@ const SubscriptionExpired = () => {
 const SuperAdminDashboard = () => {
   const [lodges, setLodges] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
+  const [activities, setActivities] = useState<any[]>([]);
+  const [financials, setFinancials] = useState<any>(null);
+  const [publicUsers, setPublicUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'lodges' | 'users' | 'feed' | 'financials'>('lodges');
 
   const fetchData = async () => {
     const token = localStorage.getItem('lodgeease_token');
     try {
-      const [lodgesRes, statsRes] = await Promise.all([
+      const [lodgesRes, statsRes, activitiesRes, financialsRes, usersRes] = await Promise.all([
         fetch('/api/admin/lodges', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/admin/recent-activities', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/admin/financials', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/admin/public-users', { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
       setLodges(await lodgesRes.json());
       setStats(await statsRes.json());
+      setActivities(await activitiesRes.json());
+      setFinancials(await financialsRes.json());
+      setPublicUsers(await usersRes.json());
     } catch (err) {
       console.error(err);
     } finally {
@@ -1158,15 +1179,45 @@ const SuperAdminDashboard = () => {
     }
   };
 
+  const impersonateLodge = async (lodgeId: number) => {
+    const token = localStorage.getItem('lodgeease_token');
+    try {
+      const res = await fetch('/api/admin/impersonate', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ lodgeId })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('lodgeease_token', data.token);
+        localStorage.setItem('lodgeease_user', JSON.stringify(data.user));
+        localStorage.setItem('lodge_name', data.user.lodge_name);
+        window.location.href = '/'; // Refresh to apply new user state
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-screen"><Loader2 className="animate-spin" /></div>;
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">Developer Console</h1>
-          <p className="text-zinc-500">Manage all registered lodges and subscriptions</p>
+          <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">System Overview</h1>
+          <p className="text-zinc-500">Global monitoring and management console</p>
         </div>
+        <button 
+          onClick={fetchData}
+          className="p-3 bg-zinc-100 text-zinc-900 rounded-2xl hover:bg-zinc-200 transition-all flex items-center gap-2 font-bold text-sm"
+        >
+          <RefreshCw size={18} />
+          Refresh
+        </button>
       </div>
 
       {stats && (
@@ -1190,78 +1241,212 @@ const SuperAdminDashboard = () => {
         </div>
       )}
 
-      <div className="bg-white rounded-3xl border border-zinc-100 overflow-hidden shadow-sm">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-zinc-50 border-b border-zinc-100">
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Lodge Details</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Owner</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Status</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Expires</th>
-              <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-50">
-            {lodges.map((lodge) => (
-              <tr key={lodge.id} className={`hover:bg-zinc-50/50 transition-colors ${lodge.is_disabled ? 'opacity-50' : ''}`}>
-                <td className="px-6 py-4">
-                  <div className="font-bold text-zinc-900">{lodge.lodge_name}</div>
-                  <div className="text-xs text-zinc-400">{lodge.login_id}</div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-zinc-600">{lodge.owner_name}</div>
-                  <div className="text-xs text-zinc-400">{lodge.phone}</div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex flex-col gap-1">
-                    <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                      lodge.subscription_status === 'active' ? 'bg-emerald-50 text-emerald-600' :
-                      lodge.subscription_status === 'trial' ? 'bg-blue-50 text-blue-600' :
-                      'bg-rose-50 text-rose-600'
-                    }`}>
-                      {lodge.subscription_status}
-                    </span>
-                    {lodge.is_disabled && (
-                      <span className="w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-500">
-                        Disabled
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm text-zinc-500">
-                  {lodge.subscription_end_date ? new Date(lodge.subscription_end_date).toLocaleDateString() : 'N/A'}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => activateSubscription(lodge.id, 'monthly')}
-                      className="px-3 py-1 bg-zinc-900 text-white text-xs rounded-lg font-bold hover:bg-zinc-800"
-                    >
-                      Monthly
-                    </button>
-                    <button 
-                      onClick={() => activateSubscription(lodge.id, 'yearly')}
-                      className="px-3 py-1 bg-zinc-100 text-zinc-900 text-xs rounded-lg font-bold hover:bg-zinc-200"
-                    >
-                      Yearly
-                    </button>
-                    <button 
-                      onClick={() => toggleLodgeStatus(lodge.id, !lodge.is_disabled)}
-                      className={`p-1.5 rounded-lg transition-colors ${
-                        lodge.is_disabled 
-                          ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
-                          : 'bg-rose-50 text-rose-600 hover:bg-rose-100'
-                      }`}
-                      title={lodge.is_disabled ? 'Enable Lodge' : 'Disable Lodge'}
-                    >
-                      {lodge.is_disabled ? <CheckCircle2 size={16} /> : <ShieldAlert size={16} />}
-                    </button>
-                  </div>
-                </td>
+      <div className="flex gap-2 bg-zinc-100 p-1.5 rounded-[2rem] w-fit">
+        {[
+          { id: 'lodges', label: 'Lodges', icon: Building2 },
+          { id: 'users', label: 'Public Users', icon: Users },
+          { id: 'feed', label: 'System Feed', icon: Activity },
+          { id: 'financials', label: 'Platform Financials', icon: IndianRupee },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={cn(
+              "flex items-center gap-2 px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all",
+              activeTab === tab.id 
+                ? "bg-white text-zinc-900 shadow-sm" 
+                : "text-zinc-400 hover:text-zinc-900"
+            )}
+          >
+            <tab.icon size={16} />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-[2.5rem] border border-zinc-100 overflow-hidden shadow-sm min-h-[400px]">
+        {activeTab === 'lodges' && (
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100">
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Lodge Details</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Owner</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Status</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Expires</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
               </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {lodges.map((lodge) => (
+                <tr key={lodge.id} className={`hover:bg-zinc-50/50 transition-colors ${lodge.is_disabled ? 'opacity-50' : ''}`}>
+                  <td className="px-6 py-4">
+                    <div className="font-bold text-zinc-900">{lodge.lodge_name}</div>
+                    <div className="text-xs text-zinc-400">{lodge.login_id}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-zinc-600">{lodge.owner_name}</div>
+                    <div className="text-xs text-zinc-400">{lodge.phone}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col gap-1">
+                      <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        lodge.subscription_status === 'active' ? 'bg-emerald-50 text-emerald-600' :
+                        lodge.subscription_status === 'trial' ? 'bg-blue-50 text-blue-600' :
+                        'bg-rose-50 text-rose-600'
+                      }`}>
+                        {lodge.subscription_status}
+                      </span>
+                      {lodge.is_disabled && (
+                        <span className="w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-500">
+                          Disabled
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-zinc-500">
+                    {lodge.subscription_end_date ? new Date(lodge.subscription_end_date).toLocaleDateString() : 'N/A'}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => activateSubscription(lodge.id, 'monthly')}
+                        className="px-3 py-1 bg-zinc-900 text-white text-xs rounded-lg font-bold hover:bg-zinc-800"
+                      >
+                        Monthly
+                      </button>
+                      <button 
+                        onClick={() => activateSubscription(lodge.id, 'yearly')}
+                        className="px-3 py-1 bg-zinc-100 text-zinc-900 text-xs rounded-lg font-bold hover:bg-zinc-200"
+                      >
+                        Yearly
+                      </button>
+                      <button 
+                        onClick={() => toggleLodgeStatus(lodge.id, !lodge.is_disabled)}
+                        className={`p-1.5 rounded-lg transition-colors ${
+                          lodge.is_disabled 
+                            ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
+                            : 'bg-rose-50 text-rose-600 hover:bg-rose-100'
+                        }`}
+                        title={lodge.is_disabled ? 'Enable Lodge' : 'Disable Lodge'}
+                      >
+                        {lodge.is_disabled ? <CheckCircle2 size={16} /> : <ShieldAlert size={16} />}
+                      </button>
+                      <button 
+                        onClick={() => impersonateLodge(lodge.id)}
+                        className="p-1.5 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors"
+                        title="Go To Lodge"
+                      >
+                        <ExternalLink size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {activeTab === 'users' && (
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-zinc-50 border-b border-zinc-100">
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">User Name</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Email</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Phone</th>
+                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Joined</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {publicUsers.map((user) => (
+                <tr key={user.id} className="hover:bg-zinc-50/50 transition-colors">
+                  <td className="px-6 py-4 font-bold text-zinc-900">{user.name}</td>
+                  <td className="px-6 py-4 text-sm text-zinc-600">{user.email}</td>
+                  <td className="px-6 py-4 text-sm text-zinc-600">{user.phone}</td>
+                  <td className="px-6 py-4 text-sm text-zinc-400">{new Date(user.created_at).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {activeTab === 'feed' && (
+          <div className="p-8 space-y-6">
+            {activities.map((activity, i) => (
+              <div key={i} className="flex items-start gap-4 p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+                <div className={cn(
+                  "p-2 rounded-xl",
+                  activity.type === 'lodge_registration' ? "bg-blue-50 text-blue-600" :
+                  activity.type === 'user_registration' ? "bg-emerald-50 text-emerald-600" :
+                  "bg-purple-50 text-purple-600"
+                )}>
+                  {activity.type === 'lodge_registration' ? <Building2 size={20} /> :
+                   activity.type === 'user_registration' ? <Users size={20} /> :
+                   <Calendar size={20} />}
+                </div>
+                <div>
+                  <div className="text-sm font-black text-zinc-900">{activity.title}</div>
+                  <div className="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-1">
+                    {activity.type.replace('_', ' ')} • {new Date(activity.date).toLocaleString()}
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        )}
+
+        {activeTab === 'financials' && financials && (
+          <div className="p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-8">
+                <h3 className="text-xl font-black text-zinc-900 uppercase tracking-tight">Revenue Breakdown</h3>
+                <div className="space-y-6">
+                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
+                    <span className="text-zinc-500 font-bold">Total Platform Revenue</span>
+                    <span className="text-3xl font-black text-zinc-900">₹{financials.totalRevenue}</span>
+                  </div>
+                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
+                    <span className="text-zinc-500 font-bold">Monthly Revenue</span>
+                    <span className="text-2xl font-black text-emerald-600">₹{financials.monthlyRevenue}</span>
+                  </div>
+                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
+                    <span className="text-zinc-500 font-bold">Total System Expenses</span>
+                    <span className="text-2xl font-black text-rose-600">₹{financials.totalExpenses}</span>
+                  </div>
+                  <div className="flex justify-between items-end pt-4">
+                    <span className="text-zinc-900 font-black uppercase tracking-widest text-sm">Net Platform Profit</span>
+                    <span className="text-4xl font-black text-zinc-900">₹{financials.netProfit}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-zinc-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden">
+                <div className="relative z-10">
+                  <h3 className="text-xl font-black mb-6">Platform Health</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-2">
+                        <span>Lodge Retention</span>
+                        <span>94%</span>
+                      </div>
+                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-500 w-[94%]" />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-2">
+                        <span>Subscription Conversion</span>
+                        <span>12%</span>
+                      </div>
+                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-500 w-[12%]" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

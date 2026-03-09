@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -113,6 +114,13 @@ db.exec(`
   );
 `);
 
+// Add public_user_id column if it doesn't exist (for existing databases)
+try {
+  db.prepare("ALTER TABLE bookings ADD COLUMN public_user_id INTEGER").run();
+} catch (e) {
+  // Column already exists or table doesn't exist yet
+}
+
 // Seed Default Lodge if not exists
 const lodgeExists = db.prepare("SELECT * FROM lodges WHERE login_id = ?").get("admin@lodgeease.com");
 if (!lodgeExists) {
@@ -168,6 +176,92 @@ async function startServer() {
       req.user = user;
       next();
     });
+  };
+
+  const sendBookingEmail = async (bookingData: any) => {
+    const { lodgeId, roomId, publicUserId, customerName, checkInDate, checkOutDate } = bookingData;
+
+    try {
+      const lodge = db.prepare("SELECT lodge_name, login_id FROM lodges WHERE id = ?").get(lodgeId) as any;
+      const room = db.prepare("SELECT room_number, type, price FROM rooms WHERE id = ?").get(roomId) as any;
+      const user = db.prepare("SELECT email FROM public_users WHERE id = ?").get(publicUserId) as any;
+
+      if (!lodge || !room || !user) {
+        console.warn("Could not find lodge, room, or user for email notification");
+        return;
+      }
+
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      const emailContent = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: #18181b;">Booking Confirmation</h2>
+          <p>Dear ${customerName},</p>
+          <p>Your booking at <strong>${lodge.lodge_name}</strong> has been confirmed.</p>
+          <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; font-size: 16px;">Booking Details:</h3>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 8px;"><strong>Room:</strong> ${room.room_number} (${room.type})</li>
+              <li style="margin-bottom: 8px;"><strong>Check-in:</strong> ${checkInDate}</li>
+              <li style="margin-bottom: 8px;"><strong>Check-out:</strong> ${checkOutDate}</li>
+              <li style="margin-bottom: 8px;"><strong>Price:</strong> ₹${room.price}/night</li>
+            </ul>
+          </div>
+          <p>Thank you for choosing LodgeEase!</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #71717a;">This is an automated message, please do not reply.</p>
+        </div>
+      `;
+
+      const ownerEmailContent = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: #18181b;">New Booking Received</h2>
+          <p>A new booking has been made for your lodge <strong>${lodge.lodge_name}</strong>.</p>
+          <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; font-size: 16px;">Customer Details:</h3>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 8px;"><strong>Name:</strong> ${customerName}</li>
+              <li style="margin-bottom: 8px;"><strong>Email:</strong> ${user.email}</li>
+            </ul>
+            <h3 style="margin-top: 20px; font-size: 16px;">Booking Details:</h3>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: 8px;"><strong>Room:</strong> ${room.room_number} (${room.type})</li>
+              <li style="margin-bottom: 8px;"><strong>Check-in:</strong> ${checkInDate}</li>
+              <li style="margin-bottom: 8px;"><strong>Check-out:</strong> ${checkOutDate}</li>
+            </ul>
+          </div>
+          <p>Please log in to your dashboard to manage this booking.</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #71717a;">LodgeEase Notification System</p>
+        </div>
+      `;
+
+      // Send to user
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM || '"LodgeEase" <noreply@lodgeease.com>',
+        to: user.email,
+        subject: `Booking Confirmed - ${lodge.lodge_name}`,
+        html: emailContent,
+      });
+
+      // Send to owner
+      await transporter.sendMail({
+        from: process.env.EMAIL_FROM || '"LodgeEase" <noreply@lodgeease.com>',
+        to: lodge.login_id,
+        subject: `New Booking Alert - ${customerName}`,
+        html: ownerEmailContent,
+      });
+    } catch (error) {
+      console.error("Error sending booking email:", error);
+    }
   };
 
   // API Routes
@@ -325,6 +419,9 @@ async function startServer() {
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(lodgeId, roomId, publicUserId, customerName, customerPhone, checkInDate, checkOutDate);
 
+    // Send confirmation emails asynchronously
+    sendBookingEmail({ lodgeId, roomId, publicUserId, customerName, checkInDate, checkOutDate });
+
     res.json({ success: true });
   });
 
@@ -389,6 +486,91 @@ async function startServer() {
 
     db.prepare("UPDATE lodges SET subscription_status = 'active', subscription_end_date = ? WHERE id = ?").run(endDate.toISOString(), lodgeId);
     res.json({ success: true, endDate: endDate.toISOString() });
+  });
+
+  app.get("/api/admin/recent-activities", authenticateToken, (req, res) => {
+    if (!(req as any).user.is_super_admin) {
+      const lodge = db.prepare("SELECT is_super_admin FROM lodges WHERE id = ?").get((req as any).user.id) as any;
+      if (!lodge || !lodge.is_super_admin) return res.sendStatus(403);
+    }
+
+    const activities: any[] = [];
+    
+    // New Lodges
+    const newLodges = db.prepare("SELECT 'lodge_registration' as type, lodge_name as title, created_at as date FROM lodges WHERE is_super_admin = 0 ORDER BY created_at DESC LIMIT 10").all();
+    activities.push(...newLodges);
+
+    // New Public Users
+    const newUsers = db.prepare("SELECT 'user_registration' as type, name as title, created_at as date FROM public_users ORDER BY created_at DESC LIMIT 10").all();
+    activities.push(...newUsers);
+
+    // New Bookings
+    const newBookings = db.prepare(`
+      SELECT 'booking' as type, l.lodge_name || ' - ' || b.customer_name as title, b.created_at as date 
+      FROM bookings b 
+      JOIN lodges l ON b.lodge_id = l.id 
+      ORDER BY b.created_at DESC LIMIT 10
+    `).all();
+    activities.push(...newBookings);
+
+    activities.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    res.json(activities.slice(0, 20));
+  });
+
+  app.get("/api/admin/financials", authenticateToken, (req, res) => {
+    if (!(req as any).user.is_super_admin) {
+      const lodge = db.prepare("SELECT is_super_admin FROM lodges WHERE id = ?").get((req as any).user.id) as any;
+      if (!lodge || !lodge.is_super_admin) return res.sendStatus(403);
+    }
+
+    const totalRevenue = db.prepare("SELECT SUM(total_amount) as total FROM checkouts").get() as any;
+    const monthlyRevenue = db.prepare("SELECT SUM(total_amount) as total FROM checkouts WHERE check_out_date >= date('now', 'start of month')").get() as any;
+    const totalExpenses = db.prepare("SELECT SUM(amount) as total FROM expenses").get() as any;
+
+    res.json({
+      totalRevenue: totalRevenue.total || 0,
+      monthlyRevenue: monthlyRevenue.total || 0,
+      totalExpenses: totalExpenses.total || 0,
+      netProfit: (totalRevenue.total || 0) - (totalExpenses.total || 0)
+    });
+  });
+
+  app.get("/api/admin/public-users", authenticateToken, (req, res) => {
+    if (!(req as any).user.is_super_admin) {
+      const lodge = db.prepare("SELECT is_super_admin FROM lodges WHERE id = ?").get((req as any).user.id) as any;
+      if (!lodge || !lodge.is_super_admin) return res.sendStatus(403);
+    }
+    const users = db.prepare("SELECT id, name, email, phone, created_at FROM public_users ORDER BY created_at DESC").all();
+    res.json(users);
+  });
+
+  app.post("/api/admin/impersonate", authenticateToken, (req, res) => {
+    const { lodgeId } = req.body;
+    
+    if (!(req as any).user.is_super_admin) {
+      const lodge = db.prepare("SELECT is_super_admin FROM lodges WHERE id = ?").get((req as any).user.id) as any;
+      if (!lodge || !lodge.is_super_admin) return res.sendStatus(403);
+    }
+
+    const targetLodge = db.prepare("SELECT * FROM lodges WHERE id = ?").get(lodgeId) as any;
+    if (!targetLodge) return res.status(404).json({ error: "Lodge not found" });
+
+    const token = jwt.sign(
+      { id: targetLodge.id, login_id: targetLodge.login_id, type: 'lodge', is_super_admin: false },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: targetLodge.id,
+        name: targetLodge.owner_name,
+        lodge_name: targetLodge.lodge_name,
+        type: 'lodge',
+        is_super_admin: false
+      }
+    });
   });
   app.get("/api/rooms", authenticateToken, (req, res) => {
     const lodgeId = (req as any).user.id;
