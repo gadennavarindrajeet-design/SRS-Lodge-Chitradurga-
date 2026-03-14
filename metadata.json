@@ -1,5 +1,5 @@
 {
-  "name": "LodgeEase",
-  "description": "A premium, multi-lodge management platform for room booking, customer billing, and real-time analytics across all devices.",
-  "requestFramePermissions": []
+  "name": "lodgeease-app",
+  "description": "LodgeEase - Lodge management system",
+  "requestFramePermissions": ["camera"]
 }

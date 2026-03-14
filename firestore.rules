@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isSuperAdmin() {
+      return isAuthenticated() && get(/databases/$(database)/documents/lodges/$(request.auth.uid)).data.is_super_admin == true;
+    }
+    
+    function isLodgeOwner(lodgeID) {
+      return isAuthenticated() && request.auth.uid == lodgeID;
+    }
+    
+    function isStaff(lodgeID) {
+      return isAuthenticated() && get(/databases/$(database)/documents/lodges/$(lodgeID)).data.staff[request.auth.uid] != null;
+    }
+
+    // Lodges collection
+    match /lodges/{lodgeID} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isLodgeOwner(lodgeID) || isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+    
+    // Rooms collection
+    match /rooms/{roomID} {
+      allow read: if isAuthenticated();
+      allow create, update: if isLodgeOwner(resource.data.lodgeID) || isStaff(resource.data.lodgeID) || isSuperAdmin();
+      allow delete: if isLodgeOwner(resource.data.lodgeID) || isSuperAdmin();
+    }
+    
+    // Customers collection
+    match /customers/{customerID} {
+      allow read: if isAuthenticated();
+      allow create, update: if isLodgeOwner(resource.data.lodgeID) || isStaff(resource.data.lodgeID) || isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+    
+    // Subscriptions collection
+    match /subscriptions/{subID} {
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.lodgeID || isSuperAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isSuperAdmin();
+    }
+
+    // WhatsApp Logs
+    match /whatsapp_logs/{logID} {
+      allow read: if isAuthenticated() && (isLodgeOwner(resource.data.lodgeID) || isStaff(resource.data.lodgeID) || isSuperAdmin());
+      allow create: if isAuthenticated();
+    }
+
+    // Housekeeping
+    match /housekeeping/{taskID} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+      allow delete: if isSuperAdmin();
+    }
+  }
+}

@@ -1,3975 +1,1558 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, Link, useParams } from 'react-router-dom';
 import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell
-} from 'recharts';
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
-import { 
-  LayoutDashboard, 
-  Bed, 
-  UserPlus, 
-  User as UserIcon,
-  Lock,
-  Mail,
-  TrendingUp,
-  LogOut, 
-  Key, 
-  Phone, 
-  IdCard, 
-  IndianRupee,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Menu,
-  X,
-  Plus,
-  Edit2,
-  Settings,
-  MapPin,
-  Users,
-  Clock,
-  Calendar,
-  FileText,
-  MessageCircle,
-  Search,
-  Filter,
-  Download,
-  ChevronLeft,
-  ChevronRight,
-  BarChart3,
-  PieChart,
-  ArrowRight,
-  Building2,
-  ShieldAlert,
-  ShieldCheck,
-  UserMinus,
-  Trash2,
-  MoreVertical,
-  ChevronDown,
-  CreditCard,
-  Wallet,
-  History,
-  Activity,
-  Zap,
-  Star,
-  Bell,
-  HelpCircle,
-  Info,
-  ExternalLink,
-  RefreshCw,
-  Database,
-  Cloud,
-  Lock as LockIcon,
-  Shield,
-  Smartphone,
-  Globe,
-  Monitor,
-  Layout,
-  Grid,
-  List,
-  Maximize2,
-  Minimize2,
-  ArrowUpRight,
-  ArrowDownRight,
-  ArrowUp,
-  ArrowDown,
-  Check,
-  Copy,
-  Share2,
-  Eye,
-  EyeOff,
-  UserMinus as UserMinusIcon,
-  UserPlus as UserPlusIcon,
-  Bed as BedIcon,
-  Home,
-  Briefcase,
-  Coffee,
-  Utensils,
-  Car,
-  Wifi,
-  Tv,
-  Wind,
-  Sun,
-  Moon,
-  CloudRain,
-  Snowflake,
-  Thermometer,
-  Droplets,
-  Waves,
-  Mountain,
-  Trees,
-  Palmtree,
-  Compass,
-  Map,
-  Navigation,
-  Locate,
-  LocateFixed,
-  Flag,
-  Tag,
-  Ticket,
-  Percent,
-  Gift,
-  ShoppingBag,
-  ShoppingCart,
-  Store,
-  Package,
-  Truck,
-  Box,
-  Archive,
-  HardDrive,
-  Cpu,
-  Server,
-  Terminal,
-  Code,
-  Braces,
-  Parentheses,
-  Hash,
-  AtSign,
-  Link as LinkIcon,
-  Paperclip,
-  Image as ImageIcon,
-  Video,
-  Music,
-  Mic,
-  Speaker,
-  Headphones,
-  Camera,
-  Play,
-  Pause,
-  Square,
-  Circle,
-  Triangle,
-  Heart,
-  ThumbsUp,
-  ThumbsDown,
-  Smile,
-  Frown,
-  Meh,
-  Send,
-  Inbox,
-  Archive as ArchiveIcon,
-  Trash,
-  Search as SearchIcon,
-  Settings as SettingsIcon,
-  Bell as BellIcon,
-  Calendar as CalendarIcon,
-  Clock as ClockIcon,
-  User as UserIconLucide,
-  Users as UsersIcon,
-  Mail as MailIcon,
-  Phone as PhoneIcon,
-  MapPin as MapPinIcon,
-  Globe as GlobeIcon,
-  LayoutDashboard as DashboardIcon,
-  FileText as FileTextIcon,
-  BarChart as BarChartIcon,
-  PieChart as PieChartIcon,
-  TrendingUp as TrendingUpIcon,
-  Activity as ActivityIcon,
-  Zap as ZapIcon,
-  Shield as ShieldIcon,
-  Lock as LockIconLucide,
-  Key as KeyIcon,
-  CreditCard as CreditCardIcon,
-  Wallet as WalletIcon,
-  IndianRupee as RupeeIcon,
-  DollarSign,
-  Euro,
-  PoundSterling,
-  Bitcoin,
-  Plus as PlusIcon,
-  Minus,
-  X as XIcon,
-  Check as CheckIcon,
-  ChevronUp,
-  ChevronDown as ChevronDownIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  ArrowLeft,
-  ArrowRight as ArrowRightIcon,
-  ArrowUp as ArrowUpIcon,
-  ArrowDown as ArrowDownIcon,
-  RefreshCw as RefreshIcon,
-  Download as DownloadIcon,
-  Upload,
-  Share as ShareIcon,
-  ExternalLink as ExternalLinkIcon,
-  MoreHorizontal,
-  MoreVertical as MoreVerticalIcon,
-  Menu as MenuIcon,
-  Grid as GridIcon,
-  List as ListIcon,
-  Maximize as MaximizeIcon,
-  Minimize as MinimizeIcon,
-  Eye as EyeIcon,
-  EyeOff as EyeOffIcon,
-  Edit as EditIcon,
-  Save,
-  Copy as CopyIcon,
-  Clipboard,
-  Search as SearchIconLucide,
-  Filter as FilterIcon,
-  SortAsc,
-  SortDesc,
-  Printer,
-  Share2 as Share2Icon,
-  MessageSquare,
-  MessageCircle as MessageCircleIcon,
-  HelpCircle as HelpCircleIcon,
-  Info as InfoIcon,
-  AlertTriangle,
-  AlertCircle as AlertCircleIcon,
-  CheckCircle as CheckCircleIcon,
-  CheckCircle2 as CheckCircle2Icon,
-  XCircle,
-  PlayCircle,
-  PauseCircle,
-  StopCircle,
-  PlusCircle,
-  MinusCircle,
-  Settings2,
-  Sliders,
-  ToggleLeft,
-  ToggleRight,
-  CheckSquare,
-  Square as SquareIcon,
-  Circle as CircleIcon,
+  LayoutDashboard, Bed, Calendar, FileText, IndianRupee, Settings, 
+  Search, Bell, HelpCircle, LogOut, Plus, Users, CheckCircle2, 
+  Clock, TrendingUp, Filter, Download, Trash2, Edit2, ChevronRight,
+  Menu, X, ShieldCheck, MapPin, Phone, Mail, User, Lock, Building2,
+  CreditCard, BarChart3, PieChart, Loader2, ArrowRight, ArrowLeft, QrCode,
+  MessageSquare, Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  LineChart, Line, AreaChart, Area, PieChart as RePieChart, Pie, Cell, Legend
+} from 'recharts';
+import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
+import { cn } from './lib/utils';
+import { useTranslation } from 'react-i18next';
+import './lib/i18n';
+import { getRevenueForecast, chatWithAssistant } from './lib/ai';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
+import { encryptData, decryptData } from './lib/encryption';
+import { scanAadhaar } from './lib/ocr';
+import { parseAadhaarQR } from './lib/aadhaar';
+import { QRScanner } from './components/QRScanner';
+import { loadRazorpay, createRazorpayOrder } from './lib/payments';
+import { sendWhatsAppMessage } from './lib/whatsapp';
+import { ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// Firebase Imports
+import { auth, db, storage } from './firebase';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut 
+} from 'firebase/auth';
+import { 
+  collection, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  getDocs, 
+  query, 
+  where, 
+  onSnapshot, 
+  addDoc, 
+  updateDoc, 
+  serverTimestamp,
+  orderBy,
+  limit,
+  Timestamp,
+  deleteDoc
+} from 'firebase/firestore';
 
 // --- Types ---
-interface User {
-  id: number;
+interface UserData {
+  lodgeID: string;
   name: string;
+  owner_name: string;
   email: string;
+  ownerPhone?: string;
+  gstNumber?: string;
   type: 'lodge' | 'public';
-  lodge_name?: string;
-  address?: string;
-  phone?: string;
-  subscription_status?: string;
-  subscription_end_date?: string;
-  is_super_admin?: boolean;
+  role: 'SuperAdmin' | 'LodgeOwner' | 'Manager' | 'ReceptionStaff' | 'CleaningStaff';
+  is_super_admin: boolean;
+  subscriptionStatus: 'trial' | 'monthly' | 'yearly' | 'expired';
+  trialStartDate: any;
+  subscriptionExpiry: any;
+  is_disabled?: boolean;
+  staff?: Record<string, { role: string, name: string }>;
+  blacklistedGuests?: string[];
+  referralCode?: string;
+  commissionRate?: number;
+  totalRevenue?: number;
+}
+
+interface MaintenanceTask {
+  id: string;
+  roomID: string;
+  roomNumber: string;
+  issue: string;
+  status: 'pending' | 'in_progress' | 'resolved';
+  priority: 'low' | 'medium' | 'high';
+  createdAt: any;
+}
+
+interface HousekeepingTask {
+  id: string;
+  roomID: string;
+  roomNumber: string;
+  status: 'dirty' | 'cleaning' | 'clean';
+  assignedTo?: string;
+  updatedAt: any;
 }
 
 interface Room {
-  id: number;
+  id: string;
   room_number: string;
   type: string;
   price: number;
-  status: 'available' | 'occupied' | 'maintenance';
+  status: 'available' | 'occupied' | 'cleaning' | 'maintenance';
   customer_name?: string;
-  check_in_date?: string;
-  advance_paid?: number;
+  customer_id?: string;
   customer_phone?: string;
-  num_guests?: number;
+  check_in_date?: any;
+  advance_paid?: number;
+  lodgeID: string;
 }
 
-interface Stats {
-  total: number;
-  occupied: number;
-  available: number;
-  checkins: number;
-  checkouts: number;
-  revenue: number;
-  grossRevenue: number;
-  expenses: number;
+interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  aadhaar: string;
+  aadhaarDisplay?: string;
+  aadhaarImageURL?: string;
+  room: string;
+  checkIn: any;
+  checkOut: any;
+  amount: number;
+  advance_paid: number;
+  lodgeID: string;
 }
-
-// --- Auth Context Mock ---
-const useAuth = () => {
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('lodgeease_user');
-    return saved ? JSON.parse(saved) : null;
-  });
-
-  const login = (userData: User, token: string) => {
-    localStorage.setItem('lodgeease_token', token);
-    localStorage.setItem('lodgeease_user', JSON.stringify(userData));
-    if (userData.lodge_name) localStorage.setItem('lodge_name', userData.lodge_name);
-    if (userData.address) localStorage.setItem('lodge_address', userData.address);
-    if (userData.phone) localStorage.setItem('lodge_phone', userData.phone);
-    setUser(userData);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('lodgeease_token');
-    localStorage.removeItem('lodgeease_user');
-    setUser(null);
-  };
-
-  return { user, login, logout, isAuthenticated: !!user };
-};
 
 // --- Components ---
 
-const PublicLandingPage = ({ isAuthenticated, user }: { isAuthenticated?: boolean, user?: any }) => {
-  const [location, setLocation] = useState('');
-  const [lodges, setLodges] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  // Use props if provided, otherwise fallback to hook (for direct routes)
-  const auth = useAuth();
-  const currentIsAuthenticated = isAuthenticated !== undefined ? isAuthenticated : auth.isAuthenticated;
-
-  const handleSearch = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/public/search?location=${location}`);
-      const data = await res.json();
-      setLodges(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+const Button = ({ children, className, variant = 'primary', ...props }: any) => {
+  const variants = {
+    primary: 'bg-zinc-900 text-white hover:bg-zinc-800 shadow-lg shadow-zinc-200',
+    secondary: 'bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50',
+    ghost: 'bg-transparent text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50',
+    danger: 'bg-rose-500 text-white hover:bg-rose-600 shadow-lg shadow-rose-200',
   };
+  return (
+    <button 
+      className={cn(
+        'px-4 py-2 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50',
+        variants[variant as keyof typeof variants],
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+const Input = ({ label, icon: Icon, ...props }: any) => (
+  <div className="space-y-1.5 w-full">
+    {label && <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">{label}</label>}
+    <div className="relative group">
+      {Icon && <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-zinc-900 transition-colors" size={16} />}
+      <input 
+        className={cn(
+          "w-full bg-zinc-50 border border-zinc-100 rounded-2xl py-3 px-4 text-sm font-bold text-zinc-900 outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-900 transition-all",
+          Icon && "pl-11"
+        )}
+        {...props}
+      />
+    </div>
+  </div>
+);
+
+// --- Main App ---
+
+export default function App() {
+  const { t, i18n } = useTranslation();
+  const [user, setUser] = useState<UserData | null>(null);
+  const [view, setView] = useState<'login' | 'dashboard' | 'rooms' | 'reports' | 'whatsapp' | 'public' | 'admin' | 'subscription' | 'staff' | 'housekeeping' | 'maintenance' | 'bookings' | 'ai' | 'agents' | 'calendar'>('login');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    handleSearch();
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-zinc-50">
-      {/* Hero Section */}
-      <div className="bg-zinc-900 text-white py-24 px-4 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col items-center text-center space-y-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-zinc-900 font-black text-4xl shadow-2xl"
-            >
-              L
-            </motion.div>
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl font-black tracking-tighter max-w-4xl"
-            >
-              Find Your Perfect Stay <br />
-              <span className="text-zinc-500 italic">Anywhere, Anytime.</span>
-            </motion.h1>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="w-full max-w-2xl"
-            >
-              <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 bg-white/10 backdrop-blur-xl p-4 rounded-[2.5rem] border border-white/10 shadow-2xl">
-                <div className="flex-1 flex items-center gap-4 px-6 py-4 bg-white rounded-3xl shadow-inner">
-                  <MapPin className="text-zinc-400" size={24} />
-                  <input 
-                    type="text" 
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Search by city or location..." 
-                    className="bg-transparent border-none outline-none text-zinc-900 font-bold w-full placeholder:text-zinc-400"
-                  />
-                </div>
-                <button type="submit" className="bg-white text-zinc-900 px-10 py-4 rounded-3xl font-black uppercase tracking-widest hover:bg-zinc-100 transition-all flex items-center justify-center gap-3">
-                  <Search size={20} />
-                  Search
-                </button>
-              </form>
-            </motion.div>
-
-            {!currentIsAuthenticated ? (
-              <div className="flex gap-4">
-                <Link to="/public/login" className="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl font-bold transition-all border border-white/10">
-                  Public Login
-                </Link>
-                <Link to="/login" className="px-8 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl font-bold transition-all border border-white/5">
-                  Lodge Owner Login
-                </Link>
-              </div>
-            ) : (
-              <div className="flex gap-4">
-                <Link to="/dashboard" className="px-8 py-3 bg-white text-zinc-900 rounded-2xl font-black uppercase tracking-widest hover:bg-zinc-100 transition-all shadow-lg flex items-center gap-2">
-                  <LayoutDashboard size={18} />
-                  Go to Dashboard
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // First check if it's a lodge owner or staff
+        let userDoc = await getDoc(doc(db, 'lodges', firebaseUser.uid));
         
-        {/* Decorative elements */}
-        <div className="absolute top-[-20%] right-[-10%] w-[40rem] h-[40rem] bg-zinc-800 rounded-full blur-[150px] opacity-30" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[40rem] h-[40rem] bg-zinc-800 rounded-full blur-[150px] opacity-30" />
-      </div>
+        // If not found in lodges, it might be a staff member
+        if (!userDoc.exists()) {
+          // Staff members are stored under their lodge's staff map, but for login simplicity
+          // we might want a separate staff collection or just use custom claims.
+          // For this demo, we'll assume staff are also in the 'lodges' collection with a 'role'
+          userDoc = await getDoc(doc(db, 'staff', firebaseUser.uid));
+        }
 
-      {/* Results Section */}
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="flex items-center justify-between mb-12">
-          <div>
-            <h2 className="text-3xl font-black text-zinc-900 tracking-tight">Available Lodges</h2>
-            <p className="text-zinc-500 font-medium mt-1">Discover top-rated properties in your area</p>
-          </div>
-          <div className="flex items-center gap-2 text-zinc-400 font-black uppercase tracking-widest text-xs">
-            <Activity size={16} />
-            {lodges.length} Properties Found
-          </div>
-        </div>
+        if (userDoc.exists()) {
+          const u = userDoc.data() as UserData;
+          
+          // Check subscription status
+          const now = new Date();
+          const expiry = u.subscriptionExpiry?.toDate ? u.subscriptionExpiry.toDate() : new Date(u.subscriptionExpiry);
+          
+          if (!u.is_super_admin && expiry < now && u.subscriptionStatus !== 'expired') {
+            await updateDoc(doc(db, 'lodges', firebaseUser.uid), { subscriptionStatus: 'expired' });
+            u.subscriptionStatus = 'expired';
+          }
 
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="animate-spin text-zinc-900" size={40} />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {lodges.map((lodge) => (
-              <motion.div 
-                key={lodge.id}
-                whileHover={{ y: -10 }}
-                className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm hover:shadow-2xl hover:shadow-zinc-200 transition-all overflow-hidden group"
-              >
-                <div className="h-48 bg-zinc-100 relative overflow-hidden">
-                  <img 
-                    src={`https://picsum.photos/seed/${lodge.id}/800/600`} 
-                    alt={lodge.lodge_name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-zinc-900 font-black text-xs uppercase tracking-widest shadow-lg">
-                    <div className="flex items-center gap-1">
-                      <Star size={12} className="fill-zinc-900" />
-                      4.8
-                    </div>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-black text-zinc-900 mb-2 tracking-tight">{lodge.lodge_name}</h3>
-                  <div className="flex items-center gap-2 text-zinc-400 mb-6">
-                    <MapPin size={16} />
-                    <p className="text-sm font-bold truncate">{lodge.address}</p>
-                  </div>
-                  
-                  <div className="flex items-center justify-between pt-6 border-t border-zinc-50">
-                    <div>
-                      <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Starting from</p>
-                      <p className="text-xl font-black text-zinc-900">₹800<span className="text-xs text-zinc-400 font-bold">/night</span></p>
-                    </div>
-                    <button 
-                      onClick={() => navigate(`/public/lodge/${lodge.id}`)}
-                      className="bg-zinc-900 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center gap-2"
-                    >
-                      View Rooms
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const PublicLoginPage = ({ onLogin }: { onLogin: (u: any, t: string) => void }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/public/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        onLogin(data.user, data.token);
-        navigate('/');
+          setUser(u);
+          
+          if (u.is_super_admin) {
+            setView('admin');
+          } else if (u.subscriptionStatus === 'expired') {
+            setView('subscription');
+          } else {
+            setView(u.type === 'public' ? 'public' : 'dashboard');
+          }
+        }
       } else {
-        setError(data.error || 'Login failed');
+        setUser(null);
+        setView('login');
       }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
       setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-[3rem] p-12 shadow-2xl border border-zinc-100">
-        <div className="text-center mb-12">
-          <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-3xl mx-auto mb-6 shadow-xl">L</div>
-          <h2 className="text-3xl font-black text-zinc-900 tracking-tight">Public Login</h2>
-          <p className="text-zinc-500 font-medium mt-2">Access your bookings and find stays</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="p-4 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-3">
-              <AlertCircle size={18} />
-              {error}
-            </div>
-          )}
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Email Address</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="your@email.com" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Password</label>
-            <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="••••••••" />
-          </div>
-          <button type="submit" disabled={loading} className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-zinc-200 disabled:opacity-70">
-            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Login to Account'}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center">
-          <p className="text-zinc-500 font-medium">Don't have an account? <Link to="/public/register" className="text-zinc-900 font-black underline">Register here</Link></p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PublicRegisterPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/public/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => navigate('/public/login'), 2000);
-      } else {
-        setError(data.error || 'Registration failed');
-      }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-[3rem] p-12 shadow-2xl border border-zinc-100">
-        <div className="text-center mb-12">
-          <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-3xl mx-auto mb-6 shadow-xl">L</div>
-          <h2 className="text-3xl font-black text-zinc-900 tracking-tight">Create Account</h2>
-          <p className="text-zinc-500 font-medium mt-2">Join LodgeEase for easy bookings</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="p-4 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-3">
-              <AlertCircle size={18} />
-              {error}
-            </div>
-          )}
-          {success && (
-            <div className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-3">
-              <CheckCircle2 size={18} />
-              Registration successful! Redirecting...
-            </div>
-          )}
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Full Name</label>
-            <input required value={name} onChange={e => setName(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="John Doe" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Email Address</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="your@email.com" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Phone Number</label>
-            <input required value={phone} onChange={e => setPhone(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="+91 00000 00000" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Password</label>
-            <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="••••••••" />
-          </div>
-          <button type="submit" disabled={loading} className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-zinc-200 disabled:opacity-70">
-            {loading ? <Loader2 className="animate-spin" size={20} /> : 'Create Account'}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center">
-          <p className="text-zinc-500 font-medium">Already have an account? <Link to="/public/login" className="text-zinc-900 font-black underline">Login here</Link></p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const PublicLodgeDetails = () => {
-  const { id } = useParams();
-  const [rooms, setRooms] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedRoom, setSelectedRoom] = useState<any>(null);
-  const [isBookingModal, setIsBookingModal] = useState(false);
-  const [checkInDate, setCheckInDate] = useState(new Date().toISOString().split('T')[0]);
-  const [checkOutDate, setCheckOutDate] = useState(new Date(Date.now() + 86400000).toISOString().split('T')[0]);
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  const fetchRooms = async () => {
-    try {
-      const res = await fetch(`/api/public/lodge/${id}/rooms`);
-      const data = await res.json();
-      setRooms(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRooms();
-  }, [id]);
-
-  const handleBook = async () => {
-    if (!user) {
-      navigate('/public/login');
-      return;
-    }
-
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/public/book', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          lodgeId: parseInt(id || '0'),
-          roomId: selectedRoom.id,
-          customerName: user.name,
-          customerPhone: user.phone,
-          checkInDate,
-          checkOutDate
-        })
-      });
-
-      if (res.ok) {
-        alert('Booking confirmed successfully!');
-        setIsBookingModal(false);
-        fetchRooms();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Booking failed');
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (loading) return <div className="flex items-center justify-center h-screen"><Loader2 className="animate-spin" /></div>;
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="mb-12">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 font-black uppercase tracking-widest text-xs mb-8 transition-colors">
-          <ChevronLeft size={16} />
-          Back to Search
-        </button>
-        <h2 className="text-4xl font-black text-zinc-900 tracking-tight">Available Rooms</h2>
-        <p className="text-zinc-500 font-medium mt-2">Select a room to proceed with your booking</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {rooms.map((room) => (
-          <motion.div 
-            key={room.id}
-            whileHover={{ y: -10 }}
-            className="bg-white rounded-[2.5rem] border border-zinc-100 p-8 shadow-sm hover:shadow-2xl hover:shadow-zinc-200 transition-all group"
-          >
-            <div className="flex justify-between items-start mb-8">
-              <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-2xl group-hover:scale-110 transition-transform">
-                {room.room_number}
-              </div>
-              <span className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-2xl text-[10px] font-black uppercase tracking-widest">
-                {room.type}
-              </span>
-            </div>
-            
-            <div className="mb-8">
-              <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Price per night</p>
-              <h4 className="text-3xl font-black text-zinc-900">₹{room.price}</h4>
-            </div>
-
-            <button 
-              onClick={() => { setSelectedRoom(room); setIsBookingModal(true); }}
-              className="w-full bg-zinc-50 text-zinc-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-900 hover:text-white transition-all flex items-center justify-center gap-2"
-            >
-              Book Now
-              <ArrowRight size={16} />
-            </button>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Booking Modal */}
-      <AnimatePresence>
-        {isBookingModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsBookingModal(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-md bg-white rounded-[3rem] overflow-hidden shadow-2xl">
-              <div className="p-10 bg-zinc-900 text-white">
-                <h3 className="text-2xl font-black tracking-tight">Confirm Booking</h3>
-                <p className="text-zinc-400 text-sm mt-1">Room {selectedRoom.room_number} • {selectedRoom.type}</p>
-              </div>
-              <div className="p-10 space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Check-In</label>
-                    <input type="date" value={checkInDate} onChange={e => setCheckInDate(e.target.value)} className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl font-bold outline-none focus:ring-2 focus:ring-zinc-900" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Check-Out</label>
-                    <input type="date" value={checkOutDate} onChange={e => setCheckOutDate(e.target.value)} className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl font-bold outline-none focus:ring-2 focus:ring-zinc-900" />
-                  </div>
-                </div>
-                <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-bold text-zinc-500">Total Price</span>
-                    <span className="text-xl font-black text-zinc-900">₹{selectedRoom.price}</span>
-                  </div>
-                  <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Pay at property during check-in</p>
-                </div>
-                <button onClick={handleBook} className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200">
-                  Confirm Reservation
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-const PublicMyBookings = () => {
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
-
-  const fetchBookings = async () => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/bookings', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setBookings(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBookings();
+    });
+    return () => unsubscribe();
   }, []);
 
-  if (loading) return <div className="flex items-center justify-center h-screen"><Loader2 className="animate-spin" /></div>;
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser(null);
+    setView('login');
+  };
+
+  if (loading) return <div className="h-screen flex items-center justify-center"><Loader2 className="animate-spin text-zinc-900" /></div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="mb-12">
-        <h2 className="text-4xl font-black text-zinc-900 tracking-tight">My Bookings</h2>
-        <p className="text-zinc-500 font-medium mt-2">Manage your upcoming and past reservations</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {bookings.map((booking) => (
-          <div key={booking.id} className="bg-white rounded-[2.5rem] border border-zinc-100 p-8 shadow-sm relative overflow-hidden group">
-            <div className="flex justify-between items-start mb-8">
-              <div className="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-xl">
-                {booking.room_number}
-              </div>
-              <span className={cn(
-                "px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest",
-                booking.status === 'confirmed' ? "bg-emerald-50 text-emerald-600" : "bg-zinc-100 text-zinc-500"
-              )}>
-                {booking.status}
-              </span>
-            </div>
-            <h4 className="text-xl font-black text-zinc-900 mb-6">{booking.lodge_name || 'Lodge Stay'}</h4>
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3 text-zinc-400">
-                <Calendar size={16} />
-                <span className="text-sm font-bold">
-                  {new Date(booking.check_in_date).toLocaleDateString()} - {new Date(booking.check_out_date).toLocaleDateString()}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-zinc-400">
-                <Bed size={16} />
-                <span className="text-sm font-bold">{booking.room_type} Room</span>
-              </div>
-            </div>
-            <div className="absolute top-0 right-0 w-1 h-full bg-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-        ))}
-        {bookings.length === 0 && (
-          <div className="col-span-full py-20 text-center bg-white rounded-[3rem] border border-dashed border-zinc-200">
-            <Calendar className="mx-auto text-zinc-200 mb-4" size={48} />
-            <p className="text-zinc-400 font-bold">No bookings found</p>
-            <Link to="/" className="text-zinc-900 font-black underline mt-2 block">Start searching for lodges</Link>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const Navbar = ({ onLogout, currentView, setView }: { onLogout: () => void, currentView: string, setView: (v: string) => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [lodgeName, setLodgeName] = useState(localStorage.getItem('lodge_name') || 'LodgeEase');
-  const user = JSON.parse(localStorage.getItem('lodgeease_user') || '{}');
-  const isSuperAdmin = user?.is_super_admin;
-  const isPublic = user?.type === 'public';
-
-  const navItems = isPublic ? [
-    { id: 'dashboard', label: 'Search Lodges', icon: Search },
-    { id: 'my-bookings', label: 'My Bookings', icon: Calendar },
-  ] : [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'rooms', label: 'Rooms', icon: Bed },
-    { id: 'bookings', label: 'Bookings', icon: Calendar },
-    { id: 'reports', label: 'Reports', icon: FileText },
-    { id: 'expenses', label: 'Expenses', icon: IndianRupee },
-    { id: 'settings', label: 'Settings', icon: Settings },
-  ];
-
-  useEffect(() => {
-    const handleStorage = () => {
-      setLodgeName(localStorage.getItem('lodge_name') || 'LodgeEase');
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-  
-  return (
-    <>
-      <nav className="fixed top-0 left-0 right-0 z-[100] px-4 py-4 pointer-events-none">
-        <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
-          <div 
-            className="bg-white/80 backdrop-blur-xl border border-zinc-100 rounded-[2rem] px-6 py-3 flex items-center gap-4 shadow-xl shadow-zinc-200/50 cursor-pointer group"
-            onClick={() => !isSuperAdmin && setView('dashboard')}
-          >
-            <div className="w-10 h-10 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-xl group-hover:scale-110 transition-transform">
-              L
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-sm font-black text-zinc-900 tracking-tight block leading-none mb-1">{isSuperAdmin ? 'LodgeEase Dev' : lodgeName}</span>
-              <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest leading-none">{isSuperAdmin ? 'Developer Console' : 'Management'}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-white/80 backdrop-blur-xl border border-zinc-100 rounded-[2rem] px-4 py-2 shadow-xl shadow-zinc-200/50 group focus-within:ring-2 focus-within:ring-zinc-900 transition-all">
-              <Search size={16} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
-              <input 
-                type="text" 
-                placeholder="Search rooms, guests..." 
-                className="bg-transparent border-none outline-none text-xs font-bold text-zinc-900 placeholder:text-zinc-400 w-40 focus:w-60 transition-all"
-              />
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-xl border border-zinc-100 rounded-[2rem] p-1.5 flex items-center gap-1 shadow-xl shadow-zinc-200/50">
-              <button className="w-11 h-11 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 rounded-2xl transition-all relative">
-                <Bell size={20} />
-                <span className="absolute top-3 right-3 w-2 h-2 bg-rose-500 rounded-full border-2 border-white" />
-              </button>
-              <button className="w-11 h-11 flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 rounded-2xl transition-all">
-                <HelpCircle size={20} />
-              </button>
-            </div>
-
-            {!isSuperAdmin && (
-              <div className="hidden lg:flex items-center gap-1 bg-white/80 backdrop-blur-xl border border-zinc-100 rounded-[2rem] p-1.5 shadow-xl shadow-zinc-200/50">
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setView(item.id as any)}
-                    className={cn(
-                      "flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all",
-                      currentView === item.id 
-                        ? "bg-zinc-900 text-white shadow-lg" 
-                        : "text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50"
-                    )}
-                  >
-                    <item.icon size={16} />
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            <div className="bg-white/80 backdrop-blur-xl border border-zinc-100 rounded-[2rem] p-1.5 flex items-center gap-2 shadow-xl shadow-zinc-200/50">
-            <div className="hidden md:flex flex-col items-end px-4">
-                <span className="text-xs font-black text-zinc-900 tracking-tight">{user?.name}</span>
-                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{isSuperAdmin ? 'Dev' : isPublic ? 'Public' : 'Admin'}</span>
-              </div>
-              <button 
-                onClick={onLogout}
-                className="w-11 h-11 flex items-center justify-center text-rose-500 hover:bg-rose-50 rounded-2xl transition-all"
-                title="Logout"
-              >
-                <LogOut size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Bottom Nav - Refined */}
-      {!isSuperAdmin && (
-        <div className="lg:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-md">
-          <div className="bg-zinc-900/95 backdrop-blur-2xl rounded-[2.5rem] p-2 flex items-center justify-around shadow-2xl border border-white/10">
-            {navItems.slice(0, 5).map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setView(item.id as any)}
-                className={cn(
-                  "flex flex-col items-center justify-center w-14 h-14 rounded-[1.5rem] transition-all relative group",
-                  currentView === item.id 
-                    ? "bg-white text-zinc-900 scale-110 shadow-xl" 
-                    : "text-zinc-500 hover:text-white"
-                )}
-              >
-                <item.icon size={20} />
-                {currentView === item.id && (
-                  <motion.div 
-                    layoutId="activeTab"
-                    className="absolute -bottom-1 w-1 h-1 bg-zinc-900 rounded-full"
-                  />
-                )}
-              </button>
-            ))}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={cn(
-                "flex flex-col items-center justify-center w-14 h-14 rounded-[1.5rem] transition-all text-zinc-500 hover:text-white",
-                isOpen ? "bg-white text-zinc-900" : ""
-              )}
-            >
-              <MoreVertical size={20} />
-            </button>
-          </div>
+    <div className="min-h-screen bg-zinc-50 font-sans text-zinc-900">
+      {view === 'login' ? (
+        <Login onSuccess={(u: any) => { 
+          setUser(u); 
+          if (u.is_super_admin) setView('admin');
+          else if (u.subscriptionStatus === 'expired') setView('subscription');
+          else setView(u.type === 'public' ? 'public' : 'dashboard');
+        }} />
+      ) : (
+        <div className="flex flex-col h-screen">
+          <Navbar user={user} setView={setView} currentView={view} onLogout={handleLogout} />
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 pt-24">
+            <AnimatePresence mode="wait">
+              {view === 'dashboard' && <Dashboard key="dashboard" user={user} />}
+              {view === 'rooms' && <Rooms key="rooms" user={user} />}
+              {view === 'reports' && <Reports key="reports" user={user} />}
+              {view === 'whatsapp' && <WhatsAppManager key="whatsapp" user={user} />}
+              {view === 'staff' && <StaffManagement key="staff" user={user} />}
+              {view === 'housekeeping' && <HousekeepingManagement key="housekeeping" user={user} />}
+              {view === 'maintenance' && <MaintenanceTracking key="maintenance" user={user} />}
+              {view === 'ai' && <AIAssistant key="ai" user={user} />}
+              {view === 'agents' && <AgentSystem key="agents" user={user} />}
+              {view === 'calendar' && <BookingCalendar key="calendar" user={user} />}
+              {view === 'public' && <PublicPortal key="public" />}
+              {view === 'admin' && <SuperAdminDashboard key="admin" />}
+              {view === 'subscription' && <SubscriptionView key="subscription" user={user} />}
+            </AnimatePresence>
+          </main>
         </div>
       )}
-      <div className="h-24" /> {/* Spacer for fixed top nav */}
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && !isSuperAdmin && (
-          <motion.div 
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            className="fixed inset-0 z-[45] lg:hidden"
-          >
-            <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
-            <div className="absolute bottom-[120px] left-4 right-4 bg-white rounded-5xl p-8 shadow-2xl border border-zinc-100">
-              <div className="flex justify-between items-center mb-8">
-                <h3 className="text-xl font-bold text-zinc-900">Navigation</h3>
-                <button onClick={() => setIsOpen(false)} className="p-2 bg-zinc-50 rounded-full text-zinc-400">
-                  <X size={20} />
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {navItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => { setView(item.id as any); setIsOpen(false); }}
-                    className={cn(
-                      "flex items-center gap-3 p-4 rounded-3xl text-sm font-bold transition-all",
-                      currentView === item.id 
-                        ? "bg-zinc-900 text-white" 
-                        : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100"
-                    )}
-                  >
-                    <item.icon size={20} />
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-              <div className="mt-8 pt-8 border-t border-zinc-100">
-                <button 
-                  onClick={onLogout}
-                  className="w-full flex items-center justify-center gap-3 p-4 rounded-3xl bg-rose-50 text-rose-600 font-bold"
-                >
-                  <LogOut size={20} />
-                  Logout from System
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    </div>
   );
-};
+}
 
-const SubscriptionExpired = () => {
+// --- Sub-Views ---
+
+function Navbar({ user, setView, currentView, onLogout }: any) {
+  const { t, i18n } = useTranslation();
+  const navItems = user?.type === 'public' ? [
+    { id: 'public', label: t('search'), icon: Search },
+    { id: 'bookings', label: t('bookings'), icon: Calendar },
+  ] : user?.is_super_admin ? [
+    { id: 'admin', label: 'Admin', icon: ShieldCheck },
+  ] : [
+    { id: 'dashboard', label: t('dashboard'), icon: LayoutDashboard },
+    { id: 'rooms', label: t('rooms'), icon: Bed },
+    { id: 'housekeeping', label: t('housekeeping'), icon: CheckCircle2 },
+    { id: 'maintenance', label: t('maintenance'), icon: Settings },
+    { id: 'reports', label: t('reports'), icon: FileText },
+    { id: 'whatsapp', label: 'WhatsApp', icon: Phone },
+    { id: 'calendar', label: t('calendar'), icon: Calendar },
+    { id: 'ai', label: t('ai_assistant'), icon: Bell },
+    ...(user?.role === 'LodgeOwner' || user?.role === 'Manager' ? [
+      { id: 'staff', label: t('staff'), icon: Users },
+      { id: 'agents', label: 'Agents', icon: IndianRupee }
+    ] : []),
+  ];
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] bg-zinc-900/90 backdrop-blur-sm flex items-center justify-center p-4">
-      <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl"
-      >
-        <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 mx-auto mb-6">
-          <AlertCircle size={40} />
-        </div>
-        <h2 className="text-2xl font-bold text-zinc-900 mb-4">Trial Expired</h2>
-        <p className="text-zinc-500 mb-8">
-          Your 7-day free trial has expired. Please subscribe to a plan to continue using LodgeEase and access your dashboard.
-        </p>
-        
-        <div className="space-y-4">
-          <div className="p-4 border border-zinc-100 rounded-2xl text-left hover:border-zinc-900 transition-all cursor-pointer group">
-            <div className="flex justify-between items-center mb-1">
-              <span className="font-bold text-zinc-900">Monthly Plan</span>
-              <span className="text-zinc-900 font-black">₹999/mo</span>
-            </div>
-            <p className="text-xs text-zinc-400">Perfect for small lodges starting out.</p>
-          </div>
-          
-          <div className="p-4 border border-zinc-100 rounded-2xl text-left hover:border-zinc-900 transition-all cursor-pointer group bg-zinc-50">
-            <div className="flex justify-between items-center mb-1">
-              <span className="font-bold text-zinc-900">Yearly Plan</span>
-              <span className="text-zinc-900 font-black">₹9,999/yr</span>
-            </div>
-            <p className="text-xs text-zinc-400">Best value for established properties. Save 20%.</p>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-100 px-4 py-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-xl">L</div>
+          <div>
+            <h1 className="text-sm font-black tracking-tight leading-none">{user?.name || 'LodgeEase'}</h1>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest leading-none mt-1">{user?.type === 'public' ? 'Guest Portal' : 'Management'}</p>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-zinc-100">
-          <p className="text-sm text-zinc-400 mb-4">Contact support to activate your subscription</p>
-          <a 
-            href="mailto:support@lodgeease.com"
-            className="inline-flex items-center gap-2 text-zinc-900 font-bold hover:underline"
-          >
-            <Phone size={16} />
-            +91 98765 43210
-          </a>
+        <div className="hidden md:flex items-center gap-1 bg-zinc-100/50 p-1 rounded-2xl overflow-x-auto max-w-[50%]">
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setView(item.id as any)}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap",
+                currentView === item.id ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-400 hover:text-zinc-900"
+              )}
+            >
+              <item.icon size={12} />
+              {item.label}
+            </button>
+          ))}
         </div>
+
+        <div className="flex items-center gap-2">
+          <select 
+            onChange={(e) => changeLanguage(e.target.value)}
+            className="text-[10px] font-black uppercase tracking-widest bg-zinc-100 px-2 py-1 rounded-lg outline-none"
+            value={i18n.language}
+          >
+            <option value="en">EN</option>
+            <option value="hi">HI</option>
+            <option value="kn">KN</option>
+          </select>
+          <button onClick={onLogout} className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-rose-500 transition-colors">
+            <LogOut size={20} />
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Login({ onSuccess }: any) {
+  const [isRegister, setIsRegister] = useState(false);
+  const [formData, setFormData] = useState({ email: '', password: '', name: '', lodgeName: '', phone: '', address: '', gstNumber: '' });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (isRegister) {
+        const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+        const firebaseUser = userCredential.user;
+        
+        const trialStart = new Date();
+        const trialExpiry = new Date();
+        trialExpiry.setDate(trialExpiry.getDate() + 7);
+
+        const userData: UserData = {
+          lodgeID: firebaseUser.uid,
+          name: formData.lodgeName,
+          owner_name: formData.name,
+          email: formData.email,
+          ownerPhone: formData.phone,
+          gstNumber: formData.gstNumber || '',
+          type: 'lodge',
+          role: 'LodgeOwner',
+          is_super_admin: false,
+          subscriptionStatus: 'trial',
+          trialStartDate: Timestamp.fromDate(trialStart),
+          subscriptionExpiry: Timestamp.fromDate(trialExpiry),
+          staff: {},
+          blacklistedGuests: []
+        };
+
+        await setDoc(doc(db, 'lodges', firebaseUser.uid), userData);
+        
+        // Seed initial rooms
+        for (let i = 101; i <= 105; i++) {
+          await addDoc(collection(db, 'rooms'), {
+            lodgeID: firebaseUser.uid,
+            room_number: i.toString(),
+            type: 'Single',
+            price: 800,
+            status: 'available'
+          });
+        }
+        
+        onSuccess(userData);
+      } else {
+        const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        const firebaseUser = userCredential.user;
+        const userDoc = await getDoc(doc(db, 'lodges', firebaseUser.uid));
+        if (userDoc.exists()) {
+          onSuccess(userDoc.data());
+        }
+      }
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-zinc-900">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 bg-zinc-900 rounded-3xl flex items-center justify-center text-white font-black text-3xl mx-auto mb-6">L</div>
+          <h2 className="text-3xl font-black tracking-tight text-zinc-900">{isRegister ? 'Create Account' : 'Welcome Back'}</h2>
+          <p className="text-zinc-400 font-bold mt-2">Manage your lodge with ease.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {isRegister && (
+            <>
+              <Input label="Lodge Name" icon={Building2} placeholder="Grand Palace" value={formData.lodgeName} onChange={(e: any) => setFormData({...formData, lodgeName: e.target.value})} />
+              <Input label="GST Number (Optional)" icon={FileText} placeholder="29AAAAA0000A1Z5" value={formData.gstNumber} onChange={(e: any) => setFormData({...formData, gstNumber: e.target.value})} />
+              <Input label="Owner Name" icon={User} placeholder="John Doe" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} />
+              <Input label="Phone" icon={Phone} placeholder="9876543210" value={formData.phone} onChange={(e: any) => setFormData({...formData, phone: e.target.value})} />
+            </>
+          )}
+          <Input label="Email / Login ID" icon={Mail} type="email" placeholder="admin@lodge.com" value={formData.email} onChange={(e: any) => setFormData({...formData, email: e.target.value})} />
+          <Input label="Password" icon={Lock} type="password" placeholder="••••••••" value={formData.password} onChange={(e: any) => setFormData({...formData, password: e.target.value})} />
+          
+          <Button type="submit" disabled={loading} className="w-full py-4 rounded-2xl text-base mt-4">
+            {loading ? <Loader2 className="animate-spin" /> : (isRegister ? 'Register Lodge' : 'Login to Dashboard')}
+          </Button>
+        </form>
+
+        <p className="text-center mt-8 text-sm font-bold text-zinc-400">
+          {isRegister ? 'Already have an account?' : "Don't have an account?"}{' '}
+          <button onClick={() => setIsRegister(!isRegister)} className="text-zinc-900 hover:underline">
+            {isRegister ? 'Login here' : 'Register your lodge'}
+          </button>
+        </p>
       </motion.div>
     </div>
   );
-};
+}
 
-const SuperAdminDashboard = () => {
-  const [lodges, setLodges] = useState<any[]>([]);
+function Dashboard({ user }: { user: UserData | null }) {
   const [stats, setStats] = useState<any>(null);
-  const [activities, setActivities] = useState<any[]>([]);
-  const [financials, setFinancials] = useState<any>(null);
-  const [publicUsers, setPublicUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'lodges' | 'users' | 'feed' | 'financials'>('lodges');
-
-  const fetchData = async () => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const [lodgesRes, statsRes, activitiesRes, financialsRes, usersRes] = await Promise.all([
-        fetch('/api/admin/lodges', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/admin/recent-activities', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/admin/financials', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/admin/public-users', { headers: { 'Authorization': `Bearer ${token}` } })
-      ]);
-      setLodges(await lodgesRes.json());
-      setStats(await statsRes.json());
-      setActivities(await activitiesRes.json());
-      setFinancials(await financialsRes.json());
-      setPublicUsers(await usersRes.json());
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [chartData, setChartData] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const activateSubscription = async (lodgeId: number, planType: string) => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/admin/activate-subscription', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ lodgeId, planType })
-      });
-      if (res.ok) {
-        fetchData();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const toggleLodgeStatus = async (lodgeId: number, isDisabled: boolean) => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/admin/toggle-lodge-status', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ lodgeId, isDisabled })
-      });
-      if (res.ok) {
-        fetchData();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const impersonateLodge = async (lodgeId: number) => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/admin/impersonate', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ lodgeId })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('lodgeease_token', data.token);
-        localStorage.setItem('lodgeease_user', JSON.stringify(data.user));
-        localStorage.setItem('lodge_name', data.user.lodge_name);
-        window.location.href = '/'; // Refresh to apply new user state
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (loading) return <div className="flex items-center justify-center h-screen"><Loader2 className="animate-spin" /></div>;
-
-  return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-zinc-900 tracking-tight">System Overview</h1>
-          <p className="text-zinc-500">Global monitoring and management console</p>
-        </div>
-        <button 
-          onClick={fetchData}
-          className="p-3 bg-zinc-100 text-zinc-900 rounded-2xl hover:bg-zinc-200 transition-all flex items-center gap-2 font-bold text-sm"
-        >
-          <RefreshCw size={18} />
-          Refresh
-        </button>
-      </div>
-
-      {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {[
-            { label: 'Total Lodges', value: stats.totalLodges, icon: Building2, color: 'text-zinc-900' },
-            { label: 'Active Subs', value: stats.activeSubscriptions, icon: CheckCircle2, color: 'text-emerald-600' },
-            { label: 'Expired Subs', value: stats.expiredSubscriptions, icon: AlertCircle, color: 'text-rose-600' },
-            { label: 'Disabled', value: stats.disabledLodges, icon: ShieldAlert, color: 'text-zinc-400' },
-          ].map((stat, i) => (
-            <div key={i} className="bg-white p-6 rounded-3xl border border-zinc-100 shadow-sm">
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-zinc-50 rounded-xl">
-                  <stat.icon size={20} className={stat.color} />
-                </div>
-              </div>
-              <div className="text-2xl font-black text-zinc-900">{stat.value}</div>
-              <div className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="flex gap-2 bg-zinc-100 p-1.5 rounded-[2rem] w-fit">
-        {[
-          { id: 'lodges', label: 'Lodges', icon: Building2 },
-          { id: 'users', label: 'Public Users', icon: Users },
-          { id: 'feed', label: 'System Feed', icon: Activity },
-          { id: 'financials', label: 'Platform Financials', icon: IndianRupee },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={cn(
-              "flex items-center gap-2 px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all",
-              activeTab === tab.id 
-                ? "bg-white text-zinc-900 shadow-sm" 
-                : "text-zinc-400 hover:text-zinc-900"
-            )}
-          >
-            <tab.icon size={16} />
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-white rounded-[2.5rem] border border-zinc-100 overflow-hidden shadow-sm min-h-[400px]">
-        {activeTab === 'lodges' && (
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-zinc-50 border-b border-zinc-100">
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Lodge Details</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Owner</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Status</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Expires</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-50">
-              {lodges.map((lodge) => (
-                <tr key={lodge.id} className={`hover:bg-zinc-50/50 transition-colors ${lodge.is_disabled ? 'opacity-50' : ''}`}>
-                  <td className="px-6 py-4">
-                    <div className="font-bold text-zinc-900">{lodge.lodge_name}</div>
-                    <div className="text-xs text-zinc-400">{lodge.login_id}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-zinc-600">{lodge.owner_name}</div>
-                    <div className="text-xs text-zinc-400">{lodge.phone}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      <span className={`w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        lodge.subscription_status === 'active' ? 'bg-emerald-50 text-emerald-600' :
-                        lodge.subscription_status === 'trial' ? 'bg-blue-50 text-blue-600' :
-                        'bg-rose-50 text-rose-600'
-                      }`}>
-                        {lodge.subscription_status}
-                      </span>
-                      {lodge.is_disabled && (
-                        <span className="w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-zinc-100 text-zinc-500">
-                          Disabled
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-zinc-500">
-                    {lodge.subscription_end_date ? new Date(lodge.subscription_end_date).toLocaleDateString() : 'N/A'}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => activateSubscription(lodge.id, 'monthly')}
-                        className="px-3 py-1 bg-zinc-900 text-white text-xs rounded-lg font-bold hover:bg-zinc-800"
-                      >
-                        Monthly
-                      </button>
-                      <button 
-                        onClick={() => activateSubscription(lodge.id, 'yearly')}
-                        className="px-3 py-1 bg-zinc-100 text-zinc-900 text-xs rounded-lg font-bold hover:bg-zinc-200"
-                      >
-                        Yearly
-                      </button>
-                      <button 
-                        onClick={() => toggleLodgeStatus(lodge.id, !lodge.is_disabled)}
-                        className={`p-1.5 rounded-lg transition-colors ${
-                          lodge.is_disabled 
-                            ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
-                            : 'bg-rose-50 text-rose-600 hover:bg-rose-100'
-                        }`}
-                        title={lodge.is_disabled ? 'Enable Lodge' : 'Disable Lodge'}
-                      >
-                        {lodge.is_disabled ? <CheckCircle2 size={16} /> : <ShieldAlert size={16} />}
-                      </button>
-                      <button 
-                        onClick={() => impersonateLodge(lodge.id)}
-                        className="p-1.5 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-zinc-200 transition-colors"
-                        title="Go To Lodge"
-                      >
-                        <ExternalLink size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
-        {activeTab === 'users' && (
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-zinc-50 border-b border-zinc-100">
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">User Name</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Email</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Phone</th>
-                <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase tracking-widest">Joined</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-50">
-              {publicUsers.map((user) => (
-                <tr key={user.id} className="hover:bg-zinc-50/50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-zinc-900">{user.name}</td>
-                  <td className="px-6 py-4 text-sm text-zinc-600">{user.email}</td>
-                  <td className="px-6 py-4 text-sm text-zinc-600">{user.phone}</td>
-                  <td className="px-6 py-4 text-sm text-zinc-400">{new Date(user.created_at).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
-        {activeTab === 'feed' && (
-          <div className="p-8 space-y-6">
-            {activities.map((activity, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
-                <div className={cn(
-                  "p-2 rounded-xl",
-                  activity.type === 'lodge_registration' ? "bg-blue-50 text-blue-600" :
-                  activity.type === 'user_registration' ? "bg-emerald-50 text-emerald-600" :
-                  "bg-purple-50 text-purple-600"
-                )}>
-                  {activity.type === 'lodge_registration' ? <Building2 size={20} /> :
-                   activity.type === 'user_registration' ? <Users size={20} /> :
-                   <Calendar size={20} />}
-                </div>
-                <div>
-                  <div className="text-sm font-black text-zinc-900">{activity.title}</div>
-                  <div className="text-xs font-bold text-zinc-400 uppercase tracking-widest mt-1">
-                    {activity.type.replace('_', ' ')} • {new Date(activity.date).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'financials' && financials && (
-          <div className="p-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div className="space-y-8">
-                <h3 className="text-xl font-black text-zinc-900 uppercase tracking-tight">Revenue Breakdown</h3>
-                <div className="space-y-6">
-                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
-                    <span className="text-zinc-500 font-bold">Total Platform Revenue</span>
-                    <span className="text-3xl font-black text-zinc-900">₹{financials.totalRevenue}</span>
-                  </div>
-                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
-                    <span className="text-zinc-500 font-bold">Monthly Revenue</span>
-                    <span className="text-2xl font-black text-emerald-600">₹{financials.monthlyRevenue}</span>
-                  </div>
-                  <div className="flex justify-between items-end border-b border-zinc-100 pb-4">
-                    <span className="text-zinc-500 font-bold">Total System Expenses</span>
-                    <span className="text-2xl font-black text-rose-600">₹{financials.totalExpenses}</span>
-                  </div>
-                  <div className="flex justify-between items-end pt-4">
-                    <span className="text-zinc-900 font-black uppercase tracking-widest text-sm">Net Platform Profit</span>
-                    <span className="text-4xl font-black text-zinc-900">₹{financials.netProfit}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-zinc-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden">
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black mb-6">Platform Health</h3>
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-2">
-                        <span>Lodge Retention</span>
-                        <span>94%</span>
-                      </div>
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-emerald-500 w-[94%]" />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-2">
-                        <span>Subscription Conversion</span>
-                        <span>12%</span>
-                      </div>
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-500 w-[12%]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-const RegisterPage = () => {
-  const [lodgeName, setLodgeName] = useState('');
-  const [ownerName, setOwnerName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [loginId, setLoginId] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    if (!user) return;
     
-    try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lodgeName, ownerName, phone, address, loginId, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => navigate('/login'), 2000);
-      } else {
-        setError(data.error || 'Registration failed');
-      }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-white">
-      <div className="hidden md:flex md:w-1/3 bg-zinc-900 p-16 flex-col justify-between relative overflow-hidden">
-        <div className="relative z-10">
-          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-zinc-900 font-black text-3xl mb-12 shadow-2xl">L</div>
-          <h1 className="text-5xl font-extrabold text-white leading-tight tracking-tighter">
-            Join LodgeEase <br />
-            <span className="text-zinc-500">Grow Your Business</span>
-          </h1>
-        </div>
-        <div className="relative z-10">
-          <p className="text-zinc-400 text-lg font-medium leading-relaxed">
-            Empowering lodge owners with professional tools for modern hospitality management.
-          </p>
-        </div>
-        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-zinc-800 rounded-full blur-[100px] opacity-50" />
-      </div>
-
-      <div className="flex-1 flex items-center justify-center p-8 md:p-16 overflow-y-auto">
-        <div className="w-full max-w-2xl">
-          <div className="mb-12">
-            <h3 className="text-4xl font-extrabold text-zinc-900 mb-3 tracking-tight">Register Your Lodge</h3>
-            <p className="text-zinc-500 font-medium text-lg">Start managing your property with LodgeEase today.</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {error && (
-              <div className="p-5 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3">
-                <AlertCircle size={20} />
-                {error}
-              </div>
-            )}
-            {success && (
-              <div className="p-5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3">
-                <CheckCircle2 size={20} />
-                Registration successful! Redirecting...
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Lodge Name</label>
-                <input required value={lodgeName} onChange={e => setLodgeName(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="e.g. Grand Plaza" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Owner Name</label>
-                <input required value={ownerName} onChange={e => setOwnerName(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="Full Name" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Phone Number</label>
-                <input required value={phone} onChange={e => setPhone(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="+91 00000 00000" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Login ID (Email)</label>
-                <input required type="email" value={loginId} onChange={e => setLoginId(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="admin@yourlodge.com" />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Address</label>
-              <textarea required value={address} onChange={e => setAddress(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all resize-none font-bold" rows={2} placeholder="Full property address..." />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Password</label>
-              <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold" placeholder="••••••••" />
-            </div>
-
-            <button type="submit" disabled={loading} className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 disabled:opacity-70 shadow-xl shadow-zinc-200">
-              {loading ? <Loader2 className="animate-spin" size={24} /> : 'Register Lodge'}
-            </button>
-
-            <p className="text-center text-zinc-500 font-medium">
-              Already have an account? <Link to="/login" className="text-zinc-900 font-black hover:underline">Sign In</Link>
-            </p>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const LoginPage = ({ onLogin }: { onLogin: (u: any, t: string) => void }) => {
-  const [email, setEmail] = useState('admin@lodgeease.com');
-  const [password, setPassword] = useState('admin123');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    
-    try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+    // Real-time stats listener
+    const qRooms = query(collection(db, 'rooms'), where('lodgeID', '==', user.lodgeID));
+    const unsubscribeRooms = onSnapshot(qRooms, (snapshot) => {
+      const rooms = snapshot.docs.map(doc => doc.data());
+      const total = rooms.length;
+      const occupied = rooms.filter(r => r.status === 'occupied').length;
+      const cleaning = rooms.filter(r => r.status === 'cleaning').length;
       
-      const data = await res.json();
-      if (res.ok) {
-        onLogin(data.user, data.token);
-      } else {
-        setError(data.error || 'Login failed');
-      }
-    } catch (err) {
-      setError('Connection error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-white">
-      {/* Left Side - Branding */}
-      <div className="hidden md:flex md:w-1/2 bg-zinc-900 p-20 flex-col justify-between relative overflow-hidden">
-        <div className="relative z-10">
-          <div className="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center text-zinc-900 font-black text-4xl mb-12 shadow-2xl">
-            L
-          </div>
-          <h1 className="text-7xl font-extrabold text-white leading-tight tracking-tighter">
-            LodgeEase <br />
-            <span className="text-zinc-500">Management Platform</span>
-          </h1>
-        </div>
+      // Fetch revenue and history for analytics
+      const qCustomers = query(collection(db, 'customers'), where('lodgeID', '==', user.lodgeID));
+      getDocs(qCustomers).then(customerSnap => {
+        const customers = customerSnap.docs.map(doc => doc.data());
         
-        <div className="relative z-10">
-          <p className="text-zinc-400 max-w-md text-xl font-medium leading-relaxed">
-            The unified solution for managing multiple lodge properties, guest bookings, and financial analytics with precision.
-          </p>
-        </div>
+        const now = new Date();
+        const todayStr = now.toLocaleDateString();
+        const thisMonth = now.getMonth();
+        const thisYear = now.getFullYear();
 
-        {/* Decorative elements */}
-        <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-zinc-800 rounded-full blur-[120px] opacity-50" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-zinc-800 rounded-full blur-[150px] opacity-50" />
-      </div>
+        const dailyRevenue = customers
+          .filter(c => c.checkOut && c.checkOut.toDate().toLocaleDateString() === todayStr)
+          .reduce((acc, c) => acc + (c.amount || 0), 0);
 
-      {/* Right Side - Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 md:p-20">
-        <div className="w-full max-w-md">
-          <div className="md:hidden mb-16">
-            <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center text-white font-black text-3xl mb-6 shadow-xl">
-              L
-            </div>
-            <h2 className="text-4xl font-extrabold text-zinc-900 tracking-tight">LodgeEase</h2>
-          </div>
+        const monthlyRevenue = customers
+          .filter(c => c.checkOut && c.checkOut.toDate().getMonth() === thisMonth && c.checkOut.toDate().getFullYear() === thisYear)
+          .reduce((acc, c) => acc + (c.amount || 0), 0);
 
-          <div className="mb-12">
-            <h3 className="text-4xl font-extrabold text-zinc-900 mb-3 tracking-tight">Lodge Owner Login</h3>
-            <p className="text-zinc-500 font-medium text-lg">Please enter your credentials to access the dashboard</p>
-          </div>
+        const totalRevenue = customers.reduce((acc, c) => acc + (c.amount || 0), 0);
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-5 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center gap-3"
-              >
-                <AlertCircle size={20} />
-                {error}
-              </motion.div>
-            )}
+        // Prepare chart data (last 7 days)
+        const last7Days = [...Array(7)].map((_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          const dStr = d.toLocaleDateString();
+          const dayRev = customers
+            .filter(c => c.checkOut && c.checkOut.toDate().toLocaleDateString() === dStr)
+            .reduce((acc, c) => acc + (c.amount || 0), 0);
+          return { name: d.toLocaleDateString('en-US', { weekday: 'short' }), val: dayRev };
+        }).reverse();
 
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
-                <input 
-                  required
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-14 pr-6 py-5 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                  placeholder="admin@lodgeease.com"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
-                <input 
-                  required
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-14 pr-6 py-5 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                  placeholder="••••••••"
-                />
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 disabled:opacity-70 shadow-xl shadow-zinc-200"
-            >
-              {loading ? <Loader2 className="animate-spin" size={24} /> : 'Sign In to Dashboard'}
-            </button>
-
-            <div className="pt-6 text-center space-y-4">
-              <p className="text-zinc-500 font-medium">
-                Don't have an account? <Link to="/register" className="text-zinc-900 font-black hover:underline">Register Lodge</Link>
-              </p>
-              <div className="pt-6 border-t border-zinc-100">
-                <p className="text-xs text-zinc-400 font-bold uppercase tracking-widest mb-4">Demo Credentials</p>
-                <div className="flex flex-col gap-2">
-                  <div className="px-4 py-3 bg-zinc-50 rounded-xl text-xs font-bold text-zinc-600 flex justify-between">
-                    <span>Email:</span>
-                    <span className="text-zinc-900">admin@lodgeease.com</span>
-                  </div>
-                  <div className="px-4 py-3 bg-zinc-50 rounded-xl text-xs font-bold text-zinc-600 flex justify-between">
-                    <span>Password:</span>
-                    <span className="text-zinc-900">admin123</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const RoomManagement = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingRoom, setEditingRoom] = useState<Room | null>(null);
-  
-  // Form states
-  const [roomNumber, setRoomNumber] = useState('');
-  const [type, setType] = useState('Single');
-  const [price, setPrice] = useState('');
-  const [status, setStatus] = useState('available');
-
-  const fetchRooms = async () => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/rooms', { headers: { 'Authorization': `Bearer ${token}` } });
-      setRooms(await res.json());
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRooms();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem('lodgeease_token');
-    const url = editingRoom ? `/api/rooms/${editingRoom.id}` : '/api/rooms';
-    const method = editingRoom ? 'PUT' : 'POST';
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ roomNumber, type, price: parseFloat(price), status })
+        setChartData(last7Days);
+        setStats({
+          total,
+          occupied,
+          cleaning,
+          available: total - occupied - cleaning,
+          dailyRevenue,
+          monthlyRevenue,
+          totalRevenue,
+          occupancyRate: total > 0 ? Math.round((occupied / total) * 100) : 0
+        });
       });
-      if (res.ok) {
-        setIsModalOpen(false);
-        setEditingRoom(null);
-        resetForm();
-        fetchRooms();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Operation failed');
-      }
-    } catch (err) {
-      alert('Connection error');
-    }
-  };
+    });
 
-  const resetForm = () => {
-    setRoomNumber('');
-    setType('Single');
-    setPrice('');
-    setStatus('available');
-  };
+    return () => unsubscribeRooms();
+  }, [user]);
 
-  const openEditModal = (room: Room) => {
-    setEditingRoom(room);
-    setRoomNumber(room.room_number);
-    setType(room.type);
-    setPrice(room.price.toString());
-    setStatus(room.status);
-    setIsModalOpen(true);
-  };
+  if (!stats) return <div className="flex justify-center py-20"><Loader2 className="animate-spin" /></div>;
 
-  if (loading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin" /></div>;
+  const cards = [
+    { label: 'Occupancy Rate', value: `${stats.occupancyRate}%`, icon: Users, color: 'bg-rose-50 text-rose-600' },
+    { label: 'Daily Revenue', value: `₹${stats.dailyRevenue}`, icon: IndianRupee, color: 'bg-emerald-50 text-emerald-600' },
+    { label: 'Monthly Revenue', value: `₹${stats.monthlyRevenue}`, icon: TrendingUp, color: 'bg-blue-50 text-blue-600' },
+    { label: 'Total Revenue', value: `₹${stats.totalRevenue}`, icon: BarChart3, color: 'bg-amber-50 text-amber-600' },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-32 lg:pb-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-end">
         <div>
-          <h2 className="text-4xl font-extrabold text-zinc-900 tracking-tight">Room Management</h2>
-          <p className="text-zinc-500 font-medium mt-2">Configure and manage your property's room inventory.</p>
+          <h2 className="text-3xl font-black tracking-tight">Dashboard Overview</h2>
+          <p className="text-zinc-400 font-bold">Real-time performance metrics for {user?.name}.</p>
         </div>
-        <button 
-          onClick={() => { setEditingRoom(null); resetForm(); setIsModalOpen(true); }}
-          className="bg-zinc-900 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200"
-        >
-          <Plus size={24} />
-          Add New Room
-        </button>
+        <div className="bg-white px-6 py-3 rounded-2xl border border-zinc-100 shadow-sm flex gap-6">
+          <div className="text-center">
+            <p className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">Available</p>
+            <p className="text-lg font-black text-emerald-500">{stats.available}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">Occupied</p>
+            <p className="text-lg font-black text-rose-500">{stats.occupied}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">Cleaning</p>
+            <p className="text-lg font-black text-amber-500">{stats.cleaning}</p>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {rooms.map((room) => (
-          <motion.div
-            key={room.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bento-card p-8 group relative overflow-hidden"
-          >
-            <div className="flex justify-between items-start mb-8">
-              <div className="w-14 h-14 rounded-2xl bg-zinc-100 flex items-center justify-center font-black text-zinc-900 text-2xl group-hover:bg-zinc-900 group-hover:text-white transition-all shadow-sm">
-                {room.room_number}
-              </div>
-              <button 
-                onClick={() => openEditModal(room)}
-                className="p-3 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-2xl transition-all"
-              >
-                <Edit2 size={20} />
-              </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((card, i) => (
+          <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="bg-white p-6 rounded-[2rem] border border-zinc-100 shadow-sm">
+            <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center mb-4", card.color)}>
+              <card.icon size={24} />
             </div>
-
-            <div className="space-y-4">
-              <div>
-                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] block mb-1">Room Type</span>
-                <h4 className="text-xl font-black text-zinc-900 tracking-tight">{room.type}</h4>
-              </div>
-
-              <div className="flex justify-between items-end">
-                <div>
-                  <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] block mb-1">Pricing</span>
-                  <p className="text-2xl font-black text-zinc-900 tracking-tight">₹{room.price}</p>
-                </div>
-                <span className={cn(
-                  "text-[10px] uppercase font-black px-3 py-1.5 rounded-xl tracking-widest inline-flex items-center gap-2",
-                  room.status === 'available' ? "bg-emerald-50 text-emerald-600" : 
-                  room.status === 'occupied' ? "bg-orange-50 text-orange-600" : "bg-zinc-100 text-zinc-500"
-                )}>
-                  <span className={cn("w-1.5 h-1.5 rounded-full", room.status === 'available' ? "bg-emerald-500" : "bg-orange-500")} />
-                  {room.status}
-                </span>
-              </div>
-            </div>
-
-            {/* Decorative background accent */}
-            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-zinc-50 rounded-full blur-3xl group-hover:bg-zinc-100 transition-colors" />
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{card.label}</p>
+            <h3 className="text-2xl font-black text-zinc-900 mt-1">{card.value}</h3>
           </motion.div>
         ))}
       </div>
 
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-            >
-              <div className="p-8 bg-zinc-900 text-white">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="text-2xl font-bold tracking-tight">
-                      {editingRoom ? 'Edit Room' : 'New Room'}
-                    </h3>
-                    <p className="text-zinc-400 text-sm mt-1">Enter the room details below.</p>
-                  </div>
-                  <button onClick={() => setIsModalOpen(false)} className="text-zinc-400 hover:text-white transition-colors">
-                    <X size={28} />
-                  </button>
-                </div>
-              </div>
-
-              <form onSubmit={handleSubmit} className="p-8 space-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Room Number</label>
-                  <input 
-                    required
-                    value={roomNumber}
-                    onChange={(e) => setRoomNumber(e.target.value)}
-                    className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                    placeholder="e.g. 101"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Room Type</label>
-                    <select 
-                      value={type}
-                      onChange={(e) => setType(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold appearance-none"
-                    >
-                      <option value="Single">Single</option>
-                      <option value="Double">Double</option>
-                      <option value="Deluxe">Deluxe</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Price (₹)</label>
-                    <input 
-                      type="number"
-                      required
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                      placeholder="0.00"
-                    />
-                  </div>
-                </div>
-
-                {editingRoom && (
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Status</label>
-                    <select 
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                    >
-                      <option value="available">Available</option>
-                      <option value="occupied">Occupied</option>
-                      <option value="maintenance">Maintenance</option>
-                    </select>
-                  </div>
-                )}
-
-                <button 
-                  type="submit"
-                  className="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all mt-4"
-                >
-                  {editingRoom ? 'Update Room' : 'Create Room'}
-                </button>
-              </form>
-            </motion.div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <h3 className="text-xl font-black mb-6">Revenue Trend (Last 7 Days)</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData}>
+                <defs>
+                  <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#18181b" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#18181b" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold', fill: '#a1a1aa'}} />
+                <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 'bold', fill: '#a1a1aa'}} />
+                <Tooltip />
+                <Area type="monotone" dataKey="val" stroke="#18181b" strokeWidth={3} fillOpacity={1} fill="url(#colorVal)" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <h3 className="text-xl font-black mb-6">Occupancy Distribution</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <RePieChart>
+                <Pie 
+                  data={[
+                    {name: 'Available', value: stats.available}, 
+                    {name: 'Occupied', value: stats.occupied}, 
+                    {name: 'Cleaning', value: stats.cleaning}
+                  ]} 
+                  innerRadius={60} 
+                  outerRadius={80} 
+                  paddingAngle={5} 
+                  dataKey="value"
+                >
+                  <Cell fill="#10b981" />
+                  <Cell fill="#f43f5e" />
+                  <Cell fill="#f59e0b" />
+                </Pie>
+                <Tooltip />
+                <Legend verticalAlign="bottom" height={36}/>
+              </RePieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-const Expenses = () => {
-  const [expenses, setExpenses] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [limit] = useState(10);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('General');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-
-  const fetchExpenses = async () => {
-    setLoading(true);
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch(`/api/expenses?page=${page}&limit=${limit}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const result = await res.json();
-      setExpenses(result.data);
-      setTotal(result.total);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+const Camera = ({ onCapture, onClose }: { onCapture: (img: string) => void, onClose: () => void }) => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
-    fetchExpenses();
-  }, [page]);
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      .then(s => {
+        setStream(s);
+        if (videoRef.current) videoRef.current.srcObject = s;
+      })
+      .catch(err => alert("Camera access denied: " + err.message));
+    
+    return () => stream?.getTracks().forEach(t => t.stop());
+  }, []);
 
-  const handleAddExpense = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
-        body: JSON.stringify({ description, amount: parseFloat(amount), category, date })
-      });
-      if (res.ok) {
-        setIsModalOpen(false);
-        setDescription('');
-        setAmount('');
-        fetchExpenses();
+  const capture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
+      if (context) {
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        context.drawImage(videoRef.current, 0, 0);
+        const data = canvasRef.current.toDataURL('image/jpeg');
+        onCapture(data);
+        stream?.getTracks().forEach(t => t.stop());
       }
-    } catch (err) {
-      console.error(err);
     }
   };
-
-  const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      await fetch(`/api/expenses/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      fetchExpenses();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
-  const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-32 lg:pb-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+    <div className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center p-4">
+      <video ref={videoRef} autoPlay playsInline className="w-full max-w-md rounded-3xl bg-zinc-800" />
+      <canvas ref={canvasRef} className="hidden" />
+      <div className="flex gap-4 mt-8">
+        <Button variant="secondary" onClick={onClose} className="rounded-full w-16 h-16 p-0"><X size={24} /></Button>
+        <button onClick={capture} className="w-20 h-20 bg-white rounded-full border-8 border-zinc-200 active:scale-90 transition-transform" />
+      </div>
+    </div>
+  );
+};
+
+function Rooms({ user }: { user: UserData | null }) {
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [showCheckIn, setShowCheckIn] = useState(false);
+  const [showCheckOut, setShowCheckOut] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [aadhaarImg, setAadhaarImg] = useState<string | null>(null);
+  const [formData, setFormData] = useState({ name: '', phone: '', address: '', aadhaar: '', paid: 0 });
+  const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'rooms'), where('lodgeID', '==', user.lodgeID));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const roomData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Room));
+      setRooms(roomData.sort((a, b) => a.room_number.localeCompare(b.room_number)));
+    });
+    return () => unsubscribe();
+  }, [user]);
+
+  const handleScan = async (img: string) => {
+    setAadhaarImg(img);
+    setScanning(true);
+    try {
+      const { name, aadhaar } = await scanAadhaar(img);
+      if (name) setFormData(prev => ({ ...prev, name }));
+      if (aadhaar) setFormData(prev => ({ ...prev, aadhaar }));
+    } catch (err) {
+      console.error("OCR Error:", err);
+    } finally {
+      setScanning(false);
+    }
+  };
+
+  const handleQRScan = (data: string) => {
+    const parsed = parseAadhaarQR(data);
+    setFormData(prev => ({
+      ...prev,
+      name: parsed.name || prev.name,
+      aadhaar: parsed.uid || prev.aadhaar,
+      address: parsed.address || prev.address,
+      // Note: Gender and DOB could also be stored if fields existed
+    }));
+  };
+
+  const handleCheckIn = async (e: any) => {
+    e.preventDefault();
+    if (!selectedRoom || !user) return;
+
+    // Repeat Customer Detection
+    const qRepeat = query(collection(db, 'customers'), where('lodgeID', '==', user.lodgeID), where('aadhaar', '==', encryptData(formData.aadhaar)));
+    const repeatSnap = await getDocs(qRepeat);
+    if (!repeatSnap.empty) {
+      alert(`👋 Welcome back! This guest has stayed with us ${repeatSnap.size} times before.`);
+    }
+
+    // Check Blacklist
+    if (user.blacklistedGuests?.includes(formData.aadhaar)) {
+      alert("⚠️ WARNING: This guest is in the blacklist!");
+      if (!confirm("Do you still want to proceed with check-in?")) return;
+    }
+
+    setLoading(true);
+    try {
+      let aadhaarURL = '';
+      if (aadhaarImg) {
+        const storageRef = ref(storage, `aadhaar/${user.lodgeID}/${Date.now()}.jpg`);
+        await uploadString(storageRef, aadhaarImg, 'data_url');
+        aadhaarURL = await getDownloadURL(storageRef);
+      }
+
+      const encryptedAadhaar = encryptData(formData.aadhaar);
+
+      const customerRef = await addDoc(collection(db, 'customers'), {
+        lodgeID: user.lodgeID,
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        aadhaar: encryptedAadhaar, // Store encrypted
+        aadhaarDisplay: formData.aadhaar.slice(-4).padStart(12, '*'), // For UI
+        aadhaarImageURL: aadhaarURL,
+        room: selectedRoom.room_number,
+        checkIn: serverTimestamp(),
+        checkOut: null,
+        amount: 0,
+        advance_paid: formData.paid
+      });
+
+      // Send Booking Confirmation via WhatsApp
+      try {
+        await sendWhatsAppMessage({
+          to: formData.phone,
+          message: `Hello ${formData.name}, your booking for Room ${selectedRoom.room_number} at ${user.name} is confirmed! 🏨 We look forward to seeing you.`,
+          lodgeID: user.lodgeID,
+          lodgeName: user.name,
+          guestName: formData.name
+        });
+      } catch (waErr) {
+        console.error("WhatsApp Confirmation Error:", waErr);
+      }
+
+      await updateDoc(doc(db, 'rooms', selectedRoom.id), {
+        status: 'occupied',
+        customer_name: formData.name,
+        customer_id: customerRef.id,
+        customer_phone: formData.phone,
+        check_in_date: new Date().toISOString(),
+        advance_paid: formData.paid
+      });
+
+      setShowCheckIn(false);
+      setAadhaarImg(null);
+      setFormData({ name: '', phone: '', address: '', aadhaar: '', paid: 0 });
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCheckOut = async () => {
+    if (!selectedRoom || !user) return;
+    setLoading(true);
+    try {
+      const q = query(
+        collection(db, 'customers'), 
+        where('lodgeID', '==', user.lodgeID), 
+        where('room', '==', selectedRoom.room_number),
+        where('checkOut', '==', null)
+      );
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const customerDoc = snap.docs[0];
+        await updateDoc(doc(db, 'customers', customerDoc.id), {
+          checkOut: serverTimestamp(),
+          amount: selectedRoom.price
+        });
+      }
+
+      // GST Logic (12% for rooms < 7500, 18% for rooms > 7500)
+      const basePrice = selectedRoom.price || 0;
+      const gstRate = basePrice > 7500 ? 0.18 : 0.12;
+      const cgst = (basePrice * gstRate) / 2;
+      const sgst = (basePrice * gstRate) / 2;
+      const totalWithGst = basePrice + cgst + sgst;
+
+      // Generate PDF Bill with GST
+      const docPdf = new jsPDF();
+      docPdf.setFontSize(22);
+      docPdf.text(user.name || 'LodgeEase', 105, 20, { align: 'center' });
+      if (user.gstNumber) {
+        docPdf.setFontSize(10);
+        docPdf.text(`GSTIN: ${user.gstNumber}`, 105, 26, { align: 'center' });
+      }
+      docPdf.setFontSize(10);
+      docPdf.text('Tax Invoice / Stay Summary', 105, 32, { align: 'center' });
+      docPdf.line(20, 35, 190, 35);
+      docPdf.setFontSize(12);
+      docPdf.text(`Guest: ${selectedRoom.customer_name}`, 20, 50);
+      docPdf.text(`Room: ${selectedRoom.room_number} (${selectedRoom.type})`, 20, 60);
+      docPdf.text(`Check-In: ${selectedRoom.check_in_date ? new Date(selectedRoom.check_in_date).toLocaleDateString() : '-'}`, 20, 70);
+      docPdf.text(`Check-Out: ${new Date().toLocaleDateString()}`, 20, 80);
+      docPdf.line(20, 90, 190, 90);
+      docPdf.text('Description', 20, 100);
+      docPdf.text('Amount', 170, 100);
+      docPdf.text(`Room Charges (${selectedRoom.type})`, 20, 110);
+      docPdf.text(`₹${basePrice}`, 170, 110);
+      docPdf.text(`CGST (${(gstRate/2)*100}%)`, 20, 120);
+      docPdf.text(`₹${cgst.toFixed(2)}`, 170, 120);
+      docPdf.text(`SGST (${(gstRate/2)*100}%)`, 20, 130);
+      docPdf.text(`₹${sgst.toFixed(2)}`, 170, 130);
+      docPdf.text('Advance Paid', 20, 140);
+      docPdf.text(`-₹${selectedRoom.advance_paid}`, 170, 140);
+      docPdf.setFontSize(14);
+      docPdf.text('Total Balance Paid', 20, 160);
+      docPdf.text(`₹${(totalWithGst - (selectedRoom.advance_paid || 0)).toFixed(2)}`, 170, 160);
+      docPdf.setFontSize(10);
+      docPdf.text('Thank you for staying with us!', 105, 180, { align: 'center' });
+      
+      const pdfBlob = docPdf.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, '_blank');
+
+      // Upload PDF to Firebase Storage for WhatsApp sharing
+      let remotePdfUrl = '';
+      try {
+        const pdfRef = ref(storage, `invoices/${user.lodgeID}/${selectedRoom.customer_id}_${Date.now()}.pdf`);
+        await uploadBytes(pdfRef, pdfBlob);
+        remotePdfUrl = await getDownloadURL(pdfRef);
+      } catch (uploadErr) {
+        console.error("PDF Upload Error:", uploadErr);
+      }
+
+      // WhatsApp Share with Invoice Link
+      try {
+        await sendWhatsAppMessage({
+          to: selectedRoom.customer_phone || '', // Need to ensure phone is available
+          message: `Hello ${selectedRoom.customer_name}, thank you for staying at ${user.name}. Your total bill is ₹${totalWithGst.toFixed(2)}. Download invoice: ${remotePdfUrl || window.location.origin}`,
+          mediaUrl: remotePdfUrl,
+          mediaType: "document",
+          lodgeID: user.lodgeID,
+          lodgeName: user.name,
+          guestName: selectedRoom.customer_name || 'Guest'
+        });
+      } catch (waErr) {
+        console.error("WhatsApp Invoice Error:", waErr);
+      }
+      
+      // Update room status to cleaning
+      await updateDoc(doc(db, 'rooms', selectedRoom.id), {
+        status: 'cleaning',
+        customer_name: null,
+        customer_id: null,
+        check_in_date: null,
+        advance_paid: 0
+      });
+
+      // Add to housekeeping
+      await addDoc(collection(db, 'housekeeping'), {
+        lodgeID: user.lodgeID,
+        roomID: selectedRoom.id,
+        roomNumber: selectedRoom.room_number,
+        status: 'dirty',
+        updatedAt: serverTimestamp()
+      });
+
+      setShowCheckOut(false);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const finishCleaning = async (roomId: string) => {
+    await updateDoc(doc(db, 'rooms', roomId), { status: 'available' });
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-4xl font-extrabold text-zinc-900 tracking-tight">Expense Management</h2>
-          <p className="text-zinc-500 font-medium mt-2">Track and categorize your property's operational costs.</p>
+          <h2 className="text-3xl font-black tracking-tight">Room Inventory</h2>
+          <p className="text-zinc-400 font-bold">Manage your rooms and guest status.</p>
         </div>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-zinc-900 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200"
-        >
-          <Plus size={24} />
-          Add Expense
-        </button>
+        <Button><Plus size={18} /> Add Room</Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-rose-50 border border-rose-100 p-8 rounded-[2.5rem] relative overflow-hidden group"
-        >
-          <div className="relative z-10">
-            <p className="text-rose-600 text-[10px] font-black uppercase tracking-widest mb-3">Total Expenses</p>
-            <p className="text-4xl font-extrabold text-rose-700 tracking-tight">₹{totalExpenses}</p>
-            <div className="mt-6 flex items-center gap-2 text-rose-500 text-[10px] font-black uppercase tracking-widest">
-              <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-              Current Page View
-            </div>
-          </div>
-          <IndianRupee className="absolute right-[-10%] bottom-[-10%] text-rose-200/20 w-40 h-40 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-        </motion.div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        {loading ? (
-          <div className="col-span-full py-24 text-center">
-            <Loader2 className="animate-spin mx-auto text-zinc-300" size={40} />
-          </div>
-        ) : expenses.length === 0 ? (
-          <div className="col-span-full py-24 text-center bento-card">
-            <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-300 mx-auto mb-4">
-              <IndianRupee size={32} />
-            </div>
-            <p className="text-zinc-400 font-bold italic">No expenses recorded yet.</p>
-          </div>
-        ) : (
-          expenses.map((exp) => (
-            <motion.div
-              key={exp.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bento-card p-8 group relative overflow-hidden"
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex flex-col">
-                  <span className="text-sm font-black text-zinc-900">
-                    {new Date(exp.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
-                  </span>
-                  <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-                    {new Date(exp.date).getFullYear()}
-                  </span>
-                </div>
-                <button 
-                  onClick={() => handleDelete(exp.id)} 
-                  className="p-3 text-zinc-300 hover:text-rose-600 hover:bg-rose-50 rounded-2xl transition-all"
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] block mb-1">Description</span>
-                  <h4 className="text-lg font-black text-zinc-900 tracking-tight truncate">{exp.description}</h4>
-                </div>
-
-                <div className="flex justify-between items-end">
-                  <div>
-                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] block mb-1">Amount</span>
-                    <p className="text-2xl font-black text-rose-600 tracking-tight">₹{exp.amount}</p>
-                  </div>
-                  <span className="px-3 py-1.5 bg-zinc-100 text-zinc-600 rounded-xl text-[10px] font-black uppercase tracking-widest">
-                    {exp.category}
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))
-        )}
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-6 mb-12">
-          <button 
-            disabled={page === 1}
-            onClick={() => setPage(p => p - 1)}
-            className="w-12 h-12 flex items-center justify-center rounded-2xl border border-zinc-200 disabled:opacity-30 hover:bg-zinc-900 hover:text-white transition-all shadow-sm"
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {rooms.map(room => (
+          <motion.div 
+            key={room.id} 
+            whileHover={{ y: -5 }}
+            onClick={() => {
+              setSelectedRoom(room);
+              if (room.status === 'available') setShowCheckIn(true);
+              else if (room.status === 'occupied') setShowCheckOut(true);
+              else if (room.status === 'cleaning') finishCleaning(room.id);
+            }}
+            className={cn(
+              "p-6 rounded-[2rem] border cursor-pointer transition-all relative overflow-hidden group",
+              room.status === 'available' ? "bg-white border-zinc-100 hover:border-zinc-900" : 
+              room.status === 'cleaning' ? "bg-amber-50 border-amber-200 text-amber-900" :
+              "bg-zinc-900 border-zinc-900 text-white"
+            )}
           >
-            <ChevronLeft size={24} />
-          </button>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-black text-zinc-900">Page {page}</span>
-            <span className="text-sm font-bold text-zinc-400">/ {totalPages}</span>
-          </div>
-          <button 
-            disabled={page === totalPages}
-            onClick={() => setPage(p => p + 1)}
-            className="w-12 h-12 flex items-center justify-center rounded-2xl border border-zinc-200 disabled:opacity-30 hover:bg-zinc-900 hover:text-white transition-all shadow-sm"
-          >
-            <ChevronRight size={24} />
-          </button>
-        </div>
-      )}
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-2xl font-black">{room.room_number}</span>
+              <div className={cn(
+                "w-2 h-2 rounded-full", 
+                room.status === 'available' ? "bg-emerald-500" : 
+                room.status === 'cleaning' ? "bg-amber-500 animate-pulse" :
+                "bg-rose-500"
+              )} />
+            </div>
+            <p className={cn(
+              "text-[10px] font-black uppercase tracking-widest", 
+              room.status === 'available' ? "text-zinc-400" : 
+              room.status === 'cleaning' ? "text-amber-600" :
+              "text-zinc-500"
+            )}>{room.type}</p>
+            <p className="text-sm font-bold mt-1">₹{room.price}</p>
+            
+            {room.status === 'occupied' && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Guest</p>
+                <p className="text-xs font-bold truncate">{room.customer_name}</p>
+              </div>
+            )}
+            {room.status === 'cleaning' && (
+              <div className="mt-4 pt-4 border-t border-amber-200">
+                <p className="text-[10px] font-black uppercase tracking-widest text-amber-600">Cleaning</p>
+                <p className="text-xs font-bold">Tap to Ready</p>
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
 
-      {/* Add Expense Modal */}
+      {/* Modals */}
       <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-            >
-              <div className="p-8 bg-zinc-900 text-white">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="text-2xl font-bold tracking-tight">New Expense</h3>
-                    <p className="text-zinc-400 text-sm mt-1">Record a new operational cost.</p>
+        {showQRScanner && <QRScanner onScan={handleQRScan} onClose={() => setShowQRScanner(false)} />}
+        {showCamera && <Camera onCapture={handleScan} onClose={() => setShowCamera(false)} />}
+        {showCheckIn && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowCheckIn(false)} className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-lg bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+              <h3 className="text-2xl font-black mb-6">Check-In Room {selectedRoom?.room_number}</h3>
+              <form onSubmit={handleCheckIn} className="space-y-4">
+                <div className="flex gap-4 items-end">
+                  <Input label="Aadhaar" placeholder="12 Digit Number" value={formData.aadhaar} onChange={(e: any) => setFormData({...formData, aadhaar: e.target.value})} />
+                  <div className="flex gap-2">
+                    <Button type="button" variant="secondary" onClick={() => setShowQRScanner(true)} className="h-12 w-12 p-0 rounded-2xl" title="Scan QR">
+                      <QrCode size={20} />
+                    </Button>
+                    <Button type="button" variant="secondary" onClick={() => setShowCamera(true)} className="h-12 w-12 p-0 rounded-2xl" title="Capture Photo">
+                      <Search size={20} />
+                    </Button>
                   </div>
-                  <button onClick={() => setIsModalOpen(false)} className="text-zinc-400 hover:text-white transition-colors">
-                    <X size={28} />
-                  </button>
+                </div>
+                {scanning && <p className="text-[10px] font-black text-emerald-500 animate-pulse uppercase tracking-widest ml-1">Scanning Aadhaar...</p>}
+                
+                <Input label="Guest Name" placeholder="Full Name" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} />
+                <Input label="Phone" placeholder="Mobile Number" value={formData.phone} onChange={(e: any) => setFormData({...formData, phone: e.target.value})} />
+                <Input label="Address" placeholder="Full Address" value={formData.address} onChange={(e: any) => setFormData({...formData, address: e.target.value})} />
+                
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Aadhaar Card Photo</label>
+                  <div className="flex gap-2">
+                    {aadhaarImg ? (
+                      <div className="relative w-20 h-20 rounded-2xl overflow-hidden border border-zinc-100">
+                        <img src={aadhaarImg} className="w-full h-full object-cover" />
+                        <button onClick={() => setAadhaarImg(null)} className="absolute top-1 right-1 bg-rose-500 text-white rounded-full p-1"><X size={10} /></button>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => setShowCamera(true)} className="w-20 h-20 rounded-2xl border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center text-zinc-400 hover:border-zinc-900 hover:text-zinc-900 transition-all">
+                        <Plus size={20} />
+                        <span className="text-[8px] font-black uppercase tracking-widest mt-1">Capture</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <Input label="Advance Paid" type="number" value={formData.paid} onChange={(e: any) => setFormData({...formData, paid: Number(e.target.value)})} />
+                <div className="flex gap-3 pt-4">
+                  <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowCheckIn(false)}>Cancel</Button>
+                  <Button type="submit" disabled={loading} className="flex-1">{loading ? <Loader2 className="animate-spin" /> : 'Confirm Check-In'}</Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+
+        {showCheckOut && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowCheckOut(false)} className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-lg bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+              <h3 className="text-2xl font-black mb-2">Check-Out Room {selectedRoom?.room_number}</h3>
+              <p className="text-zinc-400 font-bold mb-8">Review guest details and finalize payment.</p>
+              
+              <div className="space-y-6 mb-8">
+                <div className="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                  <div>
+                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Guest Name</p>
+                    <p className="font-bold">{selectedRoom?.customer_name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Check-In</p>
+                    <p className="font-bold">{selectedRoom?.check_in_date ? new Date(selectedRoom.check_in_date).toLocaleDateString() : '-'}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-zinc-400">Room Charges</span>
+                    <span>₹{selectedRoom?.price}</span>
+                  </div>
+                  <div className="flex justify-between text-sm font-bold">
+                    <span className="text-zinc-400">Advance Paid</span>
+                    <span className="text-emerald-600">-₹{selectedRoom?.advance_paid}</span>
+                  </div>
+                  <div className="pt-4 border-t border-zinc-100 flex justify-between text-xl font-black">
+                    <span>Total Balance</span>
+                    <span>₹{(selectedRoom?.price || 0) - (selectedRoom?.advance_paid || 0)}</span>
+                  </div>
                 </div>
               </div>
 
-              <form onSubmit={handleAddExpense} className="p-8 space-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Description</label>
-                  <input 
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                    placeholder="e.g. Electricity Bill"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Amount (₹)</label>
-                    <input 
-                      type="number"
-                      required
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                      placeholder="0.00"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Category</label>
-                    <select 
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold appearance-none"
-                    >
-                      <option value="General">General</option>
-                      <option value="Maintenance">Maintenance</option>
-                      <option value="Utilities">Utilities</option>
-                      <option value="Staff">Staff</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Date</label>
-                  <input 
-                    type="date"
-                    required
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                  />
-                </div>
-                <button 
-                  type="submit"
-                  className="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all mt-4"
-                >
-                  Save Expense
-                </button>
-              </form>
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowCheckOut(false)}>Cancel</Button>
+                <Button className="flex-1" disabled={loading} onClick={handleCheckOut}>{loading ? <Loader2 className="animate-spin" /> : 'Confirm Payment'}</Button>
+              </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+}
 
-const Reports = () => {
-  const [reports, setReports] = useState<any[]>([]);
+function Reports({ user }: { user: UserData | null }) {
+  const [data, setData] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [limit] = useState(10);
-  const [summary, setSummary] = useState({ totalIncome: 0, totalAdvance: 0 });
-
-  const fetchReports = async () => {
-    setLoading(true);
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const params = new URLSearchParams();
-      if (search) params.append('search', search);
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      params.append('page', page.toString());
-      params.append('limit', limit.toString());
-
-      const res = await fetch(`/api/reports?${params.toString()}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const result = await res.json();
-      setReports(result.data);
-      setTotal(result.total);
-      setSummary(result.summary);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchReports();
-  }, [page]);
+    if (!user) return;
+    const q = query(collection(db, 'customers'), where('lodgeID', '==', user.lodgeID), orderBy('checkIn', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const customers = snapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        ...doc.data(),
+        checkIn: doc.data().checkIn?.toDate(),
+        checkOut: doc.data().checkOut?.toDate()
+      } as any));
+      setData(customers);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, [user]);
 
-  const handleApplyFilters = () => {
-    setPage(1);
-    fetchReports();
+  const exportExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(data.map(r => ({
+      ID: r.id,
+      Name: r.name,
+      Phone: r.phone,
+      Aadhaar: r.aadhaar,
+      Room: r.room,
+      CheckIn: r.checkIn?.toLocaleString(),
+      CheckOut: r.checkOut?.toLocaleString(),
+      Amount: r.amount
+    })));
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Customers");
+    XLSX.writeFile(workbook, `LodgeEase_Report_${new Date().toLocaleDateString()}.xlsx`);
   };
 
-  const totalPages = Math.ceil(total / limit);
+  const exportPDF = () => {
+    const docPdf = new jsPDF();
+    docPdf.text("Customer History Report", 10, 10);
+    let y = 20;
+    data.forEach(r => {
+      if (y > 280) { docPdf.addPage(); y = 20; }
+      docPdf.setFontSize(8);
+      docPdf.text(`${r.name} | Room: ${r.room} | In: ${r.checkIn?.toLocaleDateString()} | Amt: ₹${r.amount}`, 10, y);
+      y += 10;
+    });
+    docPdf.save("Customer_Report.pdf");
+  };
+
+  const exportCSV = () => {
+    const headers = ["ID", "Name", "Phone", "Aadhaar", "Room", "CheckIn", "CheckOut", "Amount"];
+    const rows = data.map(r => [
+      r.id,
+      r.name,
+      r.phone,
+      r.aadhaarDisplay || 'N/A',
+      r.room,
+      r.checkIn?.toLocaleString(),
+      r.checkOut?.toLocaleString(),
+      r.amount
+    ]);
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + headers.join(",") + "\n" 
+      + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `LodgeEase_Report_${new Date().toLocaleDateString()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+  };
+
+  const toggleBlacklist = async (aadhaar: string) => {
+    if (!user) return;
+    const currentBlacklist = user.blacklistedGuests || [];
+    const isBlacklisted = currentBlacklist.includes(aadhaar);
+    const newBlacklist = isBlacklisted 
+      ? currentBlacklist.filter(a => a !== aadhaar)
+      : [...currentBlacklist, aadhaar];
+    
+    await updateDoc(doc(db, 'lodges', user.lodgeID), {
+      blacklistedGuests: newBlacklist
+    });
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin" /></div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-32 lg:pb-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-4xl font-extrabold text-zinc-900 tracking-tight">Reports & Analytics</h2>
-          <p className="text-zinc-500 font-medium mt-2">Comprehensive overview of your property's performance.</p>
+          <h2 className="text-3xl font-black tracking-tight">Customer Reports</h2>
+          <p className="text-zinc-400 font-bold">Detailed history of all guest stays.</p>
         </div>
-        <div className="flex gap-3">
-          <button 
-            onClick={() => window.print()}
-            className="bg-white border border-zinc-200 text-zinc-900 px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-zinc-50 transition-all shadow-sm"
-          >
-            <Download size={20} />
-            Export PDF
-          </button>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={exportExcel}><Download size={16} /> Excel</Button>
+          <Button variant="secondary" onClick={exportPDF}><Download size={16} /> PDF</Button>
+          <Button variant="secondary" onClick={exportCSV}><Download size={16} /> CSV</Button>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="bento-card p-8 mb-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Search Customer</label>
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />
-              <input 
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                placeholder="Name or Phone..."
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">From Date</label>
-            <input 
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">To Date</label>
-            <input 
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-            />
-          </div>
-          <div className="flex items-end">
-            <button 
-              onClick={handleApplyFilters}
-              className="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 shadow-xl shadow-zinc-200"
-            >
-              <Filter size={20} />
-              Apply Filters
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-zinc-900 text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden group"
-        >
-          <div className="relative z-10">
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-3">Total Revenue</p>
-            <p className="text-5xl font-extrabold tracking-tight">₹{summary.totalIncome + summary.totalAdvance}</p>
-            <div className="mt-6 flex items-center gap-2 text-emerald-400 text-[10px] font-black uppercase tracking-widest">
-              <TrendingUp size={16} />
-              <span>Filtered Range</span>
-            </div>
-          </div>
-          <IndianRupee className="absolute right-[-10%] bottom-[-10%] text-white/5 w-48 h-48 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bento-card p-10 relative overflow-hidden group"
-        >
-          <div className="relative z-10">
-            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-3">Total Bookings</p>
-            <p className="text-5xl font-extrabold text-zinc-900 tracking-tight">{total}</p>
-            <div className="mt-6 flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest">
-              <Users size={16} />
-              <span>Completed & Active</span>
-            </div>
-          </div>
-          <Bed className="absolute right-[-10%] bottom-[-10%] text-zinc-50 w-48 h-48 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bento-card p-10 relative overflow-hidden group"
-        >
-          <div className="relative z-10">
-            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-3">Avg. per Booking</p>
-            <p className="text-5xl font-extrabold text-zinc-900 tracking-tight">
-              ₹{total > 0 ? Math.round((summary.totalIncome + summary.totalAdvance) / total) : 0}
-            </p>
-            <div className="mt-6 flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest">
-              <BarChart3 size={16} />
-              <span>Efficiency Rate</span>
-            </div>
-          </div>
-          <PieChart className="absolute right-[-10%] bottom-[-10%] text-zinc-50 w-48 h-48 rotate-45 group-hover:rotate-0 transition-transform duration-700" />
-        </motion.div>
-      </div>
-
-      {/* Table */}
-      <div className="bento-card overflow-hidden mb-8">
+      <div className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-zinc-100">
-                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Date</th>
-                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Customer</th>
+              <tr className="border-b border-zinc-50">
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Guest Details</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Aadhaar</th>
                 <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Room</th>
-                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Status</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Check In</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Check Out</th>
                 <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-50">
-              {loading ? (
-                <tr>
-                  <td colSpan={5} className="px-8 py-24 text-center">
-                    <Loader2 className="animate-spin mx-auto text-zinc-300" size={40} />
-                  </td>
-                </tr>
-              ) : reports.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-8 py-24 text-center">
-                    <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-300 mx-auto mb-4">
-                      <FileText size={32} />
+              {data.map((row, i) => (
+                <tr key={i} className="hover:bg-zinc-50/50 transition-colors">
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-3">
+                      {row.aadhaarImageURL && (
+                        <img src={row.aadhaarImageURL} className="w-10 h-10 rounded-lg object-cover border border-zinc-100" />
+                      )}
+                      <div>
+                        <p className="font-bold text-zinc-900">{row.name}</p>
+                        <p className="text-xs font-bold text-zinc-400">{row.phone}</p>
+                      </div>
                     </div>
-                    <p className="text-zinc-400 font-bold italic">No records found for the selected filters.</p>
+                  </td>
+                  <td className="px-8 py-6 text-sm font-bold text-zinc-500">{row.aadhaarDisplay || 'N/A'}</td>
+                  <td className="px-8 py-6">
+                    <span className="bg-zinc-100 px-3 py-1 rounded-lg text-xs font-black">{row.room}</span>
+                  </td>
+                  <td className="px-8 py-6 text-xs font-bold text-zinc-500">{row.checkIn?.toLocaleString() || '-'}</td>
+                  <td className="px-8 py-6 text-xs font-bold text-zinc-500">
+                    {row.checkOut ? row.checkOut.toLocaleString() : <span className="text-emerald-500">Still In</span>}
+                  </td>
+                  <td className="px-8 py-6 text-right font-black text-zinc-900">
+                    <div className="flex justify-end gap-2">
+                      {row.amount ? `₹${row.amount}` : '-'}
+                      <Button 
+                        variant="ghost" 
+                        onClick={() => toggleBlacklist(decryptData(row.aadhaar))} 
+                        className={cn("w-8 h-8 p-0 rounded-lg", (user?.blacklistedGuests || []).includes(decryptData(row.aadhaar)) ? "text-rose-500 bg-rose-50" : "text-zinc-400")}
+                      >
+                        <ShieldCheck size={14} />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
-              ) : (
-                reports.map((report) => (
-                  <tr key={report.id} className="hover:bg-zinc-50/50 transition-colors group">
-                    <td className="px-8 py-6">
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-zinc-900">
-                          {new Date(report.check_in_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
-                        </span>
-                        <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-                          {new Date(report.check_in_date).getFullYear()}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex flex-col">
-                        <span className="text-base font-bold text-zinc-900">{report.customer_name}</span>
-                        <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{report.customer_phone}</span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center text-sm font-bold text-zinc-900 shadow-sm">
-                          {report.room_number}
-                        </div>
-                        <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{report.room_type}</span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className={cn(
-                        "text-[10px] uppercase font-black px-3 py-1.5 rounded-xl tracking-widest inline-flex items-center gap-2",
-                        report.status === 'completed' ? "bg-emerald-50 text-emerald-600" : "bg-orange-50 text-orange-600"
-                      )}>
-                        <span className={cn("w-1.5 h-1.5 rounded-full", report.status === 'completed' ? "bg-emerald-500" : "bg-orange-500")} />
-                        {report.status}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <span className="text-lg font-black text-zinc-900 tracking-tight">₹{report.total_amount || report.advance_paid}</span>
-                    </td>
-                  </tr>
-                ))
-              )}
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-6 mb-12">
-          <button 
-            disabled={page === 1}
-            onClick={() => setPage(p => p - 1)}
-            className="w-12 h-12 flex items-center justify-center rounded-2xl border border-zinc-200 disabled:opacity-30 hover:bg-zinc-900 hover:text-white transition-all shadow-sm"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-black text-zinc-900">Page {page}</span>
-            <span className="text-sm font-bold text-zinc-400">/ {totalPages}</span>
-          </div>
-          <button 
-            disabled={page === totalPages}
-            onClick={() => setPage(p => p + 1)}
-            className="w-12 h-12 flex items-center justify-center rounded-2xl border border-zinc-200 disabled:opacity-30 hover:bg-zinc-900 hover:text-white transition-all shadow-sm"
-          >
-            <ChevronRight size={24} />
-          </button>
-        </div>
-      )}
     </div>
   );
-};
+}
 
-const AnalyticsCharts = ({ incomeData, occupancyData }: { incomeData: any[], occupancyData: any[] }) => {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-      {/* Income & Profit Chart */}
-      <motion.div 
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm"
-      >
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h3 className="text-lg font-bold text-zinc-900 tracking-tight">Revenue & Profit</h3>
-            <p className="text-xs font-medium text-zinc-400 uppercase tracking-widest mt-1">Last 7 Days Trend</p>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-zinc-900" />
-              <span className="text-[10px] font-bold text-zinc-500 uppercase">Income</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span className="text-[10px] font-bold text-zinc-500 uppercase">Profit</span>
-            </div>
-          </div>
-        </div>
-        <div className="h-[280px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={incomeData}>
-              <defs>
-                <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#18181b" stopOpacity={0.1}/>
-                  <stop offset="95%" stopColor="#18181b" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
-              <XAxis 
-                dataKey="date" 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 600, fill: '#a1a1aa' }}
-                dy={10}
-              />
-              <YAxis 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 600, fill: '#a1a1aa' }}
-              />
-              <Tooltip 
-                contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-              />
-              <Area type="monotone" dataKey="income" stroke="#18181b" strokeWidth={3} fillOpacity={1} fill="url(#colorIncome)" />
-              <Area type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorProfit)" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </motion.div>
-
-      {/* Occupancy Chart */}
-      <motion.div 
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-zinc-900 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden"
-      >
-        <div className="relative z-10 flex items-center justify-between mb-8">
-          <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">Room Occupancy</h3>
-            <p className="text-xs font-medium text-zinc-500 uppercase tracking-widest mt-1">Weekly Performance</p>
-          </div>
-          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white">
-            <Users size={20} />
-          </div>
-        </div>
-        <div className="h-[280px] w-full relative z-10">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={occupancyData}>
-              <XAxis 
-                dataKey="date" 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 600, fill: '#71717a' }}
-                dy={10}
-              />
-              <Tooltip 
-                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                contentStyle={{ borderRadius: '16px', border: 'none', backgroundColor: '#18181b', color: '#fff' }}
-              />
-              <Bar dataKey="rooms" radius={[8, 8, 8, 8]} barSize={32}>
-                {occupancyData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={index === occupancyData.length - 1 ? '#fff' : 'rgba(255,255,255,0.2)'} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-      </motion.div>
-    </div>
-  );
-};
-
-const Dashboard = ({ setView, user }: { setView: (v: string) => void, user: any }) => {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [analytics, setAnalytics] = useState<{ incomeData: any[], occupancyData: any[] } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [lodgeName, setLodgeName] = useState(localStorage.getItem('lodge_name') || 'LodgeEase');
-  const [lodgeAddress, setLodgeAddress] = useState(localStorage.getItem('lodge_address') || '123 City Center, Bangalore');
-  const [lodgePhone, setLodgePhone] = useState(localStorage.getItem('lodge_phone') || '+91 98765 43210');
+function StaffManagement({ user }: { user: UserData | null }) {
+  const [staff, setStaff] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'ReceptionStaff' });
 
   useEffect(() => {
-    const handleStorage = () => {
-      setLodgeName(localStorage.getItem('lodge_name') || 'LodgeEase');
-      setLodgeAddress(localStorage.getItem('lodge_address') || '123 City Center, Bangalore');
-      setLodgePhone(localStorage.getItem('lodge_phone') || '+91 98765 43210');
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
+    if (!user) return;
+    const q = query(collection(db, 'staff'), where('lodgeID', '==', user.lodgeID));
+    const unsubscribe = onSnapshot(q, (snap) => {
+      setStaff(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsubscribe();
+  }, [user]);
 
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [isCheckInModal, setIsCheckInModal] = useState(false);
-  const [isCheckOutModal, setIsCheckOutModal] = useState(false);
-  const [billGenerated, setBillGenerated] = useState(false);
-
-  // Form States
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [customerAddress, setCustomerAddress] = useState('');
-  const [customerAadhaar, setCustomerAadhaar] = useState('');
-  const [numGuests, setNumGuests] = useState('1');
-  const [paidAmount, setPaidAmount] = useState('');
-  const [checkInTime, setCheckInTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
-  const [checkInDate, setCheckInDate] = useState(new Date().toISOString().split('T')[0]);
-  const [selectedRoomId, setSelectedRoomId] = useState<string>('');
-
-  const fetchData = async () => {
-    const token = localStorage.getItem('lodgeease_token');
+  const handleAddStaff = async (e: any) => {
+    e.preventDefault();
+    if (!user) return;
+    setLoading(true);
     try {
-      const [roomsRes, statsRes, analyticsRes, bookingsRes] = await Promise.all([
-        fetch('/api/rooms', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/stats', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/analytics', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/bookings', { headers: { 'Authorization': `Bearer ${token}` } })
-      ]);
-      setRooms(await roomsRes.json());
-      setStats(await statsRes.json());
-      setAnalytics(await analyticsRes.json());
-      setBookings(await bookingsRes.json());
-    } catch (err) {
-      console.error(err);
+      // In a real app, you'd use a Cloud Function to create the user to avoid logging out the current user
+      // For this demo, we'll just add to the 'staff' collection
+      await addDoc(collection(db, 'staff'), {
+        ...formData,
+        lodgeID: user.lodgeID,
+        createdAt: serverTimestamp()
+      });
+      setShowAdd(false);
+      setFormData({ name: '', email: '', password: '', role: 'ReceptionStaff' });
+    } catch (err: any) {
+      alert(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleCheckIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem('lodgeease_token');
-    const roomId = selectedRoom?.id || parseInt(selectedRoomId);
-    
-    if (!roomId) return alert('Please select a room');
-
-    try {
-      const res = await fetch('/api/check-in', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          roomId,
-          customerName,
-          customerPhone,
-          customerAddress,
-          customerAadhaar,
-          numGuests: parseInt(numGuests),
-          paidAmount: parseFloat(paidAmount),
-          checkInDate,
-          checkInTime
-        })
-      });
-      if (res.ok) {
-        setIsCheckInModal(false);
-        resetForm();
-        fetchData();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Check-in failed');
-      }
-    } catch (err) {
-      alert('Check-in failed');
-    }
-  };
-
-  const [checkOutTime, setCheckOutTime] = useState(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
-  const [checkOutDate, setCheckOutDate] = useState(new Date().toISOString().split('T')[0]);
-
-  const generateBill = (room: Room, checkoutDate: string, checkoutTime: string) => {
-    const doc = new jsPDF();
-    const checkIn = new Date(room.check_in_date!);
-    const checkOut = new Date(`${checkoutDate} ${checkoutTime}`);
-    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-    const totalRent = diffDays * room.price;
-    const advance = room.advance_paid || 0;
-    const balance = totalRent - advance;
-
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(24, 24, 27); // zinc-900
-    doc.text(lodgeName, 105, 20, { align: 'center' });
-    
-    doc.setFontSize(10);
-    doc.setTextColor(113, 113, 122); // zinc-500
-    doc.text(lodgeAddress, 105, 28, { align: 'center' });
-    doc.text(`Phone: ${lodgePhone}`, 105, 33, { align: 'center' });
-
-    doc.setDrawColor(244, 244, 245); // zinc-100
-    doc.line(20, 40, 190, 40);
-
-    // Bill Details
-    doc.setFontSize(14);
-    doc.setTextColor(24, 24, 27);
-    doc.text('INVOICE / RECEIPT', 20, 50);
-    
-    doc.setFontSize(10);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 190, 50, { align: 'right' });
-
-    // Customer Info
-    doc.setFontSize(10);
-    doc.setTextColor(113, 113, 122);
-    doc.text('BILL TO:', 20, 65);
-    doc.setTextColor(24, 24, 27);
-    doc.setFont(undefined, 'bold');
-    doc.text(room.customer_name || 'N/A', 20, 70);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Phone: ${room.customer_phone || 'N/A'}`, 20, 75);
-
-    // Room Info
-    doc.setTextColor(113, 113, 122);
-    doc.text('ROOM DETAILS:', 120, 65);
-    doc.setTextColor(24, 24, 27);
-    doc.text(`Room Number: ${room.room_number}`, 120, 70);
-    doc.text(`Room Type: ${room.type}`, 120, 75);
-
-    // Stay Info
-    doc.setDrawColor(244, 244, 245);
-    doc.setFillColor(250, 250, 250);
-    doc.rect(20, 85, 170, 35, 'F');
-    
-    doc.setTextColor(113, 113, 122);
-    doc.text('Check-In:', 25, 95);
-    doc.text('Check-Out:', 25, 105);
-    doc.text('Total Stay:', 25, 115);
-
-    doc.setTextColor(24, 24, 27);
-    doc.text(new Date(room.check_in_date!).toLocaleString(), 60, 95);
-    doc.text(checkOut.toLocaleString(), 60, 105);
-    doc.text(`${diffDays} Day(s)`, 60, 115);
-
-    // Table Header
-    doc.setFillColor(24, 24, 27);
-    doc.rect(20, 130, 170, 10, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFont(undefined, 'bold');
-    doc.text('Description', 25, 136.5);
-    doc.text('Rate', 100, 136.5);
-    doc.text('Days', 130, 136.5);
-    doc.text('Total', 170, 136.5, { align: 'right' });
-
-    // Table Row
-    doc.setTextColor(24, 24, 27);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Room Rent - ${room.room_number}`, 25, 150);
-    doc.text(`Rs. ${room.price}`, 100, 150);
-    doc.text(`${diffDays}`, 130, 150);
-    doc.text(`Rs. ${totalRent}`, 170, 150, { align: 'right' });
-
-    doc.line(20, 155, 190, 155);
-
-    // Summary
-    doc.text('Subtotal:', 140, 165);
-    doc.text(`Rs. ${totalRent}`, 170, 165, { align: 'right' });
-    
-    doc.setTextColor(16, 185, 129); // emerald-500
-    doc.text('Advance Paid:', 140, 172);
-    doc.text(`- Rs. ${advance}`, 170, 172, { align: 'right' });
-
-    doc.setTextColor(24, 24, 27);
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'bold');
-    doc.text('Total Payable:', 140, 185);
-    doc.text(`Rs. ${balance}`, 170, 185, { align: 'right' });
-
-    // Footer
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'normal');
-    doc.setTextColor(113, 113, 122);
-    doc.text('Thank you for staying with us!', 105, 220, { align: 'center' });
-    doc.text('This is a computer generated receipt.', 105, 225, { align: 'center' });
-
-    doc.save(`Bill_${room.room_number}_${room.customer_name}.pdf`);
-    setBillGenerated(true);
-  };
-
-  const sendToWhatsApp = (room: Room, checkoutDate: string, checkoutTime: string) => {
-    const checkIn = new Date(room.check_in_date!);
-    const checkOut = new Date(`${checkoutDate} ${checkoutTime}`);
-    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-    const totalRent = diffDays * room.price;
-    const advance = room.advance_paid || 0;
-    const balance = totalRent - advance;
-
-    const message = `*INVOICE / RECEIPT*
-*${lodgeName}*
-${lodgeAddress}
-
-*Guest:* ${room.customer_name}
-*Room:* ${room.room_number} (${room.type})
-*Check-In:* ${checkIn.toLocaleString()}
-*Check-Out:* ${checkOut.toLocaleString()}
-*Total Stay:* ${diffDays} Day(s)
-
-*Total Rent:* Rs. ${totalRent}
-*Advance Paid:* Rs. ${advance}
-*Final Paid:* Rs. ${balance}
-
-Thank you for staying with us!
-_This is a digital receipt generated via LodgeEase._`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const phone = room.customer_phone?.replace(/\D/g, '');
-    const whatsappUrl = `https://wa.me/${phone.startsWith('91') ? phone : '91' + phone}?text=${encodedMessage}`;
-    window.open(whatsappUrl, '_blank');
-  };
-
-  const handleCheckOut = async () => {
-    const token = localStorage.getItem('lodgeease_token');
-    if (!selectedRoom) return;
-
-    const checkIn = new Date(selectedRoom.check_in_date!);
-    const checkOut = new Date(`${checkOutDate} ${checkOutTime}`);
-    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-    const totalAmount = diffDays * selectedRoom.price;
-    const advance = selectedRoom.advance_paid || 0;
-    const balance = totalAmount - advance;
-
-    try {
-      const res = await fetch('/api/check-out', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          roomId: selectedRoom.id,
-          totalAmount,
-          checkOutDate,
-          checkOutTime,
-          paidAmount: balance, // Final balance paid at checkout
-          stayDays: diffDays
-        })
-      });
-      if (res.ok) {
-        setIsCheckOutModal(false);
-        fetchData();
-      }
-    } catch (err) {
-      alert('Check-out failed');
-    }
-  };
-
-  const resetForm = () => {
-    setCustomerName('');
-    setCustomerPhone('');
-    setCustomerAddress('');
-    setCustomerAadhaar('');
-    setNumGuests('1');
-    setPaidAmount('');
-    setCheckInTime(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
-    setCheckInDate(new Date().toISOString().split('T')[0]);
-    setSelectedRoomId('');
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-zinc-50">
-        <Loader2 className="animate-spin text-zinc-900" size={40} />
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-32 lg:pb-12">
-      {/* Welcome Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-4xl font-extrabold text-zinc-900 tracking-tight">
-              Hello, {user?.name.split(' ')[0]}!
-            </h1>
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-full">
-              Live
-            </span>
-          </div>
-          <p className="text-zinc-500 font-medium">Here's what's happening at <span className="text-zinc-900 font-bold">{lodgeName}</span> today.</p>
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Staff Management</h2>
+          <p className="text-zinc-400 font-bold">Manage roles and permissions for your team.</p>
         </div>
-        
-        <div className="flex items-center gap-3 bg-white p-2 rounded-3xl border border-zinc-100 shadow-sm">
-          <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-white">
-            <Calendar size={20} />
-          </div>
-          <div className="pr-4">
-            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest leading-none mb-1">Current Date</p>
-            <p className="text-sm font-bold text-zinc-900">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</p>
-          </div>
-        </div>
+        <Button onClick={() => setShowAdd(true)}><Plus size={18} /> Add Staff</Button>
       </div>
 
-      {/* Integrated Stats & Property Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { label: 'Available Rooms', value: stats?.available || 0, icon: Bed, color: 'emerald' },
-            { label: 'Today Check-ins', value: stats?.checkins || 0, icon: UserPlus, color: 'blue' },
-            { label: 'Today Check-outs', value: stats?.checkouts || 0, icon: LogOut, color: 'rose' },
-            { label: 'Today Revenue', value: `₹${stats?.revenue || 0}`, icon: IndianRupee, color: 'zinc' },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bento-card p-8 group hover:shadow-2xl hover:shadow-zinc-200/50 transition-all"
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110",
-                  stat.color === 'emerald' ? "bg-emerald-50 text-emerald-600" :
-                  stat.color === 'blue' ? "bg-blue-50 text-blue-600" :
-                  stat.color === 'rose' ? "bg-rose-50 text-rose-600" : "bg-zinc-100 text-zinc-900"
-                )}>
-                  <stat.icon size={28} />
-                </div>
-                <div className="flex items-center gap-1 text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-                  <Activity size={12} />
-                  Live
-                </div>
-              </div>
-              <p className="text-zinc-500 text-xs font-black uppercase tracking-widest mb-1">{stat.label}</p>
-              <h3 className="text-3xl font-black text-zinc-900 tracking-tight">{stat.value}</h3>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="bg-zinc-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden group"
-        >
-          <div className="relative z-10 h-full flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                  <Building2 size={24} />
-                </div>
-                <div>
-                  <h3 className="text-xl font-black tracking-tight">{lodgeName}</h3>
-                  <p className="text-xs font-black text-zinc-500 uppercase tracking-widest">Property Profile</p>
-                </div>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-zinc-500">
-                    <Zap size={18} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Subscription</p>
-                    <p className="text-sm font-bold">Premium Enterprise</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-zinc-500">
-                    <MapPin size={18} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Location</p>
-                    <p className="text-sm font-bold truncate max-w-[180px]">{lodgeAddress}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setView('settings')}
-              className="mt-12 w-full py-4 bg-white text-zinc-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-100 transition-all"
-            >
-              Manage Property
-            </button>
-          </div>
-          <Building2 className="absolute right-[-10%] bottom-[-10%] text-white/5 w-64 h-64 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-        </motion.div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="mb-12">
-        <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xs font-black text-zinc-400 uppercase tracking-[0.2em]">Quick Operations</h3>
-          <div className="h-px flex-1 bg-zinc-100 mx-8" />
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { label: 'New Check-in', icon: UserPlus, action: () => setIsCheckInModal(true), color: 'bg-zinc-900 text-white' },
-            { label: 'Add Expense', icon: IndianRupee, action: () => setView('expenses'), color: 'bg-white text-zinc-900 border border-zinc-100' },
-            { label: 'View Reports', icon: FileText, action: () => setView('reports'), color: 'bg-white text-zinc-900 border border-zinc-100' },
-            { label: 'Property Settings', icon: Settings, action: () => setView('settings'), color: 'bg-white text-zinc-900 border border-zinc-100' },
-          ].map((action, i) => (
-            <button
-              key={i}
-              onClick={action.action}
-              className={cn(
-                "flex flex-col items-center justify-center p-8 rounded-[2.5rem] transition-all hover:scale-105 active:scale-95 shadow-sm group",
-                action.color
-              )}
-            >
-              <div className={cn(
-                "w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-all",
-                action.color.includes('bg-zinc-900') ? "bg-white/10" : "bg-zinc-50 group-hover:bg-zinc-900 group-hover:text-white"
-              )}>
-                <action.icon size={24} />
-              </div>
-              <span className="text-xs font-black uppercase tracking-widest">{action.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-        {/* Income Chart */}
-        <div className="lg:col-span-2 bento-card p-8">
-          <div className="flex items-center justify-between mb-10">
-            <div>
-              <h3 className="text-xl font-bold text-zinc-900">Revenue Overview</h3>
-              <p className="text-zinc-500 text-sm">Income vs Expenses for the last 7 days</p>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-zinc-900" />
-                <span className="text-xs font-bold text-zinc-500">Income</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-rose-500" />
-                <span className="text-xs font-bold text-zinc-500">Expenses</span>
-              </div>
-            </div>
-          </div>
-          <div className="h-[300px] w-full">
-            {analytics && (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={analytics.incomeData}>
-                  <defs>
-                    <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#18181b" stopOpacity={0.1}/>
-                      <stop offset="95%" stopColor="#18181b" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f4f4f5" />
-                  <XAxis 
-                    dataKey="date" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{ fill: '#a1a1aa', fontSize: 12, fontWeight: 600 }}
-                    dy={10}
-                  />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{ fill: '#a1a1aa', fontSize: 12, fontWeight: 600 }}
-                  />
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
-                  />
-                  <Area type="monotone" dataKey="income" stroke="#18181b" strokeWidth={4} fillOpacity={1} fill="url(#colorIncome)" />
-                  <Area type="monotone" dataKey="expenses" stroke="#f43f5e" strokeWidth={4} fill="transparent" />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-        </div>
-
-        {/* Property Profile Card */}
-        <div className="bento-card p-8 bg-zinc-900 text-white relative overflow-hidden group">
-          <div className="relative z-10 h-full flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center backdrop-blur-md border border-white/10">
-                  <Building2 size={32} />
-                </div>
-                <div>
-                  <h4 className="text-2xl font-bold tracking-tight">{lodgeName}</h4>
-                  <p className="text-zinc-400 text-xs font-black uppercase tracking-widest">{user?.subscription_status} Plan</p>
-                </div>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center">
-                    <MapPin size={18} className="text-zinc-400" />
-                  </div>
-                  <p className="text-sm text-zinc-300 font-medium leading-tight">{lodgeAddress}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center">
-                    <Phone size={18} className="text-zinc-400" />
-                  </div>
-                  <p className="text-sm text-zinc-300 font-medium">{lodgePhone}</p>
-                </div>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setView('settings')}
-              className="mt-10 w-full py-4 bg-white text-zinc-900 rounded-2xl font-bold hover:bg-zinc-100 transition-all flex items-center justify-center gap-2"
-            >
-              <Settings size={18} />
-              Manage Property
-            </button>
-          </div>
-          <div className="absolute right-[-20%] top-[-20%] w-64 h-64 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
-        </div>
-
-        {/* System Status Card */}
-        <div className="bento-card p-8 bg-emerald-50 border-emerald-100 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h4 className="text-xs font-black text-emerald-600 uppercase tracking-widest">System Status</h4>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live</span>
-              </div>
-            </div>
-            <h3 className="text-2xl font-extrabold text-zinc-900 tracking-tight mb-2">All Systems Operational</h3>
-            <p className="text-zinc-500 text-sm font-medium">Cloud sync active and data is secure.</p>
-          </div>
-          <div className="mt-8 pt-6 border-t border-emerald-100/50 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
-                <ShieldCheck size={16} />
-              </div>
-              <span className="text-xs font-bold text-zinc-600">Security Verified</span>
-            </div>
-            <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">v2.4.0</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Upcoming Bookings Section */}
-      {bookings.length > 0 && (
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-black text-zinc-900 tracking-tight flex items-center gap-3">
-                <Calendar size={24} className="text-zinc-400" />
-                Upcoming Bookings
-              </h2>
-              <p className="text-zinc-500 text-sm font-medium mt-1">Advance reservations for the next few days</p>
-            </div>
-            <button 
-              onClick={() => setView('bookings')}
-              className="text-sm font-black text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-2 group uppercase tracking-widest"
-            >
-              View Calendar
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-          <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-            {bookings.slice(0, 5).map((booking) => (
-              <div 
-                key={booking.id}
-                className="min-w-[320px] p-8 bg-white border border-zinc-100 rounded-[2.5rem] shadow-sm hover:shadow-2xl hover:shadow-zinc-200/50 transition-all group relative overflow-hidden"
-              >
-                <div className="flex justify-between items-start mb-8">
-                  <div className="w-14 h-14 bg-zinc-50 rounded-2xl flex items-center justify-center text-zinc-900 font-black text-xl group-hover:bg-zinc-900 group-hover:text-white transition-all duration-300">
-                    {booking.room_number}
-                  </div>
-                  <span className="text-[10px] bg-zinc-100 text-zinc-500 px-3 py-1.5 rounded-xl font-black uppercase tracking-widest">
-                    {booking.room_type}
+      <div className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm overflow-hidden">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-zinc-50">
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Name</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Role</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Email</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-50">
+            {staff.map(member => (
+              <tr key={member.id} className="hover:bg-zinc-50/50 transition-colors">
+                <td className="px-8 py-6 font-bold text-zinc-900">{member.name}</td>
+                <td className="px-8 py-6">
+                  <span className="bg-zinc-100 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest text-zinc-600">
+                    {member.role}
                   </span>
-                </div>
-                <h4 className="text-xl font-black text-zinc-900 mb-1 tracking-tight">{booking.customer_name}</h4>
-                <p className="text-sm text-zinc-400 font-bold mb-8">{booking.customer_phone}</p>
-                <div className="flex items-center gap-3 text-[10px] font-black text-zinc-400 uppercase tracking-widest border-t border-zinc-50 pt-6">
-                  <div className="w-8 h-8 bg-zinc-50 rounded-lg flex items-center justify-center">
-                    <Clock size={14} />
-                  </div>
-                  <span>
-                    {new Date(booking.check_in_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} 
-                    <span className="mx-2 text-zinc-200">→</span>
-                    {new Date(booking.check_out_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </span>
-                </div>
-                
-                {/* Subtle accent */}
-                <div className="absolute top-0 right-0 w-1 h-full bg-zinc-100 group-hover:bg-zinc-900 transition-colors" />
-              </div>
+                </td>
+                <td className="px-8 py-6 text-sm font-bold text-zinc-500">{member.email}</td>
+                <td className="px-8 py-6 text-right">
+                  <Button variant="ghost" className="text-rose-500 hover:bg-rose-50"><Trash2 size={16} /></Button>
+                </td>
+              </tr>
             ))}
-            {bookings.length > 5 && (
-              <button 
-                onClick={() => setView('bookings')}
-                className="min-w-[160px] flex flex-col items-center justify-center bg-zinc-50 rounded-[2.5rem] border-2 border-dashed border-zinc-200 text-zinc-400 hover:text-zinc-900 hover:border-zinc-900 transition-all group"
-              >
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
-                  <Plus size={32} />
-                </div>
-                <span className="text-sm font-black uppercase tracking-widest">View All</span>
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Room Grid */}
-      <div className="mb-12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-          <div>
-            <h2 className="text-3xl font-extrabold text-zinc-900 tracking-tight">Room Status</h2>
-            <p className="text-zinc-500 font-medium">Real-time availability and occupancy overview</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-6 bg-white px-6 py-3 rounded-2xl border border-zinc-100 shadow-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-200" />
-                <span className="text-xs font-black text-zinc-400 uppercase tracking-widest">Available</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-sm shadow-orange-200" />
-                <span className="text-xs font-black text-zinc-400 uppercase tracking-widest">Occupied</span>
-              </div>
-            </div>
-            <button 
-              onClick={() => { setSelectedRoom(null); setIsCheckInModal(true); }}
-              className="bg-zinc-900 text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200 active:scale-95"
-            >
-              <UserPlus size={20} />
-              Quick Check-In
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-          {rooms.map((room) => (
-            <motion.button
-              key={room.id}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setSelectedRoom(room);
-                if (room.status === 'available') {
-                  setIsCheckInModal(true);
-                } else {
-                  setBillGenerated(false);
-                  setCheckOutDate(new Date().toISOString().split('T')[0]);
-                  setCheckOutTime(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
-                  setIsCheckOutModal(true);
-                }
-              }}
-              className={cn(
-                "p-8 rounded-[2.5rem] border-2 text-left transition-all relative group overflow-hidden",
-                room.status === 'available' 
-                  ? "bg-white border-zinc-100 hover:border-zinc-900 hover:shadow-2xl hover:shadow-zinc-200" 
-                  : "bg-zinc-900 border-zinc-900 text-white shadow-2xl shadow-zinc-200"
-              )}
-            >
-              <div className="flex justify-between items-start mb-8">
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl transition-all duration-300",
-                  room.status === 'available' ? "bg-zinc-50 text-zinc-900 group-hover:bg-zinc-900 group-hover:text-white" : "bg-zinc-800 text-white"
-                )}>
-                  {room.room_number}
-                </div>
-                <span className={cn(
-                  "text-[10px] uppercase font-black px-3 py-1.5 rounded-xl tracking-widest",
-                  room.status === 'available' ? "bg-emerald-50 text-emerald-600" : "bg-orange-500/20 text-orange-400"
-                )}>
-                  {room.type}
-                </span>
-              </div>
-              
-              <div className="space-y-1.5">
-                <h4 className={cn("text-lg font-black tracking-tight truncate", room.status === 'available' ? "text-zinc-900" : "text-white")}>
-                  {room.status === 'available' ? 'Ready to Book' : room.customer_name?.split(' ')[0]}
-                </h4>
-                <p className={cn("text-sm font-bold", room.status === 'available' ? "text-zinc-400" : "text-zinc-500")}>
-                  {room.status === 'available' ? `₹${room.price}` : room.customer_phone}
-                </p>
-              </div>
-
-              {room.status === 'occupied' && (
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Occupied</span>
-                  </div>
-                  <ArrowRight size={16} className="text-zinc-700 group-hover:translate-x-1 transition-transform" />
-                </div>
-              )}
-              
-              {/* Decorative elements */}
-              <div className={cn(
-                "absolute -right-6 -bottom-6 w-24 h-24 rounded-full blur-3xl transition-opacity opacity-0 group-hover:opacity-100",
-                room.status === 'available' ? "bg-emerald-100" : "bg-orange-500/10"
-              )} />
-            </motion.button>
-          ))}
-        </div>
+          </tbody>
+        </table>
       </div>
 
-      {/* Check-In Modal */}
       <AnimatePresence>
-        {isCheckInModal && selectedRoom && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCheckInModal(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden"
-            >
-              <div className="p-6 border-b border-zinc-100 flex justify-between items-center">
-                <div>
-                  <h3 className="text-xl font-bold text-zinc-900">Customer Check-In</h3>
-                  <p className="text-sm text-zinc-500">
-                    {selectedRoom ? `Room #${selectedRoom.room_number} • ${selectedRoom.type}` : 'New Registration'}
-                  </p>
+        {showAdd && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAdd(false)} className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+              <h3 className="text-2xl font-black mb-6">Add Staff Member</h3>
+              <form onSubmit={handleAddStaff} className="space-y-4">
+                <Input label="Full Name" placeholder="Staff Name" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} />
+                <Input label="Email" type="email" placeholder="staff@lodge.com" value={formData.email} onChange={(e: any) => setFormData({...formData, email: e.target.value})} />
+                <Input label="Password" type="password" placeholder="••••••••" value={formData.password} onChange={(e: any) => setFormData({...formData, password: e.target.value})} />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Role</label>
+                  <select 
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl py-3 px-4 text-sm font-bold text-zinc-900 outline-none focus:border-zinc-900 transition-all"
+                    value={formData.role}
+                    onChange={(e) => setFormData({...formData, role: e.target.value})}
+                  >
+                    <option value="Manager">Manager</option>
+                    <option value="ReceptionStaff">Reception Staff</option>
+                    <option value="CleaningStaff">Cleaning Staff</option>
+                  </select>
                 </div>
-                <button onClick={() => setIsCheckInModal(false)} className="text-zinc-400 hover:text-zinc-600">
-                  <X size={24} />
-                </button>
-              </div>
-
-              <form onSubmit={handleCheckIn} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Customer Name</label>
-                    <div className="relative">
-                      <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        required
-                        value={customerName}
-                        onChange={(e) => setCustomerName(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                        placeholder="Enter full name"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Mobile Number</label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        required
-                        value={customerPhone}
-                        onChange={(e) => setCustomerPhone(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                        placeholder="10-digit number"
-                      />
-                    </div>
-                  </div>
+                <div className="flex gap-3 pt-4">
+                  <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAdd(false)}>Cancel</Button>
+                  <Button type="submit" disabled={loading} className="flex-1">{loading ? <Loader2 className="animate-spin" /> : 'Add Staff'}</Button>
                 </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Address</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 text-zinc-400" size={18} />
-                    <textarea 
-                      required
-                      value={customerAddress}
-                      onChange={(e) => setCustomerAddress(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 min-h-[80px]"
-                      placeholder="Enter full address"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Aadhaar Number</label>
-                    <div className="relative">
-                      <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        required
-                        value={customerAadhaar}
-                        onChange={(e) => setCustomerAadhaar(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                        placeholder="12-digit Aadhaar"
-                      />
-                    </div>
-                  </div>
-
-                  {!selectedRoom && (
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Room Number</label>
-                      <div className="relative">
-                        <Bed className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                        <select 
-                          required
-                          value={selectedRoomId}
-                          onChange={(e) => setSelectedRoomId(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 appearance-none"
-                        >
-                          <option value="">Select Room</option>
-                          {rooms.filter(r => r.status === 'available').map(r => (
-                            <option key={r.id} value={r.id}>#{r.room_number} ({r.type}) - ₹{r.price}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Number of Guests</label>
-                    <div className="relative">
-                      <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        type="number"
-                        required
-                        min="1"
-                        value={numGuests}
-                        onChange={(e) => setNumGuests(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Advance Payment (₹)</label>
-                    <div className="relative">
-                      <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        type="number"
-                        required
-                        value={paidAmount}
-                        onChange={(e) => setPaidAmount(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Check-in Date</label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        type="date"
-                        required
-                        value={checkInDate}
-                        onChange={(e) => setCheckInDate(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Check-in Time</label>
-                    <div className="relative">
-                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-                      <input 
-                        type="time"
-                        required
-                        value={checkInTime}
-                        onChange={(e) => setCheckInTime(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <button 
-                  type="submit"
-                  className="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all mt-4"
-                >
-                  Confirm Check-In
-                </button>
               </form>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
 
-      {/* Check-Out Modal */}
-      <AnimatePresence>
-        {isCheckOutModal && selectedRoom && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCheckOutModal(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
-            >
-              <div className="p-6 bg-zinc-900 text-white">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold">Room Check-Out</h3>
-                    <p className="text-zinc-400 text-sm">Room #{selectedRoom.room_number}</p>
-                  </div>
-                  <button onClick={() => setIsCheckOutModal(false)} className="text-zinc-400 hover:text-white">
-                    <X size={24} />
-                  </button>
-                </div>
-                
-                <div className="bg-white/10 rounded-2xl p-4 space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-400">Customer</span>
-                    <span className="font-medium">{selectedRoom.customer_name}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-zinc-400">Check-in</span>
-                    <span className="font-medium">{new Date(selectedRoom.check_in_date!).toLocaleString()}</span>
-                  </div>
-                  <div className="h-px bg-white/10" />
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase font-bold text-zinc-400">Check-out Date</label>
-                      <input 
-                        type="date"
-                        value={checkOutDate}
-                        onChange={(e) => setCheckOutDate(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-white/30"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase font-bold text-zinc-400">Check-out Time</label>
-                      <input 
-                        type="time"
-                        value={checkOutTime}
-                        onChange={(e) => setCheckOutTime(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-white/30"
-                      />
-                    </div>
-                  </div>
-                </div>
+function AIAssistant({ user }: { user: UserData | null }) {
+  const [message, setMessage] = useState('');
+  const [chat, setChat] = useState<{ role: string, text: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [forecast, setForecast] = useState<any[]>([]);
+
+  const handleSend = async () => {
+    if (!message || !user) return;
+    setLoading(true);
+    const newChat = [...chat, { role: 'user', text: message }];
+    setChat(newChat);
+    setMessage('');
+    
+    try {
+      const response = await chatWithAssistant(message, { lodgeName: user.name, role: user.role });
+      setChat([...newChat, { role: 'assistant', text: response || 'Sorry, I am busy.' }]);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const runForecast = async () => {
+    setLoading(true);
+    try {
+      // Dummy historical data for demo
+      const dummyData = [
+        { date: '2026-03-01', revenue: 5000 },
+        { date: '2026-03-02', revenue: 7000 },
+        { date: '2026-03-03', revenue: 4500 },
+      ];
+      const result = await getRevenueForecast(dummyData);
+      setForecast(result);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm p-8 flex flex-col h-[600px]">
+        <h3 className="text-xl font-black mb-6 flex items-center gap-2"><Bell className="text-zinc-900" /> AI Assistant</h3>
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+          {chat.map((c, i) => (
+            <div key={i} className={cn("flex", c.role === 'user' ? "justify-end" : "justify-start")}>
+              <div className={cn("max-w-[80%] p-4 rounded-2xl text-sm font-bold", c.role === 'user' ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-900")}>
+                {c.text}
               </div>
+            </div>
+          ))}
+          {loading && <Loader2 className="animate-spin text-zinc-400 mx-auto" />}
+        </div>
+        <div className="flex gap-2">
+          <input 
+            className="flex-1 bg-zinc-50 border border-zinc-100 rounded-2xl px-4 py-3 text-sm font-bold outline-none focus:border-zinc-900"
+            placeholder="Ask anything about your lodge..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          />
+          <Button onClick={handleSend} disabled={loading}><ArrowRight size={18} /></Button>
+        </div>
+      </div>
 
-              <div className="p-6 space-y-4">
-                <div className="space-y-2">
-                  {(() => {
-                    const checkIn = new Date(selectedRoom.check_in_date!);
-                    const checkOut = new Date(`${checkOutDate} ${checkOutTime}`);
-                    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-                    const totalRent = diffDays * selectedRoom.price;
-                    const advance = selectedRoom.advance_paid || 0;
-                    const balance = totalRent - advance;
-
-                    return (
-                      <>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-zinc-500">Total Days Stayed</span>
-                          <span className="font-bold">{diffDays} Days</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-zinc-500">Total Rent (₹{selectedRoom.price} x {diffDays})</span>
-                          <span className="font-bold">₹{totalRent}</span>
-                        </div>
-                        <div className="flex justify-between text-sm text-emerald-600">
-                          <span>Advance Deduction</span>
-                          <span className="font-bold">- ₹{advance}</span>
-                        </div>
-                        <div className="h-px bg-zinc-100 my-2" />
-                        <div className="flex justify-between items-center">
-                          <span className="font-bold text-zinc-900">Final Payable Amount</span>
-                          <span className="text-2xl font-bold text-zinc-900">₹{balance}</span>
-                        </div>
-                      </>
-                    );
-                  })()}
+      <div className="space-y-8">
+        <div className="bg-zinc-900 text-white p-8 rounded-[2.5rem] shadow-xl">
+          <h3 className="text-lg font-black mb-4">Revenue Forecast</h3>
+          <p className="text-zinc-400 text-xs font-bold mb-6">Predict future earnings using Gemini 3.1 AI.</p>
+          <Button variant="secondary" onClick={runForecast} disabled={loading} className="w-full">Run AI Forecast</Button>
+          
+          {forecast.length > 0 && (
+            <div className="mt-6 space-y-3">
+              {forecast.slice(0, 5).map((f, i) => (
+                <div key={i} className="flex justify-between items-center text-xs font-bold border-b border-white/10 pb-2">
+                  <span className="text-zinc-500">{f.date}</span>
+                  <span className="text-emerald-400">₹{f.predictedRevenue}</span>
                 </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-                <div className="flex flex-col gap-3">
-                  <div className="flex gap-3">
-                    <button 
-                      onClick={() => generateBill(selectedRoom, checkOutDate, checkOutTime)}
-                      className="flex-1 bg-zinc-100 text-zinc-900 py-4 rounded-2xl font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
-                    >
-                      <FileText size={18} />
-                      {billGenerated ? 'Re-generate' : 'Generate Bill'}
-                    </button>
-                    {billGenerated && (
-                      <button 
-                        onClick={() => sendToWhatsApp(selectedRoom, checkOutDate, checkOutTime)}
-                        className="flex-1 bg-emerald-50 text-emerald-600 py-4 rounded-2xl font-bold hover:bg-emerald-100 transition-all flex items-center justify-center gap-2"
-                      >
-                        <MessageCircle size={18} />
-                        WhatsApp
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <h3 className="text-lg font-black mb-4">Quick Insights</h3>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center"><TrendingUp size={16} /></div>
+              <div>
+                <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Growth</p>
+                <p className="text-sm font-black">+12% this week</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center"><Users size={16} /></div>
+              <div>
+                <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Retention</p>
+                <p className="text-sm font-black">65% repeat guests</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HousekeepingManagement({ user }: { user: UserData | null }) {
+  const [tasks, setTasks] = useState<HousekeepingTask[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'housekeeping'), where('lodgeID', '==', user.lodgeID));
+    onSnapshot(q, (snap) => {
+      setTasks(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as HousekeepingTask)));
+    });
+  }, [user]);
+
+  const updateStatus = async (taskId: string, status: string) => {
+    await updateDoc(doc(db, 'housekeeping', taskId), { status, updatedAt: serverTimestamp() });
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Housekeeping</h2>
+          <p className="text-zinc-400 font-bold">Track room cleaning and readiness.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {['dirty', 'cleaning', 'clean'].map(status => (
+          <div key={status} className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm p-6">
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-4 flex items-center gap-2">
+              <div className={cn("w-2 h-2 rounded-full", status === 'dirty' ? "bg-rose-500" : status === 'cleaning' ? "bg-amber-500" : "bg-emerald-500")} />
+              {status}
+            </h3>
+            <div className="space-y-3">
+              {tasks.filter(t => t.status === status).map(task => (
+                <div key={task.id} className="p-4 bg-zinc-50 rounded-2xl flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-black">Room {task.roomNumber}</p>
+                    <p className="text-[10px] font-bold text-zinc-400">Last update: {task.updatedAt?.toDate().toLocaleTimeString()}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    {status !== 'clean' && (
+                      <button onClick={() => updateStatus(task.id, status === 'dirty' ? 'cleaning' : 'clean')} className="p-2 hover:bg-zinc-200 rounded-lg transition-colors">
+                        <ChevronRight size={14} />
                       </button>
                     )}
                   </div>
-                  <button 
-                    onClick={handleCheckOut}
-                    className="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2"
-                  >
-                    Confirm Check-Out
-                  </button>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-const BookingCalendar = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [isBookingModal, setIsBookingModal] = useState(false);
-  
-  // New Booking Form
-  const [selectedRoomId, setSelectedRoomId] = useState('');
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [checkInDate, setCheckInDate] = useState('');
-  const [checkOutDate, setCheckOutDate] = useState('');
-
-  const fetchData = async () => {
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const [roomsRes, bookingsRes] = await Promise.all([
-        fetch('/api/rooms', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('/api/bookings', { headers: { 'Authorization': `Bearer ${token}` } })
-      ]);
-      setRooms(await roomsRes.json());
-      setBookings(await bookingsRes.json());
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handleCreateBooking = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          roomId: selectedRoomId,
-          customerName,
-          customerPhone,
-          checkInDate,
-          checkOutDate
-        })
-      });
-      if (res.ok) {
-        setIsBookingModal(false);
-        fetchData();
-        // Reset form
-        setSelectedRoomId('');
-        setCustomerName('');
-        setCustomerPhone('');
-        setCheckInDate('');
-        setCheckOutDate('');
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Booking failed');
-      }
-    } catch (err) {
-      alert('Booking failed');
-    }
-  };
-
-  const handleDeleteBooking = async (id: number) => {
-    if (!confirm('Cancel this booking?')) return;
-    const token = localStorage.getItem('lodgeease_token');
-    await fetch(`/api/bookings/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    fetchData();
-  };
-
-  const daysInMonth = (date: Date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const startOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
-
-  const renderCalendar = () => {
-    const totalDays = daysInMonth(currentMonth);
-    const startDay = startOfMonth(currentMonth);
-    const days = [];
-
-    // Header
-    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
-    // Previous month padding
-    for (let i = 0; i < startDay; i++) {
-      days.push(<div key={`pad-${i}`} className="h-24 border border-zinc-50 bg-zinc-50/50" />);
-    }
-
-    // Current month days
-    for (let d = 1; d <= totalDays; d++) {
-      const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const dayBookings = bookings.filter(b => {
-        const start = new Date(b.check_in_date).toISOString().split('T')[0];
-        const end = new Date(b.check_out_date).toISOString().split('T')[0];
-        return dateStr >= start && dateStr <= end;
-      });
-
-      days.push(
-        <div key={d} className="h-24 border border-zinc-100 p-2 relative group hover:bg-zinc-50 transition-colors">
-          <span className="text-xs font-bold text-zinc-400">{d}</span>
-          <div className="mt-1 space-y-1 overflow-y-auto max-h-16 scrollbar-hide">
-            {dayBookings.map(b => (
-              <div 
-                key={b.id} 
-                className="text-[10px] bg-zinc-900 text-white px-1.5 py-0.5 rounded-md truncate cursor-pointer hover:scale-105 transition-transform"
-                title={`${b.customer_name} - Room ${b.room_number}`}
-              >
-                {b.room_number}: {b.customer_name}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="grid grid-cols-7 border-l border-t border-zinc-100 rounded-2xl overflow-hidden shadow-sm bg-white">
-        {weekdays.map(w => (
-          <div key={w} className="py-3 text-center text-[10px] font-black uppercase tracking-widest text-zinc-400 border-r border-b border-zinc-100 bg-zinc-50">
-            {w}
+              ))}
+            </div>
           </div>
         ))}
-        {days}
       </div>
-    );
+    </div>
+  );
+}
+
+function MaintenanceTracking({ user }: { user: UserData | null }) {
+  const [tasks, setTasks] = useState<MaintenanceTask[]>([]);
+  const [showAdd, setShowAdd] = useState(false);
+  const [formData, setFormData] = useState({ roomNumber: '', issue: '', priority: 'medium' });
+
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'maintenance'), where('lodgeID', '==', user.lodgeID));
+    onSnapshot(q, (snap) => {
+      setTasks(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as MaintenanceTask)));
+    });
+  }, [user]);
+
+  const handleAdd = async (e: any) => {
+    e.preventDefault();
+    if (!user) return;
+    await addDoc(collection(db, 'maintenance'), {
+      ...formData,
+      lodgeID: user.lodgeID,
+      status: 'pending',
+      createdAt: serverTimestamp()
+    });
+    setShowAdd(false);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-zinc-900 tracking-tight">Booking Calendar</h2>
-          <p className="text-zinc-500 mt-2">Manage advance room bookings and availability.</p>
+          <h2 className="text-3xl font-black tracking-tight">Maintenance</h2>
+          <p className="text-zinc-400 font-bold">Manage repairs and facility issues.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex bg-white border border-zinc-200 rounded-2xl p-1 shadow-sm">
-            <button 
-              onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
-              className="p-2 hover:bg-zinc-50 rounded-xl transition-colors"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <div className="px-4 flex items-center font-bold text-zinc-900 min-w-[140px] justify-center">
-              {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
-            </div>
-            <button 
-              onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
-              className="p-2 hover:bg-zinc-50 rounded-xl transition-colors"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-          <button 
-            onClick={() => setIsBookingModal(true)}
-            className="bg-zinc-900 text-white px-6 py-3 rounded-2xl font-bold hover:bg-zinc-800 transition-all flex items-center gap-2 shadow-xl shadow-zinc-200"
-          >
-            <Plus size={20} />
-            New Booking
-          </button>
-        </div>
+        <Button onClick={() => setShowAdd(true)}><Plus size={18} /> Report Issue</Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-3 bento-card p-2 sm:p-6">
-          {renderCalendar()}
-        </div>
-        
-        <div className="space-y-6">
-          <div className="bento-card p-8">
-            <h4 className="text-lg font-bold text-zinc-900 mb-6 flex items-center gap-3">
-              <Clock size={20} className="text-zinc-400" />
-              Upcoming
-            </h4>
-            <div className="space-y-4">
-              {bookings.length === 0 ? (
-                <div className="py-12 text-center">
-                  <div className="w-12 h-12 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-300 mx-auto mb-3">
-                    <Calendar size={24} />
-                  </div>
-                  <p className="text-zinc-400 text-sm font-medium italic">No upcoming bookings</p>
-                </div>
-              ) : (
-                bookings.map(b => (
-                  <div key={b.id} className="p-5 bg-zinc-50 rounded-3xl border border-zinc-100 group relative hover:bg-zinc-100 transition-colors">
-                    <button 
-                      onClick={() => handleDeleteBooking(b.id)}
-                      className="absolute top-4 right-4 p-1.5 bg-white text-zinc-300 hover:text-rose-500 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all"
-                    >
-                      <X size={14} />
-                    </button>
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-zinc-900 font-bold shadow-sm">
-                        {b.room_number}
-                      </div>
-                      <span className="text-[10px] bg-zinc-900 text-white px-2.5 py-1 rounded-full font-black uppercase tracking-widest">{b.room_type}</span>
-                    </div>
-                    <p className="font-bold text-zinc-900">{b.customer_name}</p>
-                    <div className="mt-3 flex items-center gap-2 text-[10px] text-zinc-500 font-black uppercase tracking-widest">
-                      <Calendar size={12} />
-                      {new Date(b.check_in_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(b.check_out_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </div>
-                  </div>
-                ))
-              )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tasks.map(task => (
+          <div key={task.id} className="bg-white p-6 rounded-[2rem] border border-zinc-100 shadow-sm space-y-4">
+            <div className="flex justify-between items-start">
+              <span className="text-lg font-black">Room {task.roomNumber}</span>
+              <span className={cn(
+                "px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest",
+                task.priority === 'high' ? "bg-rose-50 text-rose-500" : task.priority === 'medium' ? "bg-amber-50 text-amber-500" : "bg-blue-50 text-blue-500"
+              )}>
+                {task.priority} Priority
+              </span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Booking Modal */}
-      <AnimatePresence>
-        {isBookingModal && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsBookingModal(false)}
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-            >
-              <div className="p-8 bg-zinc-900 text-white">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold">New Advance Booking</h3>
-                    <p className="text-zinc-400 text-sm">Reserve a room for future dates.</p>
-                  </div>
-                  <button onClick={() => setIsBookingModal(false)} className="text-zinc-400 hover:text-white transition-colors">
-                    <X size={24} />
-                  </button>
-                </div>
+            <p className="text-sm font-bold text-zinc-600">{task.issue}</p>
+            <div className="flex justify-between items-center pt-4 border-t border-zinc-50">
+              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">{task.status}</span>
+              <div className="flex gap-2">
+                <Button variant="ghost" className="w-8 h-8 p-0"><Edit2 size={14} /></Button>
+                <Button variant="ghost" className="w-8 h-8 p-0 text-rose-500"><Trash2 size={14} /></Button>
               </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-              <form onSubmit={handleCreateBooking} className="p-8 space-y-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Select Room</label>
+      <AnimatePresence>
+        {showAdd && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAdd(false)} className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+              <h3 className="text-2xl font-black mb-6">Report Maintenance Issue</h3>
+              <form onSubmit={handleAdd} className="space-y-4">
+                <Input label="Room Number" placeholder="101" value={formData.roomNumber} onChange={(e: any) => setFormData({...formData, roomNumber: e.target.value})} />
+                <Input label="Issue Description" placeholder="AC not cooling" value={formData.issue} onChange={(e: any) => setFormData({...formData, issue: e.target.value})} />
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Priority</label>
                   <select 
-                    required
-                    value={selectedRoomId}
-                    onChange={(e) => setSelectedRoomId(e.target.value)}
-                    className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-medium appearance-none"
+                    className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl py-3 px-4 text-sm font-bold text-zinc-900 outline-none focus:border-zinc-900 transition-all"
+                    value={formData.priority}
+                    onChange={(e) => setFormData({...formData, priority: e.target.value})}
                   >
-                    <option value="">Choose a room...</option>
-                    {rooms.map(r => (
-                      <option key={r.id} value={r.id}>Room {r.room_number} ({r.type}) - Rs. {r.price}</option>
-                    ))}
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
                   </select>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Customer Name</label>
-                    <input 
-                      required
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-medium"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Phone Number</label>
-                    <input 
-                      required
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-medium"
-                      placeholder="+91 00000 00000"
-                    />
-                  </div>
+                <div className="flex gap-3 pt-4">
+                  <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAdd(false)}>Cancel</Button>
+                  <Button type="submit" className="flex-1">Report Issue</Button>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Check-In Date</label>
-                    <input 
-                      required
-                      type="date"
-                      value={checkInDate}
-                      onChange={(e) => setCheckInDate(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-medium"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Check-Out Date</label>
-                    <input 
-                      required
-                      type="date"
-                      value={checkOutDate}
-                      onChange={(e) => setCheckOutDate(e.target.value)}
-                      className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-medium"
-                    />
-                  </div>
-                </div>
-
-                <button 
-                  type="submit"
-                  className="w-full bg-zinc-900 text-white py-5 rounded-2xl font-bold hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200 flex items-center justify-center gap-2"
-                >
-                  <Calendar size={20} />
-                  Confirm Booking
-                </button>
               </form>
             </motion.div>
           </div>
@@ -3977,328 +1560,596 @@ const BookingCalendar = () => {
       </AnimatePresence>
     </div>
   );
-};
+}
 
-// --- Main App ---
+function BookingCalendar({ user }: { user: UserData | null }) {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
 
-const LodgeSettings = () => {
-  const [lodgeName, setLodgeName] = useState(localStorage.getItem('lodge_name') || 'Main Lodge');
-  const [lodgeAddress, setLodgeAddress] = useState(localStorage.getItem('lodge_address') || '123 City Center, Bangalore');
-  const [lodgePhone, setLodgePhone] = useState(localStorage.getItem('lodge_phone') || '+91 98765 43210');
-  const [isSaved, setIsSaved] = useState(false);
-  const [isBackingUp, setIsBackingUp] = useState(false);
-  const [isRestoring, setIsRestoring] = useState(false);
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'customers'), where('lodgeID', '==', user.lodgeID));
+    onSnapshot(q, (snap) => {
+      setBookings(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+    const qRooms = query(collection(db, 'rooms'), where('lodgeID', '==', user.lodgeID));
+    onSnapshot(qRooms, (snap) => {
+      setRooms(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Room)));
+    });
+  }, [user]);
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem('lodge_name', lodgeName);
-    localStorage.setItem('lodge_address', lodgeAddress);
-    localStorage.setItem('lodge_phone', lodgePhone);
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
-    window.dispatchEvent(new Event('storage')); // Notify other components
-  };
-
-  const handleBackup = async () => {
-    setIsBackingUp(true);
-    const token = localStorage.getItem('lodgeease_token');
-    try {
-      const res = await fetch('/api/backup', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `LodgeEase_Backup_${new Date().toISOString().split('T')[0]}.json`;
-      a.click();
-    } catch (err) {
-      alert('Backup failed');
-    } finally {
-      setIsBackingUp(false);
-    }
-  };
-
-  const handleRestore = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!confirm('WARNING: This will overwrite all current data. Are you sure you want to proceed?')) return;
-
-    setIsRestoring(true);
-    const token = localStorage.getItem('lodgeease_token');
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        const data = JSON.parse(event.target?.result as string);
-        const res = await fetch('/api/restore', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(data)
-        });
-        if (res.ok) {
-          alert('Data restored successfully! The app will reload.');
-          window.location.reload();
-        } else {
-          alert('Restore failed. Please check the file format.');
-        }
-      } catch (err) {
-        alert('Invalid backup file');
-      } finally {
-        setIsRestoring(false);
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleExportCSV = async (table: string) => {
-    const token = localStorage.getItem('lodgeease_token');
-    window.open(`/api/export-csv?table=${table}&token=${token}`, '_blank');
-  };
+  const monthStart = startOfMonth(currentDate);
+  const monthEnd = endOfMonth(currentDate);
+  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-32 lg:pb-12">
-      <div className="mb-12">
-        <h2 className="text-4xl font-extrabold text-zinc-900 tracking-tight">Property Settings</h2>
-        <p className="text-zinc-500 font-medium mt-2">Manage your lodge profile and system configurations.</p>
-      </div>
-
-      <div className="bento-card p-8 md:p-12 mb-12">
-        <form onSubmit={handleSave} className="space-y-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Lodge Name</label>
-              <input 
-                required
-                value={lodgeName}
-                onChange={(e) => setLodgeName(e.target.value)}
-                className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                placeholder="e.g. LodgeEase Grand"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Contact Phone</label>
-              <input 
-                required
-                value={lodgePhone}
-                onChange={(e) => setLodgePhone(e.target.value)}
-                className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold"
-                placeholder="+91 00000 00000"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-black text-zinc-500 uppercase tracking-widest">Property Address</label>
-            <textarea 
-              required
-              rows={3}
-              value={lodgeAddress}
-              onChange={(e) => setLodgeAddress(e.target.value)}
-              className="w-full px-6 py-4 bg-zinc-50 border border-zinc-200 rounded-2xl outline-none focus:ring-2 focus:ring-zinc-900 transition-all font-bold resize-none"
-              placeholder="Full address of the property..."
-            />
-          </div>
-
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <button 
-              type="submit"
-              className="w-full sm:w-auto bg-zinc-900 text-white px-12 py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200 flex items-center justify-center gap-3"
-            >
-              <Settings size={24} />
-              Save Changes
-            </button>
-            
-            <AnimatePresence>
-              {isSaved && (
-                <motion.div 
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="flex items-center gap-3 text-emerald-600 font-black uppercase tracking-widest text-xs"
-                >
-                  <CheckCircle2 size={20} />
-                  Settings saved successfully
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </form>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div className="bento-card p-10">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-14 h-14 bg-zinc-900 rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <Download size={28} />
-            </div>
-            <div>
-              <h4 className="text-xl font-extrabold text-zinc-900 tracking-tight">Backup & Restore</h4>
-              <p className="text-zinc-500 font-medium text-sm">Secure your data with manual backups.</p>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <button 
-              onClick={handleBackup}
-              disabled={isBackingUp}
-              className="w-full flex items-center justify-between p-6 bg-zinc-50 hover:bg-zinc-100 rounded-2xl transition-all group border border-transparent hover:border-zinc-200"
-            >
-              <div className="flex items-center gap-4">
-                <FileText className="text-zinc-400 group-hover:text-zinc-900 transition-colors" size={24} />
-                <span className="font-bold text-zinc-700">Download Full Backup (JSON)</span>
-              </div>
-              <ArrowRight size={20} className="text-zinc-300 group-hover:text-zinc-900 transition-all group-hover:translate-x-1" />
-            </button>
-
-            <label className="w-full flex items-center justify-between p-6 bg-zinc-50 hover:bg-zinc-100 rounded-2xl transition-all group cursor-pointer border border-transparent hover:border-zinc-200">
-              <div className="flex items-center gap-4">
-                <Plus className="text-zinc-400 group-hover:text-zinc-900 transition-colors" size={24} />
-                <span className="font-bold text-zinc-700">Restore from Backup</span>
-              </div>
-              <input type="file" accept=".json" onChange={handleRestore} className="hidden" />
-              <ArrowRight size={20} className="text-zinc-300 group-hover:text-zinc-900 transition-all group-hover:translate-x-1" />
-            </label>
-          </div>
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Booking Calendar</h2>
+          <p className="text-zinc-400 font-bold">Manage room availability and future bookings.</p>
         </div>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}><ArrowLeft size={16} /></Button>
+          <span className="bg-white px-6 py-2 rounded-xl border border-zinc-100 font-black uppercase tracking-widest text-xs flex items-center">{format(currentDate, 'MMMM yyyy')}</span>
+          <Button variant="secondary" onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}><ArrowRight size={16} /></Button>
+        </div>
+      </div>
 
-        <div className="bento-card p-10">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <TrendingUp size={28} />
-            </div>
-            <div>
-              <h4 className="text-xl font-extrabold text-zinc-900 tracking-tight">Data Exports</h4>
-              <p className="text-zinc-500 font-medium text-sm">Download specific data for Excel.</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            {['rooms', 'customers', 'checkins', 'expenses'].map((table) => (
-              <button 
-                key={table}
-                onClick={() => handleExportCSV(table)}
-                className="flex items-center gap-4 p-5 bg-zinc-50 hover:bg-zinc-100 rounded-2xl transition-all group capitalize border border-transparent hover:border-zinc-200"
-              >
-                <FileText className="text-zinc-400 group-hover:text-emerald-600 transition-colors" size={20} />
-                <span className="font-bold text-zinc-700 text-sm">{table}</span>
-              </button>
+      <div className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm overflow-x-auto">
+        <div className="min-w-[1000px]">
+          <div className="grid grid-cols-[150px_repeat(31,1fr)] border-b border-zinc-50">
+            <div className="p-4 bg-zinc-50 font-black text-[10px] uppercase tracking-widest text-zinc-400">Room</div>
+            {days.map(day => (
+              <div key={day.toString()} className="p-2 text-center font-black text-[8px] uppercase tracking-widest text-zinc-400 border-l border-zinc-50">
+                {format(day, 'd')}
+              </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-zinc-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden group shadow-2xl">
-          <div className="relative z-10">
-            <h4 className="text-2xl font-extrabold mb-3 tracking-tight">Multi-Property Sync</h4>
-            <p className="text-zinc-400 font-medium leading-relaxed">
-              Your changes are automatically synced across all connected devices and branches in real-time.
-            </p>
-          </div>
-          <div className="absolute right-[-10%] bottom-[-10%] w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
-        </div>
-        
-        <div className="bento-card p-10 relative overflow-hidden group">
-          <div className="relative z-10">
-            <h4 className="text-2xl font-extrabold text-zinc-900 mb-3 tracking-tight">Platform Security</h4>
-            <p className="text-zinc-500 font-medium leading-relaxed">
-              LodgeEase uses industry-standard encryption to protect your property and guest data.
-            </p>
-          </div>
-          <ShieldCheck className="absolute right-[-5%] bottom-[-5%] text-zinc-100 w-32 h-32 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-        </div>
-      </div>
-
-      {/* Danger Zone */}
-      <div className="mt-12 pt-12 border-t border-zinc-200">
-        <div className="flex items-center gap-3 mb-6">
-          <AlertTriangle className="text-rose-500" size={20} />
-          <h3 className="text-xs font-black text-rose-500 uppercase tracking-[0.2em]">Danger Zone</h3>
-        </div>
-        <div className="bento-card p-8 border-rose-100 bg-rose-50/30">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div>
-              <h4 className="text-lg font-black text-zinc-900 tracking-tight">Erase All Property Data</h4>
-              <p className="text-sm text-zinc-500 font-medium mt-1">This will permanently delete all rooms, check-ins, and expenses. This action cannot be undone.</p>
+          {rooms.map(room => (
+            <div key={room.id} className="grid grid-cols-[150px_repeat(31,1fr)] border-b border-zinc-50 hover:bg-zinc-50/50 transition-colors">
+              <div className="p-4 font-bold text-xs">Room {room.room_number}</div>
+              {days.map(day => {
+                const isBooked = bookings.find(b => b.room === room.room_number && b.checkIn && b.checkOut && isSameDay(b.checkIn.toDate(), day));
+                return (
+                  <div key={day.toString()} className="border-l border-zinc-50 min-h-[40px] p-1">
+                    {isBooked && (
+                      <div className="w-full h-full bg-zinc-900 rounded-lg flex items-center justify-center text-[8px] text-white font-black uppercase tracking-widest">
+                        Booked
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-            <button 
-              onClick={() => {
-                if (confirm('CRITICAL: Are you sure you want to delete ALL property data? This action is permanent and cannot be undone.')) {
-                  alert('For security, please contact system administrator to perform a full data reset.');
-                }
-              }}
-              className="px-8 py-4 bg-rose-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-rose-600 transition-all shadow-lg shadow-rose-200"
-            >
-              Reset Data
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default function App() {
-  const { user, login, logout, isAuthenticated } = useAuth();
-  const [view, setView] = useState('dashboard');
+function AgentSystem({ user }: { user: UserData | null }) {
+  const [agents, setAgents] = useState<any[]>([]);
+  const [showAdd, setShowAdd] = useState(false);
+  const [formData, setFormData] = useState({ name: '', phone: '', commission: 10 });
 
-  const isExpired = user?.subscription_status === 'expired' && !user?.is_super_admin;
-  const isPublic = user?.type === 'public';
+  useEffect(() => {
+    if (!user) return;
+    const q = query(collection(db, 'agents'), where('lodgeID', '==', user.lodgeID));
+    onSnapshot(q, (snap) => {
+      setAgents(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+  }, [user]);
+
+  const handleAdd = async (e: any) => {
+    e.preventDefault();
+    if (!user) return;
+    await addDoc(collection(db, 'agents'), {
+      ...formData,
+      lodgeID: user.lodgeID,
+      referralCode: `AGENT_${Math.random().toString(36).substring(7).toUpperCase()}`,
+      totalCommission: 0,
+      createdAt: serverTimestamp()
+    });
+    setShowAdd(false);
+  };
 
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-zinc-50 font-sans text-zinc-900">
-        {isAuthenticated && <Navbar onLogout={logout} currentView={view} setView={setView} />}
-        {isAuthenticated && isExpired && !isPublic && <SubscriptionExpired />}
-        
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<PublicLandingPage isAuthenticated={isAuthenticated} user={user} />} />
-          <Route path="/public/login" element={!isAuthenticated ? <PublicLoginPage onLogin={login} /> : <Navigate to="/" />} />
-          <Route path="/public/register" element={!isAuthenticated ? <PublicRegisterPage /> : <Navigate to="/" />} />
-          <Route path="/public/lodge/:id" element={<PublicLodgeDetails />} />
-
-          {/* Lodge Owner Routes */}
-          <Route 
-            path="/login" 
-            element={!isAuthenticated ? <LoginPage onLogin={login} /> : <Navigate to="/" />} 
-          />
-          <Route 
-            path="/register" 
-            element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/" />} 
-          />
-          
-          {/* Protected Dashboard Routes */}
-          <Route 
-            path="/dashboard" 
-            element={
-              isAuthenticated ? (
-                isPublic ? (
-                  view === 'dashboard' ? <PublicLandingPage isAuthenticated={isAuthenticated} user={user} /> : <PublicMyBookings />
-                ) : (
-                  user?.is_super_admin ? (
-                    <SuperAdminDashboard />
-                  ) : (
-                    view === 'dashboard' ? <Dashboard setView={setView} user={user} /> : 
-                    view === 'rooms' ? <RoomManagement /> :
-                    view === 'bookings' ? <BookingCalendar /> :
-                    view === 'expenses' ? <Expenses /> :
-                    view === 'settings' ? <LodgeSettings /> :
-                    <Reports />
-                  )
-                )
-              ) : (
-                <Navigate to="/login" />
-              )
-            } 
-          />
-        </Routes>
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">Agent Referrals</h2>
+          <p className="text-zinc-400 font-bold">Manage referral agents and commissions.</p>
+        </div>
+        <Button onClick={() => setShowAdd(true)}><Plus size={18} /> Add Agent</Button>
       </div>
-    </BrowserRouter>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {agents.map(agent => (
+          <div key={agent.id} className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm space-y-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-lg font-black">{agent.name}</h3>
+                <p className="text-xs font-bold text-zinc-400">{agent.phone}</p>
+              </div>
+              <div className="bg-zinc-900 text-white px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">
+                {agent.referralCode}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-zinc-50 p-4 rounded-2xl">
+                <p className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">Commission</p>
+                <p className="text-lg font-black">{agent.commission}%</p>
+              </div>
+              <div className="bg-emerald-50 p-4 rounded-2xl">
+                <p className="text-[8px] font-black text-emerald-600 uppercase tracking-widest">Earned</p>
+                <p className="text-lg font-black text-emerald-600">₹{agent.totalCommission}</p>
+              </div>
+            </div>
+            <Button variant="secondary" className="w-full">View Bookings</Button>
+          </div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {showAdd && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowAdd(false)} className="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="relative w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+              <h3 className="text-2xl font-black mb-6">Register New Agent</h3>
+              <form onSubmit={handleAdd} className="space-y-4">
+                <Input label="Agent Name" placeholder="John Agent" value={formData.name} onChange={(e: any) => setFormData({...formData, name: e.target.value})} />
+                <Input label="Phone" placeholder="9876543210" value={formData.phone} onChange={(e: any) => setFormData({...formData, phone: e.target.value})} />
+                <Input label="Commission Rate (%)" type="number" value={formData.commission} onChange={(e: any) => setFormData({...formData, commission: Number(e.target.value)})} />
+                <div className="flex gap-3 pt-4">
+                  <Button type="button" variant="secondary" className="flex-1" onClick={() => setShowAdd(false)}>Cancel</Button>
+                  <Button type="submit" className="flex-1">Register Agent</Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function PublicPortal() {
+  const [lodges, setLodges] = useState<any[]>([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    const q = query(collection(db, 'lodges'), where('is_super_admin', '==', false));
+    getDocs(q).then(snap => {
+      setLodges(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+  }, []);
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-12">
+      <div className="text-center space-y-6 py-12">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-7xl font-black tracking-tighter text-zinc-900">Find your next stay.</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="max-w-2xl mx-auto relative group">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-zinc-900 transition-colors" size={24} />
+          <input 
+            type="text" 
+            placeholder="Search by city, name, or address..." 
+            className="w-full bg-white border-2 border-zinc-100 rounded-[2.5rem] py-6 pl-16 pr-8 text-lg font-bold shadow-xl shadow-zinc-200/50 outline-none focus:border-zinc-900 transition-all"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </motion.div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {lodges.filter(l => l.name.toLowerCase().includes(search.toLowerCase()) || l.address?.toLowerCase().includes(search.toLowerCase())).map((lodge, i) => (
+          <motion.div 
+            key={lodge.id} 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ delay: i * 0.1 }}
+            className="bg-white p-8 rounded-[3rem] border border-zinc-100 shadow-lg shadow-zinc-200/20 hover:shadow-xl transition-all group cursor-pointer"
+          >
+            <div className="flex justify-between items-start mb-6">
+              <div className="w-16 h-16 bg-zinc-900 rounded-[2rem] flex items-center justify-center text-white font-black text-2xl group-hover:scale-110 transition-transform">
+                {lodge.name[0]}
+              </div>
+              <div className="bg-emerald-50 text-emerald-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">Available</div>
+            </div>
+            <h3 className="text-2xl font-black mb-2">{lodge.name}</h3>
+            <div className="flex items-center gap-2 text-zinc-400 font-bold text-sm mb-6">
+              <MapPin size={14} />
+              {lodge.address}
+            </div>
+            <Button className="w-full py-4 rounded-2xl group-hover:bg-zinc-800">
+              View Rooms <ArrowRight size={16} />
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SubscriptionView({ user }: { user: UserData | null }) {
+  const [loading, setLoading] = useState(false);
+
+  const handlePayment = async (plan: 'monthly' | 'yearly') => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const isLoaded = await loadRazorpay();
+      if (!isLoaded) {
+        alert('Razorpay SDK failed to load. Are you online?');
+        return;
+      }
+
+      const amount = plan === 'monthly' ? 999 : 9999;
+      const order = await createRazorpayOrder(amount, plan, user.lodgeID);
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_lodgeease',
+        amount: order.amount,
+        currency: order.currency,
+        name: 'LodgeEase SaaS',
+        description: `${plan.toUpperCase()} Subscription`,
+        order_id: order.id,
+        handler: async (response: any) => {
+          // Success handler
+          const expiry = new Date();
+          if (plan === 'monthly') expiry.setMonth(expiry.getMonth() + 1);
+          else expiry.setFullYear(expiry.getFullYear() + 1);
+
+          await updateDoc(doc(db, 'lodges', user.lodgeID), {
+            subscriptionStatus: plan,
+            subscriptionExpiry: Timestamp.fromDate(expiry)
+          });
+
+          // Log subscription
+          await addDoc(collection(db, 'subscriptions'), {
+            lodgeID: user.lodgeID,
+            planType: plan,
+            paymentID: response.razorpay_payment_id,
+            amount,
+            startDate: serverTimestamp(),
+            expiryDate: Timestamp.fromDate(expiry),
+            status: 'active'
+          });
+
+          window.location.reload();
+        },
+        prefill: {
+          name: user.owner_name,
+          email: user.email,
+          contact: user.ownerPhone
+        },
+        theme: { color: '#18181b' }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto py-20 text-center space-y-12">
+      <div className="space-y-4">
+        <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <Clock size={40} />
+        </div>
+        <h2 className="text-5xl font-black tracking-tighter">Subscription Expired</h2>
+        <p className="text-zinc-400 font-bold text-lg">Your trial or subscription has ended. Please upgrade to continue.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white p-10 rounded-[3rem] border border-zinc-100 shadow-xl shadow-zinc-200/50 space-y-8">
+          <div>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Standard Plan</p>
+            <h3 className="text-4xl font-black">₹999<span className="text-sm text-zinc-400">/mo</span></h3>
+          </div>
+          <ul className="text-left space-y-4 text-sm font-bold text-zinc-500">
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> Unlimited Rooms</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> Cloud Storage</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> WhatsApp Integration</li>
+          </ul>
+          <Button onClick={() => handlePayment('monthly')} disabled={loading} className="w-full py-4 rounded-2xl">Upgrade Now</Button>
+        </div>
+
+        <div className="bg-zinc-900 p-10 rounded-[3rem] text-white space-y-8 relative overflow-hidden">
+          <div className="absolute top-6 right-6 bg-emerald-500 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Best Value</div>
+          <div>
+            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-2">Annual Plan</p>
+            <h3 className="text-4xl font-black">₹9,999<span className="text-sm text-zinc-500">/yr</span></h3>
+          </div>
+          <ul className="text-left space-y-4 text-sm font-bold text-zinc-400">
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> All Monthly Features</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> 2 Months Free</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> Priority Support</li>
+          </ul>
+          <Button onClick={() => handlePayment('yearly')} disabled={loading} className="w-full py-4 rounded-2xl bg-white text-zinc-900 hover:bg-zinc-100">Upgrade Now</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SuperAdminDashboard() {
+  const [lodges, setLodges] = useState<any[]>([]);
+  const [stats, setStats] = useState({ totalLodges: 0, activeSubs: 0, totalRevenue: 0 });
+
+  useEffect(() => {
+    const q = query(collection(db, 'lodges'), where('is_super_admin', '==', false));
+    onSnapshot(q, (snap) => {
+      const lodgeData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as any));
+      setLodges(lodgeData);
+      setStats({
+        totalLodges: lodgeData.length,
+        activeSubs: lodgeData.filter(l => l.subscriptionStatus !== 'expired').length,
+        totalRevenue: lodgeData.reduce((acc, l) => acc + (l.totalRevenue || 0), 0)
+      });
+    });
+  }, []);
+
+  const toggleSubscription = async (lodge: any) => {
+    const newStatus = lodge.subscriptionStatus === 'expired' ? 'trial' : 'expired';
+    const newExpiry = new Date();
+    if (newStatus === 'trial') newExpiry.setDate(newExpiry.getDate() + 7);
+    else newExpiry.setDate(newExpiry.getDate() - 1);
+
+    await updateDoc(doc(db, 'lodges', lodge.id), {
+      subscriptionStatus: newStatus,
+      subscriptionExpiry: Timestamp.fromDate(newExpiry)
+    });
+  };
+
+  const toggleSuspension = async (lodge: any) => {
+    await updateDoc(doc(db, 'lodges', lodge.id), {
+      is_disabled: !lodge.is_disabled
+    });
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">System Administration</h2>
+          <p className="text-zinc-400 font-bold">Global overview of all registered lodges.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Total Lodges</p>
+          <h3 className="text-4xl font-black">{stats.totalLodges}</h3>
+        </div>
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Active Subscriptions</p>
+          <h3 className="text-4xl font-black text-emerald-500">{stats.activeSubs}</h3>
+        </div>
+        <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+          <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Platform Revenue</p>
+          <h3 className="text-4xl font-black text-zinc-900">₹{stats.totalRevenue}</h3>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm overflow-hidden">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-zinc-50">
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Lodge Details</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Status</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Expiry</th>
+              <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-50">
+            {lodges.map(lodge => (
+              <tr key={lodge.id} className="hover:bg-zinc-50/50 transition-colors">
+                <td className="px-8 py-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-zinc-100 rounded-2xl flex items-center justify-center font-black text-zinc-900">{lodge.name[0]}</div>
+                    <div>
+                      <p className="font-bold text-zinc-900">{lodge.name}</p>
+                      <p className="text-xs font-bold text-zinc-400">{lodge.email}</p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-8 py-6">
+                  <div className="flex flex-col gap-1">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest w-fit",
+                      lodge.subscriptionStatus === 'expired' ? "bg-rose-50 text-rose-500" : "bg-emerald-50 text-emerald-500"
+                    )}>
+                      {lodge.subscriptionStatus}
+                    </span>
+                    {lodge.is_disabled && <span className="text-[8px] font-black text-rose-500 uppercase tracking-widest ml-1">Suspended</span>}
+                  </div>
+                </td>
+                <td className="px-8 py-6 text-xs font-bold text-zinc-500">
+                  {lodge.subscriptionExpiry?.toDate ? lodge.subscriptionExpiry.toDate().toLocaleDateString() : 'N/A'}
+                </td>
+                <td className="px-8 py-6 text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button variant="secondary" onClick={() => toggleSubscription(lodge)}>
+                      {lodge.subscriptionStatus === 'expired' ? 'Activate' : 'Deactivate'}
+                    </Button>
+                    <Button variant={lodge.is_disabled ? 'primary' : 'danger'} onClick={() => toggleSuspension(lodge)}>
+                      {lodge.is_disabled ? 'Unsuspend' : 'Suspend'}
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function WhatsAppManager({ user }: { user: UserData | null }) {
+  const [logs, setLogs] = useState<any[]>([]);
+  const [customers, setCustomers] = useState<any[]>([]);
+  const [promoMessage, setPromoMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'logs' | 'marketing'>('logs');
+
+  useEffect(() => {
+    if (!user) return;
+    
+    // Fetch logs
+    const qLogs = query(collection(db, 'whatsapp_logs'), where('lodgeID', '==', user.lodgeID), orderBy('timestamp', 'desc'), limit(50));
+    const unsubscribeLogs = onSnapshot(qLogs, (snap) => {
+      setLogs(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+
+    // Fetch unique customers for marketing
+    const qCust = query(collection(db, 'customers'), where('lodgeID', '==', user.lodgeID));
+    getDocs(qCust).then(snap => {
+      const unique = new Map();
+      snap.docs.forEach(doc => {
+        const data = doc.data();
+        if (!unique.has(data.phone)) {
+          unique.set(data.phone, data);
+        }
+      });
+      setCustomers(Array.from(unique.values()));
+    });
+
+    return () => unsubscribeLogs();
+  }, [user]);
+
+  const sendPromotion = async () => {
+    if (!user || !promoMessage) return;
+    setLoading(true);
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const customer of customers) {
+      try {
+        await sendWhatsAppMessage({
+          to: customer.phone,
+          message: promoMessage,
+          lodgeID: user.lodgeID,
+          lodgeName: user.name,
+          guestName: customer.name
+        });
+        successCount++;
+      } catch (err) {
+        failCount++;
+      }
+    }
+
+    alert(`Marketing campaign complete! ✅ ${successCount} sent, ❌ ${failCount} failed.`);
+    setPromoMessage("");
+    setLoading(false);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="text-3xl font-black tracking-tight">WhatsApp Automation</h2>
+          <p className="text-zinc-400 font-bold">Manage automated alerts and marketing campaigns.</p>
+        </div>
+        <div className="flex bg-zinc-100 p-1 rounded-2xl">
+          <button 
+            onClick={() => setActiveTab('logs')}
+            className={cn("px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all", activeTab === 'logs' ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-400")}
+          >
+            Message Logs
+          </button>
+          <button 
+            onClick={() => setActiveTab('marketing')}
+            className={cn("px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all", activeTab === 'marketing' ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-400")}
+          >
+            Marketing
+          </button>
+        </div>
+      </div>
+
+      {activeTab === 'logs' ? (
+        <div className="bg-white rounded-[2.5rem] border border-zinc-100 shadow-sm overflow-hidden">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-zinc-50">
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Guest</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Message</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Status</th>
+                <th className="px-8 py-6 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Time</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-50">
+              {logs.map(log => (
+                <tr key={log.id} className="hover:bg-zinc-50/50 transition-colors">
+                  <td className="px-8 py-6">
+                    <p className="font-bold text-zinc-900">{log.guestName}</p>
+                    <p className="text-xs font-bold text-zinc-400">{log.to}</p>
+                  </td>
+                  <td className="px-8 py-6">
+                    <p className="text-sm text-zinc-600 line-clamp-1 max-w-xs">{log.message}</p>
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest",
+                      log.status === 'sent' ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"
+                    )}>
+                      {log.status}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6 text-right text-xs font-bold text-zinc-400">
+                    {log.timestamp?.toDate().toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white p-8 rounded-[2.5rem] border border-zinc-100 shadow-sm">
+              <h3 className="text-xl font-black mb-6">Create Campaign</h3>
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Message Content</label>
+                  <textarea 
+                    value={promoMessage}
+                    onChange={(e) => setPromoMessage(e.target.value)}
+                    placeholder="E.g., Special 20% discount for your next stay! Book now at LodgeEase."
+                    className="w-full h-40 p-6 rounded-3xl bg-zinc-50 border-none focus:ring-2 focus:ring-zinc-900 transition-all resize-none text-sm font-medium"
+                  />
+                </div>
+                <Button 
+                  onClick={sendPromotion} 
+                  disabled={loading || !promoMessage}
+                  className="w-full py-4 rounded-2xl"
+                >
+                  {loading ? <Loader2 className="animate-spin" /> : <><Send size={18} className="mr-2" /> Blast to {customers.length} Guests</>}
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="bg-zinc-900 p-8 rounded-[2.5rem] text-white">
+              <MessageSquare className="text-emerald-400 mb-4" size={32} />
+              <h3 className="text-xl font-black mb-2">Marketing Tips</h3>
+              <ul className="space-y-4 text-sm text-zinc-400 font-medium">
+                <li className="flex gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" /> Keep messages short and personalized.</li>
+                <li className="flex gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" /> Include a clear call-to-action (CTA).</li>
+                <li className="flex gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" /> Avoid sending messages too frequently.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
