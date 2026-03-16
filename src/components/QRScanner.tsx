@@ -7,20 +7,20 @@ interface QRScannerProps {
   onClose: () => void;
 }
 
-export function QRScanner({ onScan, onClose }: QRScannerProps) {
+export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onClose }) => {
   const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner(
-      "reader",
+    scannerRef.current = new Html5QrcodeScanner(
+      "qr-reader",
       { fps: 10, qrbox: { width: 250, height: 250 } },
       /* verbose= */ false
     );
 
-    scanner.render(
+    scannerRef.current.render(
       (decodedText) => {
         onScan(decodedText);
-        scanner.clear();
+        scannerRef.current?.clear();
         onClose();
       },
       (error) => {
@@ -28,31 +28,23 @@ export function QRScanner({ onScan, onClose }: QRScannerProps) {
       }
     );
 
-    scannerRef.current = scanner;
-
     return () => {
-      if (scannerRef.current) {
-        scannerRef.current.clear().catch(err => console.error("Failed to clear scanner", err));
-      }
+      scannerRef.current?.clear();
     };
-  }, [onScan, onClose]);
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-zinc-900/90 backdrop-blur-md p-4">
-      <div className="relative w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden shadow-2xl">
-        <div className="p-6 border-b border-zinc-100 flex justify-between items-center">
-          <h3 className="text-xl font-black">Scan Aadhaar QR</h3>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
-            <X size={20} />
-          </button>
-        </div>
-        <div id="reader" className="w-full"></div>
-        <div className="p-6 bg-zinc-50 text-center">
-          <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
-            Align the QR code within the frame
-          </p>
-        </div>
+    <div className="fixed inset-0 z-[200] bg-black/80 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl p-6 w-full max-w-md relative">
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-900 transition-colors"
+        >
+          <X size={24} />
+        </button>
+        <h3 className="text-xl font-black mb-6">Scan Aadhaar QR</h3>
+        <div id="qr-reader" className="overflow-hidden rounded-2xl border-none" />
       </div>
     </div>
   );
-}
+};

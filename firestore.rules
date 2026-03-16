@@ -46,18 +46,5 @@ service cloud.firestore {
       allow create: if isAuthenticated();
       allow update: if isSuperAdmin();
     }
-
-    // WhatsApp Logs
-    match /whatsapp_logs/{logID} {
-      allow read: if isAuthenticated() && (isLodgeOwner(resource.data.lodgeID) || isStaff(resource.data.lodgeID) || isSuperAdmin());
-      allow create: if isAuthenticated();
-    }
-
-    // Housekeeping
-    match /housekeeping/{taskID} {
-      allow read: if isAuthenticated();
-      allow create, update: if isAuthenticated();
-      allow delete: if isSuperAdmin();
-    }
   }
 }

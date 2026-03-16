@@ -1,17 +1,30 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createServer as createViteServer } from "vite";
 import Razorpay from "razorpay";
 import axios from "axios";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_lodgeease',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || 'lodgeease_secret'
-});
+let razorpay: Razorpay | null = null;
+
+function getRazorpay() {
+  if (!razorpay) {
+    const key_id = process.env.RAZORPAY_KEY_ID;
+    const key_secret = process.env.RAZORPAY_KEY_SECRET;
+    
+    if (!key_id || !key_secret) {
+      console.warn("Razorpay keys missing. Using test defaults.");
+    }
+    
+    razorpay = new Razorpay({
+      key_id: key_id || 'rzp_test_lodgeease',
+      key_secret: key_secret || 'lodgeease_secret'
+    });
+  }
+  return razorpay;
+}
 
 const WHATSAPP_TOKEN = process.env.WHATSAPP_API_TOKEN;
 const WHATSAPP_PHONE_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
@@ -26,15 +39,17 @@ async function startServer() {
   app.post("/api/payments/order", async (req, res) => {
     try {
       const { amount, plan, lodgeID } = req.body;
+      const rzp = getRazorpay();
       const options = {
         amount: amount * 100, // in paise
         currency: "INR",
         receipt: `receipt_${lodgeID}_${Date.now()}`,
         notes: { plan, lodgeID }
       };
-      const order = await razorpay.orders.create(options);
+      const order = await rzp.orders.create(options);
       res.json(order);
     } catch (error) {
+      console.error("Razorpay Error:", error);
       res.status(500).json({ error: "Failed to create order" });
     }
   });
@@ -91,6 +106,7 @@ async function startServer() {
 
   // Vite Integration
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",

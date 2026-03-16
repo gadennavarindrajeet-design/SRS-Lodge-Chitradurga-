@@ -1,5 +1,9 @@
 {
-  "name": "lodgeease-app",
-  "description": "LodgeEase - Lodge management system",
-  "requestFramePermissions": ["camera"]
+  "name": "LodgeEase",
+  "description": "Professional SaaS Lodge Management System with WhatsApp Automation, Aadhaar OCR, and Razorpay Payments.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
 }
